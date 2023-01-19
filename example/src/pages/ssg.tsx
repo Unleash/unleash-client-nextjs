@@ -1,4 +1,4 @@
-import { clientFlags, getFrontendFlags, type IVariant } from "@unleash/nextjs";
+import { flagsClient, getFrontendFlags, type IVariant } from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
 
 type Data = {
@@ -16,7 +16,7 @@ const ExampleStaticPage: NextPage<Data> = ({ isEnabled, variant }) => (
 
 export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   const { toggles } = await getFrontendFlags();
-  const flags = clientFlags(toggles);
+  const flags = flagsClient(toggles);
 
   return {
     props: {

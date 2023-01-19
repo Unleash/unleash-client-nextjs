@@ -1,5 +1,5 @@
 import {
-  clientFlags,
+  flagsClient,
   evaluateFlags,
   getDefinitions,
   type IVariant,
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
   const { toggles } = evaluateFlags(definitions, {
     sessionId,
   });
-  const flags = clientFlags(toggles);
+  const flags = flagsClient(toggles);
 
   return {
     props: {

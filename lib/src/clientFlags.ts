@@ -4,7 +4,7 @@ import { defaultClientConfig } from "./utils";
 /**
  * Simplified client SDK to work offline with pre-evaluated flags
  */
-export const clientFlags = (toggles = [] as IToggle[]) => {
+export const flagsClient = (toggles = [] as IToggle[]) => {
   const client = new UnleashClient({
     bootstrap: toggles,
     ...defaultClientConfig,

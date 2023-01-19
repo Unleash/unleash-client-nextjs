@@ -12,7 +12,7 @@ This package allows easy integration of [Unleash](https://github.com/unleash/unl
 
 To install, simply run:
 
-```
+```sh
 npm install @unleash/nextjs
 # or
 yarn add @unleash/nextjs
@@ -22,10 +22,8 @@ pnpm add @unleash/nextjs
 
 ### Environment variables
 
-This package tries to load configuration from
+This package will attempt to load configuration from
 [Next.js Environment variables](https://nextjs.org/docs/basic-features/environment-variables).
-
-If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 
 | Prefixable     | Variable                     | Default                     | Used in                                              |
 | -------------- | ---------------------------- | --------------------------- | ---------------------------------------------------- |
@@ -34,6 +32,7 @@ If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `-`                         | `FlagProvider`, `getFrontendFlags`                   |
 | `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                    | `FlagProvider`, `getFrontendFlags`, `getDefinitions` |
 
+If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
 
@@ -91,7 +90,7 @@ With same access as in the client-side example above you can resolve Unleash fea
 Use `getFrontendFlags` to load
 
 ```tsx
-import { clientFlags, getFrontendFlags, type IVariant } from "@unleash/nextjs";
+import { flagsClient, getFrontendFlags, type IVariant } from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
 
 type Data = {
@@ -115,7 +114,7 @@ export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   /* Or with Proxy/Frontend API */
   // const { toggles } = await getFrontendFlags();
 
-  const flags = clientFlags(toggles);
+  const flags = flagsClient(toggles);
 
   return {
     props: {
@@ -136,7 +135,7 @@ The same approach will work for [ISR (Incremental Static Regeneration)](https://
 
 ```tsx
 import {
-  clientFlags,
+  flagsClient,
   evaluateFlags,
   getDefinitions,
   type IVariant,
@@ -163,7 +162,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
   };
 
   const { toggles } = await getFrontendFlags(); // Use Proxy/Frontend API
-  const flags = clientFlags(toggles);
+  const flags = flagsClient(toggles);
 
   return {
     props: {
