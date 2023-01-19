@@ -177,6 +177,60 @@ export default ExamplePage;
 
 <br />
 
+## D). Bootstrapping / rehydration
+
+You can bootstrap Unleash React SDK to have values loaded from the start.
+Initial value can be customized server-side.
+
+```tsx
+import App, { AppContext, type AppProps } from "next/app";
+import {
+  FlagProvider,
+  getFrontendFlags,
+  IMutableContext,
+  IToggle,
+} from "@unleash/nextjs";
+
+type Data = {
+  toggles: IToggle[];
+  context: IMutableContext;
+};
+
+export default function CustomApp({
+  Component,
+  pageProps,
+  toggles,
+  context,
+}: AppProps & Data) {
+  return (
+    <FlagProvider
+      config={{
+        bootstrap: toggles,
+        context,
+      }}
+    >
+      <Component {...pageProps} />
+    </FlagProvider>
+  );
+}
+
+CustomApp.getInitialProps = async (ctx: AppContext) => {
+  const context = {
+    userId: "123",
+  };
+
+  const { toggles } = await getFrontendFlags();
+
+  return {
+    ...(await App.getInitialProps(ctx)),
+    bootstrap: toggles,
+    context, // pass context along so client can refetch correct values
+  };
+};
+```
+
+<br />
+
 # What's next
 
 ## Experimental features support
