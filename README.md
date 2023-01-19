@@ -99,7 +99,7 @@ type Data = {
   variant: IVariant;
 };
 
-const ExampleStaticPage: NextPage<Data> = ({ isEnabled, variant }) => (
+const ExamplePage: NextPage<Data> = ({ isEnabled, variant }) => (
   <>
     Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
     <br />
@@ -125,14 +125,55 @@ export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   };
 };
 
-export default ExampleStaticPage;
+export default ExamplePage;
 ```
 
 The same approach will work for [ISR (Incremental Static Regeneration)](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration).
 
 <br />
 
-## C). Server Side Rendering, bootstrapping and rehydration (SSR)
+## C). Server Side Rendering (SSR)
+
+```tsx
+import {
+  clientFlags,
+  evaluateFlags,
+  getDefinitions,
+  type IVariant,
+} from "@unleash/nextjs";
+import type { GetServerSideProps, NextPage } from "next";
+
+type Data = {
+  isEnabled: boolean;
+};
+
+const ExamplePage: NextPage<Data> = ({ isEnabled }) => (
+  <>Flag status: {isEnabled ? "ENABLED" : "DISABLED"}</>
+);
+
+export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
+  const sessionId =
+    ctx.req.cookies["unleash-session-id"] ||
+    `${Math.floor(Math.random() * 1_000_000_000)}`;
+  ctx.res.setHeader("set-cookie", `unleash-session-id=${sessionId}; path=/;`);
+
+  const context = {
+    sessionId, // needed for stickiness
+    // userId: "123" // etc
+  };
+
+  const { toggles } = await getFrontendFlags(); // Use Proxy/Frontend API
+  const flags = clientFlags(toggles);
+
+  return {
+    props: {
+      isEnabled: flags.isEnabled("nextjs-poc"),
+    },
+  };
+};
+
+export default ExamplePage;
+```
 
 <br />
 
@@ -144,4 +185,5 @@ Unleash Next.js SDK can run on [Edge Runtime](https://nextjs.org/docs/api-refere
 
 ## Known limitation
 
-In current interation server-side SDK does not support metrics.
+- In current interation server-side SDK does not support metrics.
+- Server-side SDK does not support "Hostname" strategy. Use custom context field and constraints instead.

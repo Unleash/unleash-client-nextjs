@@ -5,7 +5,7 @@ import { defaultClientConfig } from "./utils";
 type Config = Required<ComponentProps<typeof ReactFlagProvider>>["config"];
 
 type FlagProviderProps = {
-  config: Partial<Config>;
+  config?: Partial<Config>;
 } & Omit<ComponentProps<typeof ReactFlagProvider>, "config">;
 
 export const FlagProvider: FC<FlagProviderProps> = ({ ...props }) => (
