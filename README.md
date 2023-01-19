@@ -2,8 +2,6 @@
 >
 > We need your feedback. Share your comments in [🗣️ GitHub Discussions](https://github.com/Unleash/unleash/discussions) or on Unleash community [💬 Slack](https://unleash-community.slack.com/) server.
 
-<br/>
-
 # Unleash Next.js SDK
 
 This package allows easy integration of [Unleash](https://github.com/unleash/unleash) feature flags in a [Next.js](https://nextjs.org/) application.
@@ -38,6 +36,8 @@ If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
+
+<br/>
 
 # Usage
 
@@ -84,7 +84,7 @@ If you only plan to use [Unleash client-side React SDK](https://github.com/Unlea
 
 <br />
 
-## B). Static pages (SSG)
+## B). Static Site Generation, optimized performance (SSG)
 
 With same access as in the client-side example above you can resolve Unleash feature flags when building static pages.
 
@@ -94,12 +94,12 @@ Use `getFrontendFlags` to load
 import { clientFlags, getFrontendFlags, type IVariant } from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
 
-type Props = {
+type Data = {
   isEnabled: boolean;
   variant: IVariant;
 };
 
-const ExampleStaticPage: NextPage<Props> = ({ isEnabled, variant }) => (
+const ExampleStaticPage: NextPage<Data> = ({ isEnabled, variant }) => (
   <>
     Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
     <br />
@@ -107,7 +107,7 @@ const ExampleStaticPage: NextPage<Props> = ({ isEnabled, variant }) => (
   </>
 );
 
-export const getStaticProps: GetStaticProps<Props> = async (_ctx) => {
+export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   /* Using server-side SDK: */
   const definitions = await getDefinitions();
   const { toggles } = evaluateFlags(definitions);
@@ -132,8 +132,16 @@ The same approach will work for [ISR (Incremental Static Regeneration)](https://
 
 <br />
 
-<!-- FIXME: ## C). Server Side Rendering, bootstrapping and rehydration (SSR) -->
+## C). Server Side Rendering, bootstrapping and rehydration (SSR)
 
-# Experimental features support
+<br />
+
+# What's next
+
+## Experimental features support
 
 Unleash Next.js SDK can run on [Edge Runtime](https://nextjs.org/docs/api-reference/edge-runtime) and in [Middleware](https://nextjs.org/docs/advanced-features/middleware). We are also interested in providing an example with [App Directory](https://beta.nextjs.org/docs/app-directory-roadmap).
+
+## Known limitation
+
+In current interation server-side SDK does not support metrics.

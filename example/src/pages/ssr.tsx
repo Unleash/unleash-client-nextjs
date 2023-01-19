@@ -4,14 +4,16 @@ import {
   getDefinitions,
   type IVariant,
 } from "@unleash/nextjs";
-import type { GetStaticProps, NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 
-type Props = {
+const COOKIE_NAME = "unleash-session-id";
+
+type Data = {
   isEnabled: boolean;
   variant: IVariant;
 };
 
-const ExampleStaticPage: NextPage<Props> = ({ isEnabled, variant }) => (
+const ServerSideRenderedPage: NextPage<Data> = ({ isEnabled, variant }) => (
   <>
     Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
     <br />
@@ -19,12 +21,20 @@ const ExampleStaticPage: NextPage<Props> = ({ isEnabled, variant }) => (
   </>
 );
 
-export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
-  const context = {}; // you can populate it from user cookie etc.
+export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
+  const sessionId =
+    ctx.req.cookies[COOKIE_NAME] ||
+    `${Math.floor(Math.random() * 1_000_000_000)}`;
+
+  const context = {
+    sessionId,
+  };
 
   const definitions = await getDefinitions();
   const { toggles } = evaluateFlags(definitions, context);
   const flags = clientFlags(toggles);
+
+  ctx.res.setHeader("set-cookie", `${COOKIE_NAME}=${sessionId}; path=/;`);
 
   return {
     props: {
@@ -34,4 +44,4 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   };
 };
 
-export default ExampleStaticPage;
+export default ServerSideRenderedPage;

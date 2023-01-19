@@ -1,12 +1,12 @@
 import { clientFlags, getFrontendFlags, type IVariant } from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
 
-type Props = {
+type Data = {
   isEnabled: boolean;
   variant: IVariant;
 };
 
-const ExampleStaticPage: NextPage<Props> = ({ isEnabled, variant }) => (
+const ExampleStaticPage: NextPage<Data> = ({ isEnabled, variant }) => (
   <>
     Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
     <br />
@@ -14,14 +14,14 @@ const ExampleStaticPage: NextPage<Props> = ({ isEnabled, variant }) => (
   </>
 );
 
-export const getStaticProps: GetStaticProps<Props> = async (_ctx) => {
+export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   const { toggles } = await getFrontendFlags();
   const flags = clientFlags(toggles);
 
   return {
     props: {
-      isEnabled: flags.isEnabled("snowing"),
-      variant: flags.getVariant("snowing"),
+      isEnabled: flags.isEnabled("nextjs-poc"),
+      variant: flags.getVariant("nextjs-poc"),
     },
   };
 };
