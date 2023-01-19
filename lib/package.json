@@ -1,0 +1,38 @@
+{
+  "name": "@unleash/nextjs",
+  "version": "0.0.0-alpha.0",
+  "description": "Unleash SDK for Next.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint *.ts*",
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "devDependencies": {
+    "@types/murmurhash3js": "3.0.3",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.27",
+    "@types/react-dom": "18.0.10",
+    "@types/semver": "7.3.13",
+    "eslint-config-custom": "workspace:*",
+    "next": "12.3.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tsconfig": "workspace:*",
+    "typescript": "4.9.4"
+  },
+  "dependencies": {
+    "@unleash/proxy-client-react": "3.5.0",
+    "murmurhash3js": "3.0.1",
+    "semver": "7.3.8",
+    "unleash-client": "3.17.0",
+    "unleash-proxy-client": "2.4.1"
+  },
+  "peerDependencies": {
+    "next": ">=12",
+    "react": ">=17",
+    "react-dom": ">=17"
+  }
+}

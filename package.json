@@ -1,10 +1,11 @@
 {
-  "name": "nextjs",
+  "name": "@unleash/nextjs-monorepo",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "lib",
+    "example",
+    "common/*"
   ],
   "scripts": {
     "build": "turbo run build",
