@@ -71,7 +71,7 @@ importers:
 
   lib:
     specifiers:
-      '@types/ip': ^1.1.0
+      '@types/ip': 1.1.0
       '@types/murmurhash3js': 3.0.3
       '@types/node': 18.11.18
       '@types/react': 18.0.27
@@ -79,7 +79,7 @@ importers:
       '@types/semver': 7.3.13
       '@unleash/proxy-client-react': 3.5.0
       eslint-config-custom: workspace:*
-      ip: ^1.1.8
+      ip: 1.1.8
       murmurhash3js: 3.0.1
       next: 12.3.4
       react: 18.2.0
