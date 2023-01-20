@@ -25,12 +25,12 @@ pnpm add @unleash/nextjs
 This package will attempt to load configuration from
 [Next.js Environment variables](https://nextjs.org/docs/basic-features/environment-variables).
 
-| Prefixable     | Variable                     | Default                     | Used in                                              |
-| -------------- | ---------------------------- | --------------------------- | ---------------------------------------------------- |
-| `NEXT_PUBLIC_` | `UNLEASH_BASE_URL`           | `http://localhost:4242/api` | `FlagProvider`, `getFrontendFlags`                   |
-| **No**         | `UNLEASH_API_TOKEN`          |                             | `getDefinitions`                                     |
-| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `-`                         | `FlagProvider`, `getFrontendFlags`                   |
-| `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                    | `FlagProvider`, `getFrontendFlags`, `getDefinitions` |
+| Prefixable     | Variable                     | Default                                                   | Used in                                              |
+| -------------- | ---------------------------- | --------------------------------------------------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_` | `UNLEASH_BASE_URL`           | `http://localhost:4242/api`                               | `FlagProvider`, `getFrontendFlags`                   |
+| **No**         | `UNLEASH_API_TOKEN`          | `default:development.unleash-insecure-api-token`          | `getDefinitions`                                     |
+| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` | `FlagProvider`, `getFrontendFlags`                   |
+| `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  | `FlagProvider`, `getFrontendFlags`, `getDefinitions` |
 
 If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
