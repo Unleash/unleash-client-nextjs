@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "Apache-2.0",
-  "private": false,
   "scripts": {
     "lint": "eslint *.ts*",
     "build": "tsc",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "prepack": "cp ../README.md ./README.md"
   },
   "devDependencies": {
     "@types/murmurhash3js": "3.0.3",
@@ -35,5 +35,18 @@
     "next": ">=12",
     "react": ">=17",
     "react-dom": ">=17"
+  },
+  "repository": {
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Unleash/unleash-client-nextjs"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/Unleash/unleash-client-nextjs/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
