@@ -1,5 +1,5 @@
 {
-  "name": "unleash-nextjs-monorepo",
+  "name": "@unleash/nextjs-monorepo",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
