@@ -186,8 +186,8 @@ import App, { AppContext, type AppProps } from "next/app";
 import {
   FlagProvider,
   getFrontendFlags,
-  IMutableContext,
-  IToggle,
+  type IMutableContext,
+  type IToggle,
 } from "@unleash/nextjs";
 
 type Data = {
@@ -218,7 +218,7 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
     userId: "123",
   };
 
-  const { toggles } = await getFrontendFlags();
+  const { toggles } = await getFrontendFlags(); // use Unleash Proxy
 
   return {
     ...(await App.getInitialProps(ctx)),
