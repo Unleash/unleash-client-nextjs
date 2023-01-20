@@ -71,6 +71,7 @@ importers:
 
   lib:
     specifiers:
+      '@types/ip': ^1.1.0
       '@types/murmurhash3js': 3.0.3
       '@types/node': 18.11.18
       '@types/react': 18.0.27
@@ -78,6 +79,7 @@ importers:
       '@types/semver': 7.3.13
       '@unleash/proxy-client-react': 3.5.0
       eslint-config-custom: workspace:*
+      ip: ^1.1.8
       murmurhash3js: 3.0.1
       next: 12.3.4
       react: 18.2.0
@@ -89,11 +91,13 @@ importers:
       unleash-proxy-client: 2.4.1
     dependencies:
       '@unleash/proxy-client-react': 3.5.0_unleash-proxy-client@2.4.1
+      ip: 1.1.8
       murmurhash3js: 3.0.1
       semver: 7.3.8
       unleash-client: 3.17.0
       unleash-proxy-client: 2.4.1
     devDependencies:
+      '@types/ip': 1.1.0
       '@types/murmurhash3js': 3.0.3
       '@types/node': 18.11.18
       '@types/react': 18.0.27
@@ -605,6 +609,12 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
     dev: false
+
+  /@types/ip/1.1.0:
+    resolution: {integrity: sha512-dwNe8gOoF70VdL6WJBwVHtQmAX4RMd62M+mAB9HQFjG1/qiCLM/meRy95Pd14FYBbEDwCq7jgJs89cHpLBu4HQ==}
+    dependencies:
+      '@types/node': 18.11.18
+    dev: true
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}

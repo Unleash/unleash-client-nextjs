@@ -1,17 +1,3 @@
-// {
-//   "compilerOptions": {
-//     "target": "ESNext",
-//     "module": "commonjs",
-//     "declaration": true,
-//     "outDir": "./lib",
-//     "strict": true,
-//     "esModuleInterop": true,
-//     "jsx": "react-jsx"
-//   },
-//   "include": ["src"],
-//   "exclude": ["node_modules", "**/__tests__/*"]
-// }
-// FIXME: cleanup
 {
   "extends": "tsconfig/react-library.json",
   "compilerOptions": {
