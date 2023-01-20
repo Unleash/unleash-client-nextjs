@@ -39,5 +39,5 @@ export const defaultClientConfig = {
   clientKey:
     process.env.UNLEASH_FRONTEND_API_TOKEN ||
     process.env.NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN ||
-    "-",
+    "default:development.unleash-insecure-frontend-api-token",
 };

@@ -3,6 +3,7 @@ import type { ClientFeaturesResponse } from "unleash-client";
 const defaultUrl = "http://localhost:4242/api/client/features";
 const baseUrl =
   process.env.UNLEASH_BASE_URL || process.env.NEXT_PUBLIC_UNLEASH_BASE_URL;
+const defaultToken = "default:development.unleash-insecure-api-token";
 
 const defaultConfig = {
   appName:
@@ -10,7 +11,7 @@ const defaultConfig = {
     process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
     "nextjs",
   url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
-  token: process.env.UNLEASH_API_TOKEN || "",
+  token: process.env.UNLEASH_API_TOKEN || defaultToken,
   fetchOptions: {} as RequestInit,
 };
 
@@ -31,9 +32,9 @@ export const getDefinitions = async (
       "Provide a URL or set UNLEASH_BASE_URL environment variable."
     );
   }
-  if (!token) {
+  if (token === defaultToken) {
     console.error(
-      "Provide token or set UNLEASH_API_TOKEN environment variable."
+      "Using fallback default token. Pass token or set UNLEASH_API_TOKEN environment variable."
     );
   }
 
