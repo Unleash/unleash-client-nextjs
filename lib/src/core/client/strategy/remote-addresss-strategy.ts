@@ -1,11 +1,10 @@
-import { Strategy } from './strategy';
-import { Context } from '../context';
-
-const ip = require('ip');
+import { Strategy } from "./strategy";
+import { Context } from "../context";
+import ip from "ip";
 
 export default class RemoteAddressStrategy extends Strategy {
   constructor() {
-    super('remoteAddress');
+    super("remoteAddress");
   }
 
   isEnabled(parameters: any, context: Context) {
@@ -18,7 +17,11 @@ export default class RemoteAddressStrategy extends Strategy {
       }
       if (!ip.isV6Format(range)) {
         try {
-          return ip.cidrSubnet(range).contains(context.remoteAddress);
+          return (
+            (context.remoteAddress &&
+              ip.cidrSubnet(range).contains(context.remoteAddress)) ||
+            false
+          );
         } catch (err) {
           return false;
         }
