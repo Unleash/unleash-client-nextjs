@@ -77,7 +77,7 @@ importers:
       '@types/react': 18.0.27
       '@types/react-dom': 18.0.10
       '@types/semver': 7.3.13
-      '@unleash/proxy-client-react': 3.5.0
+      '@unleash/proxy-client-react': 3.5.1
       eslint-config-custom: workspace:*
       ip: 1.1.8
       murmurhash3js: 3.0.1
@@ -88,14 +88,14 @@ importers:
       tsconfig: workspace:*
       typescript: 4.9.4
       unleash-client: 3.17.0
-      unleash-proxy-client: 2.4.1
+      unleash-proxy-client: 2.4.2
     dependencies:
-      '@unleash/proxy-client-react': 3.5.0_unleash-proxy-client@2.4.1
+      '@unleash/proxy-client-react': 3.5.1_unleash-proxy-client@2.4.2
       ip: 1.1.8
       murmurhash3js: 3.0.1
       semver: 7.3.8
       unleash-client: 3.17.0
-      unleash-proxy-client: 2.4.1
+      unleash-proxy-client: 2.4.2
     devDependencies:
       '@types/ip': 1.1.0
       '@types/murmurhash3js': 3.0.3
@@ -734,12 +734,12 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: false
 
-  /@unleash/proxy-client-react/3.5.0_unleash-proxy-client@2.4.1:
-    resolution: {integrity: sha512-ucBQM7XIilePpbRZJQJc4G4QMtvCrzxTZtUAheEsHZy//U8Cr7zPMotQztopK/IyStaNHaLtD7h7l4cXNvFuqQ==}
+  /@unleash/proxy-client-react/3.5.1_unleash-proxy-client@2.4.2:
+    resolution: {integrity: sha512-eN9rsLrHYyGQt+Ok0+LA/1+TkTVY4m2DJcxgfKEUv/AzetxoE7Nq/rlRo8B71vC+wjsYI6qJ/OKwbopoUZiY1A==}
     peerDependencies:
-      unleash-proxy-client: ^2.4.0
+      unleash-proxy-client: ^2.4.2
     dependencies:
-      unleash-proxy-client: 2.4.1
+      unleash-proxy-client: 2.4.2
     dev: false
 
   /@vercel/examples-ui/1.0.4_q76c2b4vyoegvsbrcwkfvimnai:
@@ -3267,8 +3267,8 @@ packages:
       - supports-color
     dev: false
 
-  /unleash-proxy-client/2.4.1:
-    resolution: {integrity: sha512-8ghE36Y9lvFaHPLYe6f7pgXe9p4TVl9vN3YMA5aI1tv5ODbo+yEodxkgAYArFTJgK9N1B11xDMZiqzYeDv2zHg==}
+  /unleash-proxy-client/2.4.2:
+    resolution: {integrity: sha512-fkVne/51EsllGFuNFbEidSjB7uErFOI1GJgv9RyXy3LWrBSxIdH/P2lE/keKeH0SrU89/Wufamfk5jLogJTisQ==}
     dependencies:
       tiny-emitter: 2.1.0
       uuid: 8.3.2

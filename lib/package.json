@@ -1,6 +1,6 @@
 {
   "name": "@unleash/nextjs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Unleash SDK for Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,12 +30,12 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "@unleash/proxy-client-react": "3.5.0",
+    "@unleash/proxy-client-react": "3.5.1",
     "ip": "1.1.8",
     "murmurhash3js": "3.0.1",
     "semver": "7.3.8",
     "unleash-client": "3.17.0",
-    "unleash-proxy-client": "2.4.1"
+    "unleash-proxy-client": "2.4.2"
   },
   "peerDependencies": {
     "next": ">=12",
@@ -43,10 +43,8 @@
     "react-dom": ">=17"
   },
   "repository": {
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/Unleash/unleash-client-nextjs"
-    }
+    "type": "git",
+    "url": "https://github.com/Unleash/unleash-client-nextjs"
   },
   "bugs": {
     "url": "https://github.com/Unleash/unleash-client-nextjs/issues"
