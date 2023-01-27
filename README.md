@@ -40,7 +40,7 @@ You can use both to have different values on client-side and server-side.
 
 # Usage
 
-### A). Client-side only - simple use case and for development purposes (CSR)
+## A). Client-side only - simple use case and for development purposes (CSR)
 
 Fastest way to get started is to connect frontend directly to Unleash.
 You can find out more about direct [Front-end API access](https://docs.getunleash.io/reference/front-end-api) in our documentation,
