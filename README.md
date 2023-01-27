@@ -90,7 +90,12 @@ With same access as in the client-side example above you can resolve Unleash fea
 Use `getFrontendFlags` to load
 
 ```tsx
-import { flagsClient, getFrontendFlags, type IVariant } from "@unleash/nextjs";
+import {
+  flagsClient,
+  getDefinitions,
+  getFrontendFlags,
+  type IVariant,
+} from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
 
 type Data = {
