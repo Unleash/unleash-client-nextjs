@@ -40,7 +40,7 @@ You can use both to have different values on client-side and server-side.
 
 # Usage
 
-### A). Client-side only - simple use case and for development purposes (CSR)
+## A). Client-side only - simple use case and for development purposes (CSR)
 
 Fastest way to get started is to connect frontend directly to Unleash.
 You can find out more about direct [Front-end API access](https://docs.getunleash.io/reference/front-end-api) in our documentation,
@@ -90,7 +90,12 @@ With same access as in the client-side example above you can resolve Unleash fea
 Use `getFrontendFlags` to load
 
 ```tsx
-import { flagsClient, getFrontendFlags, type IVariant } from "@unleash/nextjs";
+import {
+  flagsClient,
+  getDefinitions,
+  getFrontendFlags,
+  type IVariant,
+} from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
 
 type Data = {
