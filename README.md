@@ -25,16 +25,22 @@ pnpm add @unleash/nextjs
 This package will attempt to load configuration from
 [Next.js Environment variables](https://nextjs.org/docs/basic-features/environment-variables).
 
-| Prefixable     | Variable                     | Default                                                   | Used in                                              |
-| -------------- | ---------------------------- | --------------------------------------------------------- | ---------------------------------------------------- |
-| `NEXT_PUBLIC_` | `UNLEASH_BASE_URL`           | `http://localhost:4242/api`                               | `FlagProvider`, `getFrontendFlags`                   |
-| **No**         | `UNLEASH_API_TOKEN`          | `default:development.unleash-insecure-api-token`          | `getDefinitions`                                     |
-| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` | `FlagProvider`, `getFrontendFlags`                   |
-| `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  | `FlagProvider`, `getFrontendFlags`, `getDefinitions` |
+| Prefixable     | Variable                     | Default                                                   |
+| -------------- | ---------------------------- | --------------------------------------------------------- |
+| `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
+| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_URL>` `/frontend`          |
+| **No**         | `UNLEASH_SERVER_API_TOKEN`   | `default:development.unleash-insecure-api-token`          |
+| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` |
+| `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  |
 
 If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
+
+#### **TL;DR** What do I actually need to set?
+
+- When using Unleash only **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`.
+- If evaluating **server-side**, set `UNLEASH_SERVER_API_URL` and `UNLEASH_SERVER_API_TOKEN`.
 
 <br/>
 
@@ -52,15 +58,7 @@ import { FlagProvider } from "@unleash/nextjs";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <FlagProvider
-      // config prop is optional if environment variables are set
-      config={{
-        url: "http://localhost:4242/api", // this will override NEXT_PUBLIC_UNLEASH_BASE_URL
-        clientKey: "<Frontend_API_token>", // NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN
-        appName: "nextjs", // NEXT_PUBLIC_UNLEASH_APP_NAME
-        refreshInterval: 15, // additional client configuration
-      }}
-    >
+    <FlagProvider>
       <Component {...pageProps} />
     </FlagProvider>
   );
@@ -87,13 +85,11 @@ If you only plan to use [Unleash client-side React SDK](https://github.com/Unlea
 
 With same access as in the client-side example above you can resolve Unleash feature flags when building static pages.
 
-Use `getFrontendFlags` to load
-
 ```tsx
 import {
   flagsClient,
   getDefinitions,
-  getFrontendFlags,
+  // getFrontendFlags,
   type IVariant,
 } from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
