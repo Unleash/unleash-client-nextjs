@@ -6,11 +6,9 @@ export default defineConfig({
     globals: true,
     coverage: {
       all: true,
+      include: ["src/**/*.ts*"],
       exclude: [
-        ".turbo/**",
-        "dist/**",
-        "coverage/**",
-        "node_modules/**",
+        "src/**/*.test.ts*",
         "src/core/**", // TODO: e2e Unleash client tests
       ],
     },
