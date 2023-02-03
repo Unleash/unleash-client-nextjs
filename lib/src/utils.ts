@@ -26,7 +26,7 @@ export const safeCompare = function safeCompare(a: string, b: string) {
 export const randomSessionId = () =>
   `${Math.floor(Math.random() * 1_000_000_000)}`;
 
-export const defaultClientConfig = {
+export const getDefaultClientConfig = () => ({
   url: `${
     process.env.UNLEASH_BASE_URL ||
     process.env.NEXT_PUBLIC_UNLEASH_BASE_URL ||
@@ -40,4 +40,4 @@ export const defaultClientConfig = {
     process.env.UNLEASH_FRONTEND_API_TOKEN ||
     process.env.NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN ||
     "default:development.unleash-insecure-frontend-api-token",
-};
+});
