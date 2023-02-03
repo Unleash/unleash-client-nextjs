@@ -1,6 +1,6 @@
 import type { IToggle, IMutableContext } from "unleash-proxy-client";
 import { UnleashClient } from "unleash-proxy-client";
-import { defaultClientConfig } from "./utils";
+import { getDefaultClientConfig } from "./utils";
 
 /**
  * Create a client-side SDK instance and get evaluated flags from Unleash Proxy or Client API
@@ -11,7 +11,7 @@ export const getFrontendFlags = async (
 ) =>
   new Promise<{ toggles: IToggle[] }>((resolve) => {
     const unleash = new UnleashClient({
-      ...defaultClientConfig,
+      ...getDefaultClientConfig(),
       ...(config || {}),
       disableRefresh: true,
       disableMetrics: true,

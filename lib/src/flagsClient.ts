@@ -1,5 +1,5 @@
 import { UnleashClient, type IToggle } from "unleash-proxy-client";
-import { defaultClientConfig } from "./utils";
+import { getDefaultClientConfig } from "./utils";
 
 /**
  * Simplified client SDK to work offline with pre-evaluated flags
@@ -7,7 +7,7 @@ import { defaultClientConfig } from "./utils";
 export const flagsClient = (toggles = [] as IToggle[]) => {
   const client = new UnleashClient({
     bootstrap: toggles,
-    ...defaultClientConfig,
+    ...getDefaultClientConfig(),
     refreshInterval: 0,
     disableRefresh: true,
     bootstrapOverride: true,
