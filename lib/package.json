@@ -10,8 +10,8 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint *.ts*",
-    "test": "vitest run",
+    "lint": "eslint src/**/*.ts*",
+    "test": "vitest run --coverage",
     "build": "tsc",
     "dev": "tsc -w",
     "prepack": "cp ../README.md ./README.md"
@@ -30,6 +30,7 @@
     "react-dom": "18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4",
+    "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },
   "dependencies": {
