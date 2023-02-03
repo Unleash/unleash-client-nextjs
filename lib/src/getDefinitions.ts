@@ -1,40 +1,44 @@
 import type { ClientFeaturesResponse } from "unleash-client";
 
 const defaultUrl = "http://localhost:4242/api/client/features";
-const baseUrl =
-  process.env.UNLEASH_BASE_URL || process.env.NEXT_PUBLIC_UNLEASH_BASE_URL;
 const defaultToken = "default:development.unleash-insecure-api-token";
 
-const defaultConfig = {
-  appName:
-    process.env.UNLEASH_APP_NAME ||
-    process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
-    "nextjs",
-  url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
-  token: process.env.UNLEASH_API_TOKEN || defaultToken,
-  fetchOptions: {} as RequestInit,
+const getDefaultConfig = () => {
+  const baseUrl =
+    process.env.UNLEASH_SERVER_API_URL ||
+    process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;
+
+  return {
+    appName:
+      process.env.UNLEASH_APP_NAME ||
+      process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
+      "nextjs",
+    url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
+    token: process.env.UNLEASH_SERVER_API_TOKEN || defaultToken,
+    fetchOptions: {} as RequestInit,
+  };
 };
 
 /**
  * Fetch Server-side feature flags definitions from Unleash API
  */
 export const getDefinitions = async (
-  config?: Partial<typeof defaultConfig>
+  config?: Partial<ReturnType<typeof getDefaultConfig>>
 ) => {
   const { appName, url, token, fetchOptions } = {
-    ...defaultConfig,
+    ...getDefaultConfig(),
     ...(config || {}),
   };
 
   if (url === defaultUrl) {
     console.warn(
       "Using fallback Unleash API URL (http://localhost:4242/api).",
-      "Provide a URL or set UNLEASH_BASE_URL environment variable."
+      "Provide a URL or set UNLEASH_SERVER_API_URL environment variable."
     );
   }
   if (token === defaultToken) {
     console.error(
-      "Using fallback default token. Pass token or set UNLEASH_API_TOKEN environment variable."
+      "Using fallback default token. Pass token or set UNLEASH_SERVER_API_TOKEN environment variable."
     );
   }
 

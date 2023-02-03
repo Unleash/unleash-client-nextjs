@@ -28,7 +28,7 @@ This package will attempt to load configuration from
 | Prefixable     | Variable                     | Default                                                   |
 | -------------- | ---------------------------- | --------------------------------------------------------- |
 | `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
-| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_URL>` `/frontend`          |
+| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>` `/frontend`      |
 | **No**         | `UNLEASH_SERVER_API_TOKEN`   | `default:development.unleash-insecure-api-token`          |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` |
 | `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  |
@@ -39,8 +39,8 @@ You can use both to have different values on client-side and server-side.
 
 #### **TL;DR** What do I actually need to set?
 
-- When using Unleash only **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`.
-- If evaluating **server-side**, set `UNLEASH_SERVER_API_URL` and `UNLEASH_SERVER_API_TOKEN`.
+- When using Unleash only **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
+- If evaluating **server-side**, set `UNLEASH_SERVER_API_URL` and `UNLEASH_SERVER_API_TOKEN`. URL should end with `/api`
 
 <br/>
 
