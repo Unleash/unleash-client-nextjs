@@ -25,6 +25,18 @@ pnpm add @unleash/nextjs
 This package will attempt to load configuration from
 [Next.js Environment variables](https://nextjs.org/docs/basic-features/environment-variables).
 
+When using Unleash **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure:
+
+  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
+  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN` [client-side Unleash token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#front-end-tokens)
+
+If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluateFlags()`, set:
+
+  - `UNLEASH_SERVER_API_URL` of you instance. URL should end with `/api`
+  - `UNLEASH_SERVER_API_TOKEN` [server-side Unleash client token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#client-tokens)
+
+#### Detailed explanation
+
 | Prefixable     | Variable                     | Default                                                   |
 | -------------- | ---------------------------- | --------------------------------------------------------- |
 | `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
@@ -36,15 +48,6 @@ This package will attempt to load configuration from
 If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
-
-#### **TL;DR** What do I actually need to set?
-
-- When using Unleash **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure:
-  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
-  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN` ([client-side Unleash token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#front-end-tokens))
-- If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluateFlags()`, set:
-  - `UNLEASH_SERVER_API_URL` of you instance. URL should end with `/api`
-  - `UNLEASH_SERVER_API_TOKEN` ([server-side Unleash client token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#client-tokens))
 
 <br/>
 
@@ -81,7 +84,7 @@ const YourComponent = () => {
 };
 ```
 
-Optional configuration is available with `config` prop. It will override environment variables.
+Optional configuration is available with `config` prop. It will take priority over environment variables.
 
 ```jsx
 <FlagProvider
