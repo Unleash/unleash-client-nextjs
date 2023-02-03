@@ -39,8 +39,12 @@ You can use both to have different values on client-side and server-side.
 
 #### **TL;DR** What do I actually need to set?
 
-- When using Unleash only **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
-- If evaluating **server-side**, set `UNLEASH_SERVER_API_URL` and `UNLEASH_SERVER_API_TOKEN`. URL should end with `/api`
+- When using Unleash **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure:
+  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
+  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN` ([client-side Unleash token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#front-end-tokens))
+- If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluateFlags()`, set:
+  - `UNLEASH_SERVER_API_URL` of you instance. URL should end with `/api`
+  - `UNLEASH_SERVER_API_TOKEN` ([server-side Unleash client token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#client-tokens))
 
 <br/>
 
@@ -77,6 +81,21 @@ const YourComponent = () => {
 };
 ```
 
+Optional configuration is available with `config` prop. It will override environment variables.
+
+```jsx
+<FlagProvider
+  config={{
+    url: "http://localhost:4242/api/frontend", // this will override NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL
+    clientKey: "<Frontend_API_token>", // NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN
+    appName: "nextjs", // NEXT_PUBLIC_UNLEASH_APP_NAME
+
+    refreshInterval: 15, // additional client configuration
+    // see https://github.com/Unleash/unleash-proxy-client-js#available-options
+  }}
+>
+```
+
 If you only plan to use [Unleash client-side React SDK](https://github.com/Unleash/proxy-client-react) now also works with Next.js. Check documentation there for more examples.
 
 <br />
@@ -89,6 +108,7 @@ With same access as in the client-side example above you can resolve Unleash fea
 import {
   flagsClient,
   getDefinitions,
+  evaluateFlags,
   // getFrontendFlags,
   type IVariant,
 } from "@unleash/nextjs";
@@ -129,6 +149,8 @@ export default ExamplePage;
 ```
 
 The same approach will work for [ISR (Incremental Static Regeneration)](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration).
+
+Both `getDefinitions()` and `getFrontendFlags()` can take arguments overriding URL, token and other request parameters.
 
 <br />
 
@@ -240,4 +262,4 @@ Unleash Next.js SDK can run on [Edge Runtime](https://nextjs.org/docs/api-refere
 ## Known limitation
 
 - In current interation server-side SDK does not support metrics.
-- Server-side SDK does not support "Hostname" strategy. Use custom context field and constraints instead.
+- Server-side SDK does not support "Hostname" or "IP" strategy. Use custom context field and constraints instead.
