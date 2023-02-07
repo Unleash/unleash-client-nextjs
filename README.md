@@ -89,9 +89,9 @@ Optional configuration is available with `config` prop. It will take priority ov
 ```jsx
 <FlagProvider
   config={{
-    url: "http://localhost:4242/api/frontend", // this will override NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL
-    clientKey: "<Frontend_API_token>", // NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN
-    appName: "nextjs", // NEXT_PUBLIC_UNLEASH_APP_NAME
+    url: "http://localhost:4242/api/frontend", // replaces NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL
+    clientKey: "<Frontend_API_token>", // replaces NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN
+    appName: "nextjs", // replaces NEXT_PUBLIC_UNLEASH_APP_NAME
 
     refreshInterval: 15, // additional client configuration
     // see https://github.com/Unleash/unleash-proxy-client-js#available-options
