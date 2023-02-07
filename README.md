@@ -265,4 +265,4 @@ Unleash Next.js SDK can run on [Edge Runtime](https://nextjs.org/docs/api-refere
 ## Known limitation
 
 - In current interation server-side SDK does not support metrics.
-- Server-side SDK does not support "Hostname" or "IP" strategy. Use custom context field and constraints instead.
+- When used server-side, this SDK does not support the "Hostname" and "IP" strategies. Use custom context fields and constraints instead.
