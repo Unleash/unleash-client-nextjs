@@ -58,7 +58,7 @@ describe("getDefinitions", () => {
     );
   });
 
-  it("should take configuration form environment variables", () => {
+  it("should read configuration from environment variables", () => {
     const url = "http://example.com/api";
     const token = "secure-token";
     const appName = "my-awesome-app";
