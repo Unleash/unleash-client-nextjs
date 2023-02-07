@@ -40,7 +40,7 @@ If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluate
 | Prefixable     | Variable                     | Default                                                   |
 | -------------- | ---------------------------- | --------------------------------------------------------- |
 | `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
-| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>` `/frontend`      |
+| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>/frontend`      |
 | **No**         | `UNLEASH_SERVER_API_TOKEN`   | `default:development.unleash-insecure-api-token`          |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` |
 | `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  |
