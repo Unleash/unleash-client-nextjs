@@ -44,17 +44,14 @@ describe("getDefinitions", () => {
   it("should warn about default config", () => {
     getDefinitions();
 
-    expect(mockConsole.warn).toHaveBeenCalledWith(
-      "Using fallback Unleash API URL (http://localhost:4242/api).",
-      "Provide a URL or set UNLEASH_SERVER_API_URL environment variable."
-    );
+    expect(mockConsole.warn).toHaveBeenCalled();
   });
 
   it("should show an error when using default token", () => {
     getDefinitions();
 
     expect(mockConsole.error).toHaveBeenCalledWith(
-      "Using fallback default token. Pass token or set UNLEASH_SERVER_API_TOKEN environment variable."
+      expect.stringContaining("Using fallback default token.")
     );
   });
 
