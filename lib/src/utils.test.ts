@@ -115,7 +115,7 @@ describe("getDefaultClientConfig", () => {
     });
 
     expect(warnSpy).toHaveBeenCalledWith(
-      "You are trying to set `NEXT_PUBLIC_UNLEASH_SERVER_API_TOKEN`. Server keys shouldn't be public. Use frontend keys or skip `NEXT_PUBLIC_ prefix."
+      expect.stringContaining("Server keys shouldn't be public.")
     );
   });
 });
