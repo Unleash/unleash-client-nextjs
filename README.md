@@ -27,20 +27,23 @@ This package will attempt to load configuration from
 
 When using Unleash **client-side**, with `<FlagProvider />` or `getFrontendFlags()` configure:
 
-  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
-  - `NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN` [client-side Unleash token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#front-end-tokens)
+- `NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL`. URL should end with `/api/frontend` or `/proxy`
+- `NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN` [client-side API token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#front-end-tokens)
+  if you're using the [front-end API](https://docs.getunleash.io/reference/front-end-api),
+  or a [proxy client key](https://docs.getunleash.io/reference/api-tokens-and-client-keys#proxy-client-keys)
+  if you're using a [proxy](https://docs.getunleash.io/reference/unleash-proxy)
 
 If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluateFlags()`, set:
 
-  - `UNLEASH_SERVER_API_URL` of you instance. URL should end with `/api`
-  - `UNLEASH_SERVER_API_TOKEN` [server-side Unleash client token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#client-tokens)
+- `UNLEASH_SERVER_API_URL` of you instance. URL should end with `/api`
+- `UNLEASH_SERVER_API_TOKEN` [server-side API client token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#client-tokens)
 
 #### Detailed explanation
 
 | Prefixable     | Variable                     | Default                                                   |
 | -------------- | ---------------------------- | --------------------------------------------------------- |
 | `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
-| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>/frontend`      |
+| `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>/frontend`         |
 | **No**         | `UNLEASH_SERVER_API_TOKEN`   | `default:development.unleash-insecure-api-token`          |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` |
 | `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  |
@@ -84,7 +87,7 @@ const YourComponent = () => {
 };
 ```
 
-Optional configuration is available with `config` prop. It will take priority over environment variables.
+Optionally, you can configure `FlagProvider` with the `config` prop. It will take priority over environment variables.
 
 ```jsx
 <FlagProvider
@@ -112,7 +115,7 @@ import {
   flagsClient,
   getDefinitions,
   evaluateFlags,
-  // getFrontendFlags,
+  getFrontendFlags,
   type IVariant,
 } from "@unleash/nextjs";
 import type { GetStaticProps, NextPage } from "next";
@@ -135,7 +138,7 @@ export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   const definitions = await getDefinitions();
   const { toggles } = evaluateFlags(definitions);
 
-  /* Or with Proxy/Frontend API */
+  /* Or with the proxy/front-end API */
   // const { toggles } = await getFrontendFlags();
 
   const flags = flagsClient(toggles);
