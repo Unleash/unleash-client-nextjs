@@ -5,6 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "Apache-2.0",
+  "bin": {
+    "unleash": "./dist/cli/index.js"
+  },
   "files": [
     "dist",
     "src"
@@ -35,6 +38,7 @@
     "vitest": "^0.28.4"
   },
   "dependencies": {
+    "@next/env": "^13.1.6",
     "@unleash/proxy-client-react": "3.5.1",
     "ip": "1.1.8",
     "murmurhash3js": "3.0.1",
