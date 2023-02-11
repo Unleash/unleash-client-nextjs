@@ -3,7 +3,7 @@ import type { ClientFeaturesResponse } from "unleash-client";
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
 
-const getDefaultConfig = () => {
+export const getDefaultConfig = () => {
   const baseUrl =
     process.env.UNLEASH_SERVER_API_URL ||
     process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;

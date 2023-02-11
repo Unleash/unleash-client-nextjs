@@ -5,9 +5,5 @@ export * from "./flagsClient";
 export * from "./getFrontendFlags";
 export * from "./types";
 export * from "./FlagProvider";
-export {
-  useFlag,
-  useVariant,
-  useFlagsStatus,
-  useFlags,
-} from "@unleash/proxy-client-react";
+export * from "./genericHooks";
+export { useFlagsStatus } from "@unleash/proxy-client-react";
