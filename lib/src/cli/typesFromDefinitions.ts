@@ -3,29 +3,28 @@ import { ClientFeaturesResponse } from "unleash-client";
 export const typesFromDefinitions = (definitions: ClientFeaturesResponse) => {
   const { features } = definitions;
 
-  const featureVariants =
-    "export type FeaturesVariantMap = {\n" +
-    features
-      .map(({ name, variants }) => {
-        if (!variants?.length) {
-          return `  "${name}": ${JSON.stringify([
-            { name: "disabled", enabled: false },
-          ])}`;
-        }
+  const featureVariants = features.length
+    ? "export type FeaturesVariantMap = {" +
+      features
+        .map(({ name, variants }) => {
+          if (!variants?.length) {
+            return `\n  "${name}": [{ "name": "disabled", "enabled": false }]`;
+          }
 
-        return `  "${name}": [${variants
-          ?.map(
-            (variant) =>
-              `{ "name": "${
-                variant.name
-              }"; "enabled": true; "payload": ${JSON.stringify(
-                variant.payload
-              )} }`
-          )
-          .join(" |\n    ")}]`;
-      })
-      .join(",\n") +
-    "};";
+          return `\n  "${name}": [${variants
+            ?.map(
+              (variant) =>
+                `${variants.length > 1 ? "\n    " : ""}{ "name": "${
+                  variant.name
+                }"; "enabled": true; "payload": ${JSON.stringify(
+                  variant.payload
+                )} }`
+            )
+            .join(" |")}]`;
+        })
+        .join(",") +
+      "\n};"
+    : "export type FeaturesVariantMap = {};";
 
   return `${featureVariants}
 
