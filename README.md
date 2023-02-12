@@ -259,6 +259,49 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
 
 <br />
 
+# ⚗️ CLI (experimental)
+
+You can use `unleash [action] [options]` in you `package.json` `scripts` section, or with:
+
+```sh
+npx @unleash/nextjs [action] [options]
+```
+
+Generator will try to read [Environment Variables](#environment-variables) from standard Next.js `.env` files
+unless you directly set `UNLEASH_SERVER_API_URL` or `UNLEASH_SERVER_API_TOKEN`.
+
+## Available actions
+
+### `get-definitions`
+
+Download feature flags definitions for bootstrapping (offline use) of server-side SDK.
+
+Example: `unleash get-definitions ./unleash.json`
+
+### `generate-types`
+
+Generate types and typed functions from feature flags defined in Unleash.
+It will also generate strictly typed versions of `useFlag`, `useVariant`, `useFlags` and `flagsClient` (unless `--bare` option is enabled).
+
+Example: `unleash generate-types --bare=true --bootstrap=./unleash.json unleash.ts`
+
+#### Options
+
+- `--bare` - don't include typed versions of functions exported from `@unleash/nextjs`
+- `--bootstrap=./path/to/file.json` - load definitions from a file instead of fetching definitions (work offline)
+
+## Example
+
+Try it now
+
+```sh
+UNLEASH_SERVER_API_URL=https://app.unleash-hosted.com/demo/api \
+UNLEASH_SERVER_API_TOKEN=test-server:default.8a090f30679be7254af997864d66b86e44dcfc5291916adff72a0fb5 \
+npx @unleash/nextjs generate-types ./unleash.ts
+```
+
+<br/>
+
 # What's next
 
 ## Experimental features support
