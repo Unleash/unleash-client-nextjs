@@ -6,6 +6,7 @@ on:
 
 jobs:
   publish:
+    if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,12 +16,32 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: "pnpm"
           registry-url: https://registry.npmjs.org/
       - run: pnpm install
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm test
       - run: cd lib && pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  pre-publish:
+    if: "github.event.release.prerelease"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+          registry-url: https://registry.npmjs.org/
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm test
+      - run: cd lib && pnpm publish --no-git-checks --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
