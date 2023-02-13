@@ -1,4 +1,4 @@
-import { getDefaultClientConfig } from "./utils";
+import { getDefaultClientConfig, safeCompare } from "./utils";
 
 describe("getDefaultClientConfig", () => {
   afterEach(() => {
@@ -117,5 +117,30 @@ describe("getDefaultClientConfig", () => {
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining("Server keys shouldn't be public.")
     );
+  });
+});
+
+describe("safeCompare", () => {
+  test.each([
+    ["foo", "foo"],
+    ["hello world", "hello world"],
+    ["你好，世界", "你好，世界"],
+    ["สวัสดีชาวโลก", "สวัสดีชาวโลก"],
+    ["\\u00e8", "\\u00e8"],
+  ])(`should return true for %s`, (a, b) => {
+    expect(safeCompare(a, b)).toBe(true);
+  });
+
+  test.each([
+    ["foo", "bar"],
+    ["hello world", "not hello world"],
+    ["你好，世界", "您好"],
+    ["สวัสดีชาวโลก", "สวัสดี"],
+    ["\\u00e8", "\\u01e8"],
+    ["a", "aaaaaaaaaa"],
+    ["prefix", "pre"],
+    ["pre", "prefix"],
+  ])(`should return false for %s and %s`, (a, b) => {
+    expect(safeCompare(a, b)).toBe(false);
   });
 });
