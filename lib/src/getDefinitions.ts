@@ -3,7 +3,7 @@ import type { ClientFeaturesResponse } from "unleash-client";
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
 
-export const getDefaultConfig = () => {
+export const getDefaultConfig = (defaultAppName = "nextjs") => {
   const baseUrl =
     process.env.UNLEASH_SERVER_API_URL ||
     process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;
@@ -12,7 +12,7 @@ export const getDefaultConfig = () => {
     appName:
       process.env.UNLEASH_APP_NAME ||
       process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
-      "nextjs",
+      defaultAppName,
     url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
     token: process.env.UNLEASH_SERVER_API_TOKEN || defaultToken,
     fetchOptions: {} as RequestInit,
