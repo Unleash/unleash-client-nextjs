@@ -56,16 +56,25 @@ export const flagsClient = (toggles: IToggle[]) => {
 
 export const fetchDefinitions = async () => {
   const defaultConfig = getDefaultConfig("cli");
-  const url = process.env.UNLEASH_URL || defaultConfig.url;
+  const url = process.env.UNLEASH_URL
+    ? `${process.env.UNLEASH_URL}/client/features`
+    : defaultConfig.url;
   const token = process.env.UNLEASH_TOKEN || defaultConfig.token;
   const appName = process.env.UNLEASH_APPNAME || defaultConfig.appName;
 
   step("- Fetching feature toggle definitions");
   step("API:", url);
   step("environment:", token.split(".")[0].split(":").slice(-1)[0]);
-  return getDefinitions({
-    url,
-    token,
-    appName,
-  });
+
+  const definitions = await getDefinitions({ url, token, appName });
+
+  if (!definitions || !definitions.features) {
+    throw new Error(
+      `${error(
+        "No feature toggle definitions found in the API response"
+      )}\n${JSON.stringify(definitions, null, 2)}`
+    );
+  }
+
+  return definitions;
 };

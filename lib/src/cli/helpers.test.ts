@@ -3,17 +3,22 @@ import * as getDefinitionsModule from "../getDefinitions";
 
 describe("fetchDefinitions", () => {
   const getDefinitions = vi.spyOn(getDefinitionsModule, "getDefinitions");
-  getDefinitions.mockResolvedValue({
-    version: 1,
-    features: [],
-  });
   const getDefaultConfig = vi.spyOn(getDefinitionsModule, "getDefaultConfig");
   const clg = {
     log: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
   };
-  vi.stubGlobal("console", clg);
+
+  beforeEach(() => {
+    vi.stubGlobal("console", clg);
+    getDefinitions.mockImplementation(() =>
+      Promise.resolve({
+        version: 1,
+        features: [],
+      })
+    );
+  });
 
   afterEach(() => {
     vi.restoreAllMocks();
@@ -35,9 +40,9 @@ describe("fetchDefinitions", () => {
     });
   });
 
-  it("is using UNLEASH_URL", () => {
+  it("is using UNLEASH_URL", async () => {
     vi.stubEnv("UNLEASH_URL", "http://example.com/api");
-    fetchDefinitions();
+    await fetchDefinitions();
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
       token: "default:development.unleash-insecure-api-token",
@@ -45,15 +50,25 @@ describe("fetchDefinitions", () => {
     });
   });
 
-  it("is using UNLEASH_TOKEN", () => {
+  it("is using UNLEASH_TOKEN", async () => {
     vi.stubEnv("UNLEASH_TOKEN", "project:env-name.token");
 
-    fetchDefinitions();
+    await fetchDefinitions();
     expect(clg.log).toHaveBeenCalledWith(expect.stringContaining("env-name"));
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
       token: "project:env-name.token",
       url: "http://localhost:4242/api/client/features",
     });
+  });
+
+  it("throws an error when the response doesn't have feature toggles", async () => {
+    getDefinitions.mockImplementation(
+      () =>
+        Promise.resolve({
+          error: "not found",
+        }) as any
+    );
+    expect(fetchDefinitions()).rejects.toThrowError();
   });
 });
