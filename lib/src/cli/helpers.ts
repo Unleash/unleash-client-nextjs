@@ -30,30 +30,6 @@ export const step = (message: string, ...params: string[]) => {
 
 export const error = (message: string) => [c4, message, r].join("");
 
-export const typedExports = {
-  imports: `import {
-  type IToggle,
-  useFlag as useFlagOriginal,
-  useVariant as useVariantOriginal,
-  useFlags as useFlagsOriginal,
-  flagsClient as flagsClientOriginal,
-} from "@unleash/nextjs";`,
-  body: `
-export const useFlag = useFlagOriginal<FeatureName>;
-export const useVariant = <T extends FeatureName>(name: T) =>
-  useVariantOriginal<T, FeatureVariants[T][number]>(name);
-export const useFlags = useFlagsOriginal<Features>;
-export const flagsClient = (toggles: IToggle[]) => {
-  const output = flagsClientOriginal(toggles);
-  return {
-    isEnabled: (name: FeatureName) => output.isEnabled(name),
-    getVariant: <T extends FeatureName>(name: T) =>
-      output.getVariant(name) as FeatureVariants[T][number],
-  };
-};
-`,
-};
-
 export const fetchDefinitions = async () => {
   const defaultConfig = getDefaultConfig("cli");
   const url = process.env.UNLEASH_URL
