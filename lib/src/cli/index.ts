@@ -1,134 +1,114 @@
 #!/usr/bin/env node
 import * as fs from "node:fs/promises";
-import * as path from "node:path";
+import { Command } from "@commander-js/extra-typings";
 import { loadEnvConfig } from "@next/env";
-import { ClientFeaturesResponse } from "unleash-client";
-import { getDefaultConfig, getDefinitions } from "../getDefinitions";
+import type { ClientFeaturesResponse } from "unleash-client";
+import {
+  error,
+  fetchDefinitions,
+  intro,
+  step,
+  typedExports,
+  version,
+} from "./helpers";
 import { typesFromDefinitions } from "./typesFromDefinitions";
 
-const [, , ...args] = process.argv;
-
-let generateTypedExports = true;
-let bootstrap: string;
-let fileName: string;
-
-const c1 = "\u001b[38;2;26;64;73m"; // #1a4049
-const c2 = "\u001b[38;2;129;122;254m"; // #817afe
-const r = "\u001b[39m\u001b[22m";
-
-const step = (message: string, param?: string) => {
-  console.log(
-    `${c1}█${param ? "  " : r} ${message}${param ? ` ${c2}${param}` : ""}${r}`
-  );
-};
-
-const typedExports = {
-  imports: `import {
-  type IToggle,
-  useFlag as useFlagOriginal,
-  useVariant as useVariantOriginal,
-  useFlags as useFlagsOriginal,
-  flagsClient as flagsClientOriginal,
-} from "@unleash/nextjs";`,
-  body: `
-export const useFlag = useFlagOriginal<FeatureName>;
-export const useVariant = <T extends FeatureName>(name: T) =>
-  useVariantOriginal<T, FeatureVariants[T][number]>(name);
-export const useFlags = useFlagsOriginal<Features>;
-export const flagsClient = (toggles: IToggle[]) => {
-  const output = flagsClientOriginal(toggles);
-  return {
-    isEnabled: (name: FeatureName) => output.isEnabled(name),
-    getVariant: <T extends FeatureName>(name: T) =>
-      output.getVariant(name) as FeatureVariants[T][number],
-  };
-};
-`,
-};
-
-const main = async () => {
-  console.log(`${c1}\n█ ${"\u001b[1m"}Unleash${r}`);
-
-  step("- Parsing configuration");
-  const pkg = await fs.readFile(
-    path.join(__dirname, "..", "..", "package.json"),
-    "utf-8"
-  );
-  const version = JSON.parse(pkg).version;
-  step(`generator package:`, `v${version}`);
-  args.forEach((arg) => {
-    if (arg.startsWith("--bootstrap")) {
-      bootstrap = arg.split("=")[1];
-      if (!bootstrap.length) {
-        throw new Error(`Incorrect argument: ${arg}`);
-      }
-    } else if (arg === "--hooks" || arg === "--hooks=true") {
-      generateTypedExports = true;
-    } else {
-      if (fileName) {
-        throw new Error(`Unknown argument: ${arg}`);
-      }
-
-      fileName = arg;
-    }
-  });
-  if (!fileName) {
-    throw new Error(
-      "Missing output file name. Example: `unleash ./generated/your-unleash-file.ts`"
-    );
-  }
-  const { url, token } = getDefaultConfig();
-
-  let definitions: ClientFeaturesResponse;
-  if (bootstrap) {
-    step("- Loading feature toggle definitions from file");
-    const source = (await fs.readFile(bootstrap)).toString();
-    definitions = JSON.parse(source);
-    step("source file:", bootstrap);
-  } else {
-    const { loadedEnvFiles } = await loadEnvConfig(process.cwd(), undefined, {
-      info: () => {},
-      error: () => {},
+const program = new Command()
+  .name("unleash")
+  .version(version)
+  .option("-d, --debug", "output extra debugging", process.env.DEBUG === "true")
+  .showHelpAfterError()
+  .configureOutput({
+    outputError: (str, write) => write(error(str)),
+  })
+  .addHelpText("before", intro)
+  .hook("preSubcommand", async () => {
+    const options = program.opts();
+    await loadEnvConfig(process.cwd(), undefined, {
+      info: (...msg: string[]) => {
+        if (options.debug) {
+          console.debug(...msg);
+        }
+      },
+      error: (...msg) => {
+        program.error(msg.join(" "));
+      },
     });
-    if (loadedEnvFiles.length) {
-      step(
-        "loaded files:",
-        loadedEnvFiles.map((file) => file.path).join(`${c1}, ${c2}`)
-      );
+  });
+
+program
+  .command("get-definitions")
+  .description(
+    "Download feature flags definitions for bootstrapping (offline use) of server-side SDK."
+  )
+  .argument(
+    "<file>",
+    "output file name (e.g. `./generated/feature-flag-definitions.json`)"
+  )
+  .action(async (file) => {
+    const definitions = await fetchDefinitions();
+    step("- Saving definitions to file");
+    await fs.writeFile(file, JSON.stringify(definitions, null, 2));
+    step("output:", file);
+  });
+
+program
+  .command("generate-types")
+  .summary("Generate types and typed functions from feature flags.")
+  .description(
+    "Generate types and typed functions from feature flags defined in an Unleash instance. " +
+      "It will also generate strictly typed versions of `useFlag`, `useVariant`, `useFlags` and `flagsClient` (unless `--typesOnly` is used)."
+  )
+  .argument("<file>", "output file name (e.g. `./generated/unleash.ts`)")
+  .option(
+    "-t, --typesOnly",
+    "don't include typed versions of functions exported from `@unleash/nextjs`",
+    false
+  )
+  .option(
+    "-b, --bootstrap <sourceFile>",
+    "load definitions from a file instead of fetching definitions (work offline)"
+  )
+  .action(async (file, options) => {
+    console.log(intro);
+    let definitions: ClientFeaturesResponse;
+
+    if (options.bootstrap) {
+      step("- Loading feature toggle definitions from file");
+      step("source file:", options.bootstrap);
+      const source = (await fs.readFile(options.bootstrap)).toString();
+      definitions = JSON.parse(source);
+    } else {
+      definitions = await fetchDefinitions();
     }
-    step("- Fetching feature toggle definitions");
-    step("API:", url);
-    step("environment:", token.split(".")[0].split(":").slice(-1)[0]);
-    definitions = await getDefinitions();
-  }
 
-  const withVariant = definitions?.features.filter(
-    ({ variants }) => variants.length > 0
-  ).length;
-  step(
-    `  ${c1}found ${c2}${definitions?.features.length}${c1} definitions${c1}, ${c2}${withVariant} ${c1}with variants`
-  );
+    const withVariant = definitions?.features.filter(
+      ({ variants }) => variants.length > 0
+    ).length;
+    step(
+      "found feature toggle definitions:",
+      `${definitions?.features.length}`
+    );
+    step("found definitions with variants:", `${withVariant}`);
 
-  step("- Generating types");
-  step(`generate hooks:`, generateTypedExports ? "true" : "false");
-  const types = typesFromDefinitions(definitions);
+    step("- Generating types");
+    const types = typesFromDefinitions(definitions);
 
-  step(`- Writing types to file`);
-  const banner = `/**
-  * Generated by @unleash/nextjs v${version}
-  * Do not edit manually.
-  */\n\n`;
-  let output = banner;
-  if (generateTypedExports) {
-    output += typedExports.imports + "\n\n";
-  }
-  output += types;
-  if (generateTypedExports) {
-    output += typedExports.body;
-  }
-  step(`output:`, fileName);
-  await fs.writeFile(fileName, output);
-  console.log(`${c2}█ Done`);
-};
+    step(`- Writing types to file`);
+    const banner = `/**
+ * Generated by @unleash/nextjs v${version}
+ * Do not edit manually.
+ */\n\n`;
+    let output = banner;
+    if (!options.typesOnly) {
+      output += typedExports.imports + "\n\n";
+    }
+    output += types;
+    if (!options.typesOnly) {
+      output += typedExports.body;
+    }
+    step(`output:`, file);
+    await fs.writeFile(file, output);
+  });
 
-main();
+program.parse(process.argv);
