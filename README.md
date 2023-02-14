@@ -104,8 +104,6 @@ Optionally, you can configure `FlagProvider` with the `config` prop. It will tak
 
 If you only plan to use [Unleash client-side React SDK](https://github.com/Unleash/proxy-client-react) now also works with Next.js. Check documentation there for more examples.
 
-<br />
-
 ## B). Static Site Generation, optimized performance (SSG)
 
 With same access as in the client-side example above you can resolve Unleash feature flags when building static pages.
@@ -158,8 +156,6 @@ The same approach will work for [ISR (Incremental Static Regeneration)](https://
 
 Both `getDefinitions()` and `getFrontendFlags()` can take arguments overriding URL, token and other request parameters.
 
-<br />
-
 ## C). Server Side Rendering (SSR)
 
 ```tsx
@@ -202,8 +198,6 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 
 export default ExamplePage;
 ```
-
-<br />
 
 ## D). Bootstrapping / rehydration
 
@@ -257,8 +251,6 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
 };
 ```
 
-<br />
-
 # ⚗️ CLI (experimental)
 
 You can use `unleash [action] [options]` in your `package.json` `scripts` section, or with:
@@ -267,7 +259,7 @@ You can use `unleash [action] [options]` in your `package.json` `scripts` sectio
 npx @unleash/nextjs
 ```
 
-Use [environment variables](#environment-variables) (you need: `UNLEASH_SERVER_API_URL`, `UNLEASH_SERVER_API_TOKEN` or shorthand versions: `UNLEASH_URL`, `UNLEASH_TOKEN`, `UNLEASH_APPNAME`).
+CLI will attemp to read NextJS `.env` files. You need to set `UNLEASH_SERVER_API_URL` and `UNLEASH_SERVER_API_TOKEN` (see [environment variables](#environment-variables)). Another way of configuring the source of feature toggles is to pass environment variables directly, like in the example below. Available shorthand variables are: `UNLEASH_URL`, `UNLEASH_TOKEN`, `UNLEASH_APPNAME`.
 
 ## Usage
 
