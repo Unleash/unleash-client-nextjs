@@ -267,7 +267,7 @@ You can use `unleash [action] [options]` in your `package.json` `scripts` sectio
 npx @unleash/nextjs
 ```
 
-Use [Environment Variables](#environment-variables) (you needed: `UNLEASH_SERVER_API_URL`, `UNLEASH_SERVER_API_TOKEN`), or shorthand versions: `UNLEASH_URL`, `UNLEASH_TOKEN`, `UNLEASH_APPNAME`.
+Use [environment variables](#environment-variables) (you need: `UNLEASH_SERVER_API_URL`, `UNLEASH_SERVER_API_TOKEN` or shorthand versions: `UNLEASH_URL`, `UNLEASH_TOKEN`, `UNLEASH_APPNAME`).
 
 ## Usage
 
