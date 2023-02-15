@@ -259,7 +259,12 @@ You can use `unleash [action] [options]` in your `package.json` `scripts` sectio
 npx @unleash/nextjs
 ```
 
-CLI will attemp to read NextJS `.env` files. You need to set `UNLEASH_SERVER_API_URL` and `UNLEASH_SERVER_API_TOKEN` (see [environment variables](#environment-variables)). Another way of configuring the source of feature toggles is to pass environment variables directly, like in the example below. Available shorthand variables are: `UNLEASH_URL`, `UNLEASH_TOKEN`, `UNLEASH_APPNAME`.
+For the CLI to work, the following [environment variables](#environment-variables) must be configured with appropriate values:
+
+- `UNLEASH_SERVER_API_URL` 
+- `UNLEASH_SERVER_API_TOKEN`
+
+The CLI will attempt to environment values from any `.env` files if they're present. You can also set the variables directly when invoking the interface, as in the [CLI usage example](#example).
 
 ## Usage
 
