@@ -262,7 +262,7 @@ For the CLI to work, the following [environment variables](#environment-variable
 - `UNLEASH_SERVER_API_URL`
 - `UNLEASH_SERVER_API_TOKEN`
 
-The CLI will attempt to environment values from any `.env` files if they're present. You can also set the variables directly when invoking the interface, as in the [CLI usage example](#example).
+The CLI will attempt to read environment values from any `.env` files if they're present. You can also set the variables directly when invoking the interface, as in the [CLI usage example](#example).
 
 ## Usage
 
