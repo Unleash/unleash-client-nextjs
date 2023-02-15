@@ -52,8 +52,6 @@ If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
 
-<br/>
-
 # Usage
 
 ## A). Client-side only - simple use case and for development purposes (CSR)
@@ -261,7 +259,7 @@ npx @unleash/nextjs
 
 For the CLI to work, the following [environment variables](#environment-variables) must be configured with appropriate values:
 
-- `UNLEASH_SERVER_API_URL` 
+- `UNLEASH_SERVER_API_URL`
 - `UNLEASH_SERVER_API_TOKEN`
 
 The CLI will attempt to environment values from any `.env` files if they're present. You can also set the variables directly when invoking the interface, as in the [CLI usage example](#example).
@@ -280,12 +278,10 @@ The CLI will attempt to environment values from any `.env` files if they're pres
 Try it now
 
 ```sh
-UNLEASH_URL=https://app.unleash-hosted.com/demo/api \
-UNLEASH_TOKEN=test-server:default.8a090f30679be7254af997864d66b86e44dcfc5291916adff72a0fb5 \
+UNLEASH_SERVER_API_URL=https://app.unleash-hosted.com/demo/api \
+UNLEASH_SERVER_API_TOKEN=test-server:default.8a090f30679be7254af997864d66b86e44dcfc5291916adff72a0fb5 \
 npx @unleash/nextjs generate-types ./unleash.ts
 ```
-
-<br/>
 
 # What's next
 
