@@ -31,12 +31,7 @@ export const step = (message: string, ...params: string[]) => {
 export const error = (message: string) => [c4, message, r].join("");
 
 export const fetchDefinitions = async () => {
-  const defaultConfig = getDefaultConfig("cli");
-  const url = process.env.UNLEASH_URL
-    ? `${process.env.UNLEASH_URL}/client/features`
-    : defaultConfig.url;
-  const token = process.env.UNLEASH_TOKEN || defaultConfig.token;
-  const appName = process.env.UNLEASH_APPNAME || defaultConfig.appName;
+  const { url, token, appName } = getDefaultConfig("cli");
 
   step("- Fetching feature toggle definitions");
   step("API:", url);

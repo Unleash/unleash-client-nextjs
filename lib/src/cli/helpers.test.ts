@@ -40,8 +40,8 @@ describe("fetchDefinitions", () => {
     });
   });
 
-  it("is using UNLEASH_URL", async () => {
-    vi.stubEnv("UNLEASH_URL", "http://example.com/api");
+  it("is using UNLEASH_SERVER_API_URL", async () => {
+    vi.stubEnv("UNLEASH_SERVER_API_URL", "http://example.com/api");
     await fetchDefinitions();
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
@@ -50,8 +50,8 @@ describe("fetchDefinitions", () => {
     });
   });
 
-  it("is using UNLEASH_TOKEN", async () => {
-    vi.stubEnv("UNLEASH_TOKEN", "project:env-name.token");
+  it("is using UNLEASH_SERVER_API_TOKEN", async () => {
+    vi.stubEnv("UNLEASH_SERVER_API_TOKEN", "project:env-name.token");
 
     await fetchDefinitions();
     expect(clg.log).toHaveBeenCalledWith(expect.stringContaining("env-name"));
