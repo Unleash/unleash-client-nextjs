@@ -59,3 +59,6 @@ export const getDefaultClientConfig = () => {
       "default:development.unleash-insecure-frontend-api-token",
   };
 };
+
+export const removeTrailingSlash = (url?: string) =>
+  url && url.replace(/\/$/, "");
