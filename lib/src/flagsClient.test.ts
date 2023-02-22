@@ -1,6 +1,8 @@
 import { flagsClient } from "./flagsClient";
 
 describe("flagsClient", () => {
+  global.fetch = vi.fn();
+
   it("should return methods", () => {
     const client = flagsClient();
     expect(client).toHaveProperty("isEnabled");

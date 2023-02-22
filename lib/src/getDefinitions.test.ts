@@ -1,4 +1,4 @@
-import { getDefinitions } from "./getDefinitions";
+import { getDefinitions, getDefaultConfig } from "./getDefinitions";
 
 const mockFetch = vi.fn();
 const mockConsole = {
@@ -89,6 +89,7 @@ describe("getDefinitions", () => {
       expect.anything()
     );
   });
+
   it("should allow for overriding the default config", () => {
     const url = "http://example.com/api/client/features";
     const token = "secure-token";
@@ -111,5 +112,37 @@ describe("getDefinitions", () => {
 
     expect(mockConsole.warn).not.toHaveBeenCalled();
     expect(mockConsole.error).not.toHaveBeenCalled();
+  });
+
+  it('should not modify "url" in config', () => {
+    const url = "http://example.com/api/";
+    getDefinitions({
+      url,
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(url, expect.anything());
+  });
+});
+
+describe("getDefaultConfig", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("should support UNLEASH_SERVER_API_URL with trailing slash", () => {
+    vi.stubEnv("UNLEASH_SERVER_API_URL", "http://example.com/api/");
+
+    expect(getDefaultConfig()).toHaveProperty(
+      "url",
+      "http://example.com/api/client/features"
+    );
+  });
+  it("should support NEXT_PUBLIC_UNLEASH_SERVER_API_URL with trailing slash", () => {
+    vi.stubEnv("NEXT_PUBLIC_UNLEASH_SERVER_API_URL", "http://example.org/api/");
+
+    expect(getDefaultConfig()).toHaveProperty(
+      "url",
+      "http://example.org/api/client/features"
+    );
   });
 });
