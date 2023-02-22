@@ -1,4 +1,8 @@
-import { getDefaultClientConfig, safeCompare } from "./utils";
+import {
+  getDefaultClientConfig,
+  removeTrailingSlash,
+  safeCompare,
+} from "./utils";
 
 describe("getDefaultClientConfig", () => {
   afterEach(() => {
@@ -142,5 +146,27 @@ describe("safeCompare", () => {
     ["pre", "prefix"],
   ])(`should return false for %s and %s`, (a, b) => {
     expect(safeCompare(a, b)).toBe(false);
+  });
+});
+
+describe("removeTrailSlash", () => {
+  it("should remove trailing slash", () => {
+    expect(removeTrailingSlash("/foo/bar/")).toBe("/foo/bar");
+  });
+
+  it("should not modify strings without trailing slash", () => {
+    expect(removeTrailingSlash("/foo/bar")).toBe("/foo/bar");
+  });
+
+  it("should remove only one trailing slash", () => {
+    expect(removeTrailingSlash("/foo/bar//")).toBe("/foo/bar/");
+  });
+
+  it("should work with empty string", () => {
+    expect(removeTrailingSlash("")).toBe("");
+  });
+
+  it("should work with undefined", () => {
+    expect(removeTrailingSlash(undefined)).toBe(undefined);
   });
 });
