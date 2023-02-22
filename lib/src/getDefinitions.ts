@@ -1,12 +1,14 @@
 import type { ClientFeaturesResponse } from "unleash-client";
+import { removeTrailingSlash } from "./utils";
 
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
 
 export const getDefaultConfig = (defaultAppName = "nextjs") => {
-  const baseUrl =
+  const baseUrl = removeTrailingSlash(
     process.env.UNLEASH_SERVER_API_URL ||
-    process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;
+      process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL
+  );
 
   return {
     appName:
@@ -21,6 +23,9 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
 
 /**
  * Fetch Server-side feature flags definitions from Unleash API
+ *
+ * If you provide `url` in the config parameter, it should be a full endpoint path:
+ * @example getDefinitions({ url: `http://localhost:4242/api/client/features` })
  */
 export const getDefinitions = async (
   config?: Partial<ReturnType<typeof getDefaultConfig>>
