@@ -32,7 +32,6 @@ describe("getDefinitions", () => {
       "http://localhost:4242/api/client/features",
       {
         headers: {
-          Authorization: "default:development.unleash-insecure-api-token",
           "Content-Type": "application/json",
           "UNLEASH-APPNAME": "nextjs",
           "User-Agent": "nextjs",
@@ -47,11 +46,11 @@ describe("getDefinitions", () => {
     expect(mockConsole.warn).toHaveBeenCalled();
   });
 
-  it("should show an error when using default token", () => {
+  it("should show an warning when neither token nor instanceId is used", () => {
     getDefinitions();
 
-    expect(mockConsole.error).toHaveBeenCalledWith(
-      expect.stringContaining("Using fallback default token.")
+    expect(mockConsole.warn).toHaveBeenCalledWith(
+      expect.stringContaining("Neither token nor instanceId is used.")
     );
   });
 

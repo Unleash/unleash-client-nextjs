@@ -31,7 +31,6 @@ describe("fetchDefinitions", () => {
     expect(getDefinitions).toHaveBeenCalledOnce();
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
-      token: "default:development.unleash-insecure-api-token",
       url: "http://localhost:4242/api/client/features",
     });
     expect(result).toEqual({
@@ -45,7 +44,6 @@ describe("fetchDefinitions", () => {
     await fetchDefinitions();
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
-      token: "default:development.unleash-insecure-api-token",
       url: "http://example.com/api/client/features",
     });
   });
@@ -58,6 +56,17 @@ describe("fetchDefinitions", () => {
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
       token: "project:env-name.token",
+      url: "http://localhost:4242/api/client/features",
+    });
+  });
+
+  it("is using UNLEASH_SERVER_INSTANCE_ID", async () => {
+    vi.stubEnv("UNLEASH_SERVER_INSTANCE_ID", "project:env-name.instance-id");
+
+    await fetchDefinitions();
+    expect(getDefinitions).toHaveBeenLastCalledWith({
+      appName: "cli",
+      instanceId: "project:env-name.instance-id",
       url: "http://localhost:4242/api/client/features",
     });
   });
