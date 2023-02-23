@@ -31,13 +31,13 @@ export const step = (message: string, ...params: string[]) => {
 export const error = (message: string) => [c4, message, r].join("");
 
 export const fetchDefinitions = async () => {
-  const { url, token, appName } = getDefaultConfig("cli");
+  const { url, token, instanceId, appName } = getDefaultConfig("cli");
 
   step("- Fetching feature toggle definitions");
   step("API:", url);
-  step("environment:", token.split(".")[0].split(":").slice(-1)[0]);
+  token && step("environment:", token.split(".")[0].split(":").slice(-1)[0]);
 
-  const definitions = await getDefinitions({ url, token, appName });
+  const definitions = await getDefinitions({ url, token, instanceId, appName });
 
   if (!definitions || !definitions.features) {
     throw new Error(

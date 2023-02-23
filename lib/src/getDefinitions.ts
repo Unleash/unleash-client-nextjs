@@ -1,7 +1,6 @@
 import type { ClientFeaturesResponse } from "unleash-client";
 
 const defaultUrl = "http://localhost:4242/api/client/features";
-const defaultToken = "default:development.unleash-insecure-api-token";
 
 export const getDefaultConfig = (defaultAppName = "nextjs") => {
   const baseUrl =
@@ -14,7 +13,8 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
       process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
       defaultAppName,
     url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
-    token: process.env.UNLEASH_SERVER_API_TOKEN || defaultToken,
+    instanceId: process.env.UNLEASH_SERVER_INSTANCE_ID,
+    token: process.env.UNLEASH_SERVER_API_TOKEN,
     fetchOptions: {} as RequestInit,
   };
 };
@@ -25,7 +25,13 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
 export const getDefinitions = async (
   config?: Partial<ReturnType<typeof getDefaultConfig>>
 ) => {
-  const { appName, url, token, fetchOptions } = {
+  const {
+    appName,
+    url,
+    token,
+    instanceId,
+    fetchOptions: { headers = {}, ...options },
+  } = {
     ...getDefaultConfig(),
     ...(config || {}),
   };
@@ -36,20 +42,30 @@ export const getDefinitions = async (
       "Provide a URL or set UNLEASH_SERVER_API_URL environment variable."
     );
   }
-  if (token === defaultToken) {
-    console.error(
-      "Using fallback default token. Pass token or set UNLEASH_SERVER_API_TOKEN environment variable."
+  if (!token && !instanceId) {
+    console.warn(
+      "Neither token nor instanceId is used. " +
+        "Pass token or set UNLEASH_SERVER_API_TOKEN or UNLEASH_SERVER_INSTANCE_ID environment variable."
     );
   }
 
-  const response = await fetch(url, {
-    ...fetchOptions,
+  const fetchUrl = new URL(url);
+
+  if (token) {
+    Object.assign(headers, { Authorization: token });
+  }
+
+  if (instanceId) {
+    fetchUrl.searchParams.append('instance_id', instanceId)
+  }
+
+  const response = await fetch(fetchUrl.toString(), {
+    ...options,
     headers: {
       "Content-Type": "application/json",
       "UNLEASH-APPNAME": appName,
       "User-Agent": appName,
-      Authorization: token,
-      ...(fetchOptions.headers || {}),
+      ...headers,
     },
   });
 
