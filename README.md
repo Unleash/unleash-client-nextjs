@@ -37,14 +37,16 @@ If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluate
 
 - `UNLEASH_SERVER_API_URL` of you instance. URL should end with `/api`
 - `UNLEASH_SERVER_API_TOKEN` [server-side API client token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#client-tokens)
+- `UNLEASH_SERVER_INSTANCE_ID` in some cases (for example [GitLab Feature Flags](https://docs.gitlab.com/ee/operations/feature_flags.html)) you might want to use instanceId
 
 #### Detailed explanation
 
 | Prefixable     | Variable                     | Default                                                   |
-| -------------- | ---------------------------- | --------------------------------------------------------- |
+| -------------- |------------------------------|-----------------------------------------------------------|
 | `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>/frontend`         |
-| **No**         | `UNLEASH_SERVER_API_TOKEN`   | `default:development.unleash-insecure-api-token`          |
+| **No**         | `UNLEASH_SERVER_API_TOKEN`   | **No**                                                    |
+| **No**         | `UNLEASH_SERVER_INSTANCE_ID` | **No**                                                    |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` |
 | `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  |
 
