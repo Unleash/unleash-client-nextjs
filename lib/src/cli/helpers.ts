@@ -40,7 +40,7 @@ export const fetchDefinitions = async () => {
     step("environment:", token.split(".")[0].split(":").slice(-1)[0]);
   }
 
-  if (instanceId) {
+  if (instanceId && instanceId.length > 6) {
     step("instanceId:", instanceId.slice(0,2) + '*'.repeat(instanceId.length - 4) + instanceId.slice(-2));
   }
 
