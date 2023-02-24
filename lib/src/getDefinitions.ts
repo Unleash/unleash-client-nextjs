@@ -8,13 +8,17 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
     process.env.UNLEASH_SERVER_API_URL ||
     process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;
 
+  const token = process.env.UNLEASH_SERVER_API_TOKEN;
+  const resolvedToken: string | false = (token === 'false' ? false : token || defaultToken);
+
   return {
     appName:
       process.env.UNLEASH_APP_NAME ||
       process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
       defaultAppName,
     url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
-    token: process.env.UNLEASH_SERVER_API_TOKEN || defaultToken,
+    token: resolvedToken,
+    instanceId: process.env.UNLEASH_SERVER_INSTANCE_ID,
     fetchOptions: {} as RequestInit,
   };
 };
@@ -25,7 +29,13 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
 export const getDefinitions = async (
   config?: Partial<ReturnType<typeof getDefaultConfig>>
 ) => {
-  const { appName, url, token, fetchOptions } = {
+  const {
+    appName,
+    url,
+    token,
+    instanceId,
+    fetchOptions: { headers = {}, ...options },
+  } = {
     ...getDefaultConfig(),
     ...(config || {}),
   };
@@ -42,14 +52,23 @@ export const getDefinitions = async (
     );
   }
 
-  const response = await fetch(url, {
-    ...fetchOptions,
+  const fetchUrl = new URL(url);
+
+  if (token) {
+    Object.assign(headers, { Authorization: token });
+  }
+
+  if (instanceId) {
+    fetchUrl.searchParams.append('instance_id', instanceId)
+  }
+
+  const response = await fetch(fetchUrl.toString(), {
+    ...options,
     headers: {
       "Content-Type": "application/json",
       "UNLEASH-APPNAME": appName,
       "User-Agent": appName,
-      Authorization: token,
-      ...(fetchOptions.headers || {}),
+      ...headers,
     },
   });
 
