@@ -132,10 +132,11 @@ const ExamplePage: NextPage<Data> = ({ isEnabled, variant }) => (
 export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   /* Using server-side SDK: */
   const definitions = await getDefinitions();
-  const { toggles } = evaluateFlags(definitions);
+  const context = {} // optional, see https://docs.getunleash.io/reference/unleash-context 
+  const { toggles } = evaluateFlags(definitions, context);
 
   /* Or with the proxy/front-end API */
-  // const { toggles } = await getFrontendFlags();
+  // const { toggles } = await getFrontendFlags({ context });
 
   const flags = flagsClient(toggles);
 
@@ -184,7 +185,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
     // userId: "123" // etc
   };
 
-  const { toggles } = await getFrontendFlags(); // Use Proxy/Frontend API
+  const { toggles } = await getFrontendFlags({ context }); // Use Proxy/Frontend API
   const flags = flagsClient(toggles);
 
   return {
