@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - package.json
+      - lib/package.json
 
 jobs:
   build-test-release:
