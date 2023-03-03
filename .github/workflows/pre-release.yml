@@ -38,7 +38,11 @@ jobs:
           token: ${{ secrets.GH_ACCESS_TOKEN }}
           fetch-depth: 2
 
-      - run: pnpm version --preid ${{ github.event.inputs.preid }} --git-tag-version=false prerelease
+      - name: ⚙️ Update version
+        run: |
+          cd lib
+          pnpm version --preid ${{ github.event.inputs.preid }} --git-tag-version=false prerelease || true
+        # ` || true` - pnpm will return error because of monorepository dev dependencies
 
       - id: Commit
         run: |
