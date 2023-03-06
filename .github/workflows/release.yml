@@ -3,7 +3,7 @@ name: 🚂 NPM & GitHub Release
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - lib/package.json
 
