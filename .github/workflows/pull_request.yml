@@ -61,7 +61,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        node-version: [16, 18, 19]
+        node-version: [16.x, 18.x, 19.x]
 
     steps:
       - uses: actions/setup-node@v3
