@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v3
         id: setup-node
         with:
-          node-version: 19
+          node-version: 18
           registry-url: "https://registry.npmjs.org"
 
       - uses: actions/checkout@v3
