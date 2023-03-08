@@ -23,19 +23,19 @@
   "devDependencies": {
     "@types/ip": "1.1.0",
     "@types/murmurhash3js": "3.0.3",
-    "@types/node": "18.11.18",
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
+    "@types/node": "18.14.5",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
     "@types/semver": "7.3.13",
-    "@vitest/coverage-c8": "^0.28.4",
+    "@vitest/coverage-c8": "^0.29.2",
     "eslint-config-custom": "workspace:*",
     "next": "12.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.5",
-    "vite": "^4.1.1",
-    "vitest": "^0.28.4"
+    "vite": "^4.1.4",
+    "vitest": "^0.29.2"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^10.0.2",
