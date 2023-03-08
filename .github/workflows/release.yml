@@ -60,7 +60,9 @@ jobs:
           git push --tags
 
       - name: 📦️ Publish to NPM
-        run: pnpm publish --access public --tag $PACKAGE_TAG
+        run: |
+          cd lib
+          pnpm publish --access public --tag $PACKAGE_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
