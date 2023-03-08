@@ -1,0 +1,114 @@
+name: 📋 Verify pull requests
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/setup-node@v3
+        id: setup-node
+        with:
+          node-version: 'lts/*'
+
+      - uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - uses: actions/checkout@v3
+        id: setup-git-checkout
+        with:
+          fetch-depth: 25
+
+      - id: pnpm-cache-path
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: 🗄️ Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache-path.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 📌 Install dependencies
+        run: pnpm install --frozen-lockfile --strict-peer-dependencies
+
+      - name: 🔨 Build
+        run: pnpm build
+
+      - uses: actions/cache@v3
+        name: 🗃️ Cache build
+        timeout-minutes: 10
+        id: cache-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}-${{ github.run_number }}
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 19.x]
+
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - uses: actions/cache@v3
+        name: 🗃️ Restore build cache
+        timeout-minutes: 5
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}-${{ github.run_number }}
+
+      - name: 🧪 Tests
+        run: pnpm test
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - uses: actions/cache@v3
+        name: 🗃️ Restore build cache
+        timeout-minutes: 5
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}-${{ github.run_number }}
+
+      - name: ✨ Lint
+        run: pnpm lint
