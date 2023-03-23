@@ -55,7 +55,7 @@ describe("getDefinitions", () => {
     );
   });
 
-  it.only("should read configuration from environment variables", () => {
+  it("should read configuration from environment variables", () => {
     const url = "http://example.com/api";
     const token = "secure-token";
     const appName = "my-awesome-app";
@@ -147,7 +147,6 @@ describe("getDefaultConfig", () => {
   });
 
   it("should set defaultToken", () => {
-    console.log(getDefaultConfig());
     expect(getDefaultConfig()).toHaveProperty(
       "token",
       "default:development.unleash-insecure-api-token"
