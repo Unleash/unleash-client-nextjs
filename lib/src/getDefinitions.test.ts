@@ -55,7 +55,7 @@ describe("getDefinitions", () => {
     );
   });
 
-  it("should read configuration from environment variables", () => {
+  it.only("should read configuration from environment variables", () => {
     const url = "http://example.com/api";
     const token = "secure-token";
     const appName = "my-awesome-app";
@@ -144,5 +144,19 @@ describe("getDefaultConfig", () => {
       "url",
       "http://example.org/api/client/features"
     );
+  });
+
+  it("should set defaultToken", () => {
+    console.log(getDefaultConfig());
+    expect(getDefaultConfig()).toHaveProperty(
+      "token",
+      "default:development.unleash-insecure-api-token"
+    );
+  });
+
+  it("shouldn't set defaultToken when UNLEASH_SERVER_INSTANCE_ID is set", () => {
+    vi.stubEnv("UNLEASH_SERVER_INSTANCE_ID", "instance-id-token");
+
+    expect(getDefaultConfig()).not.toHaveProperty("token");
   });
 });

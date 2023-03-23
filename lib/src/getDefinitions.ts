@@ -11,7 +11,15 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
   );
 
   const token = process.env.UNLEASH_SERVER_API_TOKEN;
-  const resolvedToken: string | false = (token === 'false' ? false : token || defaultToken);
+  const instanceId = process.env.UNLEASH_SERVER_INSTANCE_ID;
+
+  let resolvedToken = undefined;
+
+  if (token) {
+    resolvedToken = token;
+  } else if (!instanceId) {
+    resolvedToken = defaultToken;
+  }
 
   return {
     appName:
@@ -19,8 +27,8 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
       process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
       defaultAppName,
     url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
-    token: resolvedToken,
-    instanceId: process.env.UNLEASH_SERVER_INSTANCE_ID,
+    ...(resolvedToken ? { token: resolvedToken } : {}),
+    ...(instanceId ? { instanceId } : {}),
     fetchOptions: {} as RequestInit,
   };
 };
@@ -34,13 +42,7 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
 export const getDefinitions = async (
   config?: Partial<ReturnType<typeof getDefaultConfig>>
 ) => {
-  const {
-    appName,
-    url,
-    token,
-    instanceId,
-    fetchOptions: { headers = {}, ...options },
-  } = {
+  const { appName, url, token, instanceId, fetchOptions } = {
     ...getDefaultConfig(),
     ...(config || {}),
   };
@@ -59,22 +61,21 @@ export const getDefinitions = async (
 
   const fetchUrl = new URL(url);
 
-  if (token) {
-    Object.assign(headers, { Authorization: token });
+  if (instanceId) {
+    fetchUrl.searchParams.append("instance_id", instanceId);
   }
 
-  if (instanceId) {
-    fetchUrl.searchParams.append('instance_id', instanceId)
-  }
+  const headers = {
+    "Content-Type": "application/json",
+    "UNLEASH-APPNAME": appName,
+    "User-Agent": appName,
+    ...(fetchOptions.headers || {}),
+    ...(token ? { Authorization: token } : {}),
+  };
 
   const response = await fetch(fetchUrl.toString(), {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      "UNLEASH-APPNAME": appName,
-      "User-Agent": appName,
-      ...headers,
-    },
+    ...fetchOptions,
+    headers,
   });
 
   return response?.json() as Promise<ClientFeaturesResponse>;
