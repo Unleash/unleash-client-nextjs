@@ -61,6 +61,8 @@ export const getDefinitions = async (
 
   const fetchUrl = new URL(url);
 
+  const sendAuthorizationToken = !instanceId || token !== defaultToken;
+
   if (instanceId) {
     fetchUrl.searchParams.append("instance_id", instanceId);
   }
@@ -70,7 +72,7 @@ export const getDefinitions = async (
     "UNLEASH-APPNAME": appName,
     "User-Agent": appName,
     ...(fetchOptions.headers || {}),
-    ...(token ? { Authorization: token } : {}),
+    ...(sendAuthorizationToken ? { Authorization: token } : {}),
   };
 
   const response = await fetch(fetchUrl.toString(), {

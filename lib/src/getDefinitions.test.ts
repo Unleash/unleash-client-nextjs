@@ -122,6 +122,31 @@ describe("getDefinitions", () => {
 
     expect(mockFetch).toHaveBeenCalledWith(url, expect.anything());
   });
+
+  it("should add instanceId", () => {
+    getDefinitions({
+      instanceId: "my-instance-id",
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://localhost:4242/api/client/features?instance_id=my-instance-id",
+      expect.anything()
+    );
+  });
+
+  it("should not set default token when using instanceId is set", () => {
+    getDefinitions({
+      instanceId: "my-instance-id",
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(expect.anything(), {
+      headers: {
+        "Content-Type": "application/json",
+        "UNLEASH-APPNAME": "nextjs",
+        "User-Agent": "nextjs",
+      },
+    });
+  });
 });
 
 describe("getDefaultConfig", () => {
