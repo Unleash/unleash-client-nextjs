@@ -79,7 +79,7 @@ With `<FlagProvider />` in place you can now use hooks like: `useFlag`, `useVari
 import { useFlag } from "@unleash/nextjs";
 
 const YourComponent = () => {
-  const isEnabled = useFlag("nextjs-poc");
+  const isEnabled = useFlag("nextjs-example");
 
   return <>{isEnabled ? "ENABLED" : "DISABLED"}</>;
 };
@@ -132,7 +132,7 @@ const ExamplePage: NextPage<Data> = ({ isEnabled, variant }) => (
 export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   /* Using server-side SDK: */
   const definitions = await getDefinitions();
-  const context = {} // optional, see https://docs.getunleash.io/reference/unleash-context 
+  const context = {}; // optional, see https://docs.getunleash.io/reference/unleash-context
   const { toggles } = evaluateFlags(definitions, context);
 
   /* Or with the proxy/front-end API */
@@ -142,8 +142,8 @@ export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-poc"),
-      variant: flags.getVariant("nextjs-poc"),
+      isEnabled: flags.isEnabled("nextjs-example"),
+      variant: flags.getVariant("nextjs-example"),
     },
   };
 };
@@ -190,7 +190,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-poc"),
+      isEnabled: flags.isEnabled("nextjs-example"),
     },
   };
 };

@@ -24,6 +24,12 @@ export default function Home() {
         <li>
           <Link href="/ssr">SSG &ndash; Static Site Generation</Link>
         </li>
+        <li>
+          <Link href="/api/hello">API &ndash; JSON response</Link>
+        </li>
+        <li>
+          <Link href="/ab">Middleware &ndash; A/B testing with Next.js</Link>
+        </li>
       </List>
     </>
   );

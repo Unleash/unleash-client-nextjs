@@ -5,8 +5,7 @@ import {
   type IVariant,
 } from "@unleash/nextjs";
 import type { GetServerSideProps, NextPage } from "next";
-
-const COOKIE_NAME = "unleash-session-id";
+import { UNLEASH_COOKIE_NAME } from "../utils";
 
 type Data = {
   isEnabled: boolean;
@@ -30,9 +29,12 @@ const ServerSideRenderedPage: NextPage<Data> = ({
 
 export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
   const sessionId =
-    ctx.req.cookies[COOKIE_NAME] ||
+    ctx.req.cookies[UNLEASH_COOKIE_NAME] ||
     `${Math.floor(Math.random() * 1_000_000_000)}`;
-  ctx.res.setHeader("set-cookie", `${COOKIE_NAME}=${sessionId}; path=/;`);
+  ctx.res.setHeader(
+    "set-cookie",
+    `${UNLEASH_COOKIE_NAME}=${sessionId}; path=/;`
+  );
 
   const definitions = await getDefinitions();
   const { toggles } = evaluateFlags(definitions, {
@@ -42,8 +44,8 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-poc"),
-      variant: flags.getVariant("nextjs-poc"),
+      isEnabled: flags.isEnabled("nextjs-example"),
+      variant: flags.getVariant("nextjs-example"),
       percent: Math.round((toggles.length / definitions.features.length) * 100),
     },
   };
