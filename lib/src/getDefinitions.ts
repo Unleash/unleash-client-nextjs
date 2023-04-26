@@ -10,15 +10,15 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
       process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL
   );
 
-  const token = process.env.UNLEASH_SERVER_API_TOKEN;
+  const envToken = process.env.UNLEASH_SERVER_API_TOKEN;
   const instanceId = process.env.UNLEASH_SERVER_INSTANCE_ID;
 
-  let resolvedToken = undefined;
+  let token = undefined;
 
-  if (token) {
-    resolvedToken = token;
+  if (envToken) {
+    token = envToken;
   } else if (!instanceId) {
-    resolvedToken = defaultToken;
+    token = defaultToken;
   }
 
   return {
@@ -27,7 +27,7 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
       process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
       defaultAppName,
     url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
-    ...(resolvedToken ? { token: resolvedToken } : {}),
+    ...(token ? { token } : {}),
     ...(instanceId ? { instanceId } : {}),
     fetchOptions: {} as RequestInit,
   };
@@ -63,14 +63,11 @@ export const getDefinitions = async (
 
   const sendAuthorizationToken = !instanceId || token !== defaultToken;
 
-  if (instanceId) {
-    fetchUrl.searchParams.append("instance_id", instanceId);
-  }
-
   const headers = {
     "Content-Type": "application/json",
     "UNLEASH-APPNAME": appName,
     "User-Agent": appName,
+    ...(instanceId ? { "UNLEASH-INSTANCEID": instanceId } : {}),
     ...(fetchOptions.headers || {}),
     ...(sendAuthorizationToken ? { Authorization: token } : {}),
   };
