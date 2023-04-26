@@ -23,8 +23,8 @@ Flag in use is `nextjs-example`. https://app.unleash-hosted.com/demo/projects/de
 ### Middleware
 
 Example of A/B testing with Next.js Middleware.
-Redirect users to different (pre-rendered) page based on a feature flag.
+Redirect users to a different (pre-rendered) page based on a feature flag.
 
-- `./src/pages/api/proxy-definitions.ts`
-- `./src/middleware.ts`
-- `./src/pages/ab/a` & `./src/pages/ab/b`
+- `./src/pages/api/proxy-definitions.ts` - act as cache for feature flag definitions (role of Unleash Proxy, but can be deployed on Next.js Edge)
+- `./src/middleware.ts`- handle flag evaluation and redirect to different page
+- `./src/pages/ab/a` & `./src/pages/ab/b` - target pages - url will still be `/ab`
