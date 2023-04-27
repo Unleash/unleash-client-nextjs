@@ -11,7 +11,7 @@
   "dependencies": {
     "@unleash/nextjs": "workspace:*",
     "@vercel/examples-ui": "1.0.5",
-    "next": "13.3.1",
+    "next": "13.3.2-canary.9",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

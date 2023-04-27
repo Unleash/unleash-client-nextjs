@@ -7,7 +7,7 @@ import {
 } from "@unleash/nextjs";
 
 export const config = {
-  runtime: "experimental-edge",
+  runtime: "edge",
 };
 
 const COOKIE_NAME = "unleash-session-id";
