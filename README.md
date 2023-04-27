@@ -252,7 +252,7 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
 
 ## E). Middleware
 
-It's possible to run this SDK in Next.js Edge Middleware. This is a great use case for A/B testing, where you can transparently redirect users to different pages based on feature flag. Target pages can be statically generated, improving performance.
+It's possible to run this SDK in Next.js Edge Middleware. This is a great use case for A/B testing, where you can transparently redirect users to different pages based on a feature flag. Target pages can be statically generated, improving performance.
 
 See [`./example/README.md#Middleware`](https://github.com/Unleash/unleash-client-nextjs/blob/main/example/README.md#middleware)
 
