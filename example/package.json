@@ -11,21 +11,21 @@
   "dependencies": {
     "@unleash/nextjs": "workspace:*",
     "@vercel/examples-ui": "1.0.5",
-    "next": "13.2.3",
+    "next": "13.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.21.0",
-    "@types/node": "18.14.5",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "autoprefixer": "^10.4.13",
-    "eslint": "8.35.0",
+    "@babel/core": "7.21.4",
+    "@types/node": "18.16.1",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.1",
+    "autoprefixer": "^10.4.14",
+    "eslint": "8.39.0",
     "eslint-config-custom": "workspace:*",
-    "postcss": "8.4.21",
-    "tailwindcss": "3.2.7",
+    "postcss": "8.4.23",
+    "tailwindcss": "3.3.2",
     "tsconfig": "workspace:*",
-    "typescript": "4.9.5"
+    "typescript": "5.0.4"
   }
 }
