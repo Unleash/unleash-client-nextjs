@@ -27,4 +27,4 @@ Redirect users to a different (pre-rendered) page based on a feature flag.
 
 - `./src/pages/api/proxy-definitions.ts` - act as cache for feature flag definitions. This lets this SDK act as a substitute for Unleash Edge or the Unleash proxy that you can deploy on Next.js Edge.
 - `./src/middleware.ts`- handle flag evaluation and redirect to different page
-- `./src/pages/ab/a` & `./src/pages/ab/b` - target pages - url will still be `/ab`
+- `./src/pages/ab/a` & `./src/pages/ab/b` - target pages. Both will be served at the URL `/ab`, but which one you see is decided by the feature flag in `./src/middleware.ts`.
