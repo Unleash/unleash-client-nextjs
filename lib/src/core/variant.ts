@@ -1,6 +1,6 @@
 import type { Context } from "unleash-client/lib";
 import type { FeatureInterface } from "unleash-client/lib/feature";
-import { resolveContextValue } from "unleash-client/lib/helpers";
+import { resolveContextValue } from "./client/helpers";
 import type { Variant, VariantDefinition } from "unleash-client/lib/variant";
 import normalizedValue from "./hash";
 
