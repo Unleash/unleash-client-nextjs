@@ -8,23 +8,23 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Flag in use is `nextjs-example`. https://app.unleash-hosted.com/demo/projects/default/features/nextjs-example
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Available examples
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- `./src/pages/csr.tsx` - Client-side rendering - simple use case, with loader
+- `./src/pages/ssr.tsx` - Server-side rendering - when you need to keep some data private
+- `./src/pages/ssg.tsx` - Static site generation - performance optimization
 
-## Learn More
+### API
 
-To learn more about Next.js, take a look at the following resources:
+- `./src/pages/api/hello.ts` - API route responding with JSON
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn/foundations/about-nextjs) - an interactive Next.js tutorial.
+### Middleware
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Example of A/B testing with Next.js Middleware.
+Redirect users to a different (pre-rendered) page based on a feature flag.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `./src/pages/api/proxy-definitions.ts` - act as cache for feature flag definitions. This lets this SDK act as a substitute for Unleash Edge or the Unleash proxy that you can deploy on Next.js Edge.
+- `./src/middleware.ts`- handle flag evaluation and transparently redirect to one of the pages in `./src/pages/ab` directory
+- `./src/pages/ab/a` & `./src/pages/ab/b` - target pages. Both will be served at the URL `/ab`, but which one you see is decided by the feature flag in `./src/middleware.ts`.

@@ -14,7 +14,9 @@
     "NEXT_PUBLIC_UNLEASH_APP_NAME",
     "UNLEASH_URL",
     "UNLEASH_TOKEN",
-    "UNLEASH_APPNAME"
+    "UNLEASH_APPNAME",
+    "UNLEASH_CACHE_CONTROL",
+    "UNLEASH_RELAY_SECRET"
   ],
   "pipeline": {
     "build": {

@@ -5,18 +5,17 @@ import {
   evaluateFlags,
   getDefinitions,
 } from "@unleash/nextjs";
+import { UNLEASH_COOKIE_NAME } from "../../utils";
 
 export const config = {
   runtime: "experimental-edge",
 };
 
-const COOKIE_NAME = "unleash-session-id";
-
 export default async function handler(req: NextRequest) {
   try {
     const sessionId =
       req.nextUrl.searchParams.get("sessionId") ||
-      req.cookies.get(COOKIE_NAME)?.value ||
+      req.cookies.get(UNLEASH_COOKIE_NAME)?.value ||
       randomSessionId();
     const remoteAddress =
       req.nextUrl.searchParams.get("remoteAddress") ||
@@ -37,7 +36,7 @@ export default async function handler(req: NextRequest) {
       headers: {
         "no-cache": "no-cache",
         "content-type": "application/json",
-        "set-cookie": `${COOKIE_NAME}=${sessionId}; path=/;`,
+        "set-cookie": `${UNLEASH_COOKIE_NAME}=${sessionId}; path=/;`,
       },
     });
   } catch (error) {
