@@ -69,18 +69,6 @@ describe("fetchDefinitions", () => {
     expect(getDefinitions).toHaveBeenLastCalledWith({
       appName: "cli",
       instanceId: "SomeInstance_ID",
-      token: "default:development.unleash-insecure-api-token",
-      url: "http://localhost:4242/api/client/features",
-    });
-  });
-
-  it("can omit UNLEASH_SERVER_API_TOKEN", async () => {
-    vi.stubEnv("UNLEASH_SERVER_API_TOKEN", "false");
-
-    await fetchDefinitions();
-    expect(getDefinitions).toHaveBeenLastCalledWith({
-      appName: "cli",
-      token: false,
       url: "http://localhost:4242/api/client/features",
     });
   });

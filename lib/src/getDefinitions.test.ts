@@ -122,6 +122,33 @@ describe("getDefinitions", () => {
 
     expect(mockFetch).toHaveBeenCalledWith(url, expect.anything());
   });
+
+  it('should add "instanceId"', () => {
+    getDefinitions({
+      instanceId: "my-instance-id",
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://localhost:4242/api/client/features",
+      {
+        headers: expect.objectContaining({
+          "UNLEASH-INSTANCEID": "my-instance-id",
+        }),
+      }
+    );
+  });
+
+  it('should not set default token when "instanceId" is set', () => {
+    getDefinitions({
+      instanceId: "my-instance-id",
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(expect.anything(), {
+      headers: expect.not.objectContaining({
+        Authorization: expect.anything(),
+      }),
+    });
+  });
 });
 
 describe("getDefaultConfig", () => {
@@ -144,5 +171,18 @@ describe("getDefaultConfig", () => {
       "url",
       "http://example.org/api/client/features"
     );
+  });
+
+  it("should set defaultToken", () => {
+    expect(getDefaultConfig()).toHaveProperty(
+      "token",
+      "default:development.unleash-insecure-api-token"
+    );
+  });
+
+  it("shouldn't set defaultToken when UNLEASH_SERVER_INSTANCE_ID is set", () => {
+    vi.stubEnv("UNLEASH_SERVER_INSTANCE_ID", "instance-id-token");
+
+    expect(getDefaultConfig()).not.toHaveProperty("token");
   });
 });

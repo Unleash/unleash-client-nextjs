@@ -37,11 +37,16 @@ export const fetchDefinitions = async () => {
   step("API:", url);
 
   if (token) {
-    step("environment:", token.split(".")[0].split(":").slice(-1)[0]);
+    const environmentFromToken = token.split(".")[0].split(":").slice(-1)[0];
+    step("environment:", environmentFromToken);
   }
 
   if (instanceId && instanceId.length > 6) {
-    step("instanceId:", instanceId.slice(0,2) + '*'.repeat(instanceId.length - 4) + instanceId.slice(-2));
+    const censoredInstanceId =
+      instanceId.slice(0, 2) +
+      "*".repeat(instanceId.length - 4) +
+      instanceId.slice(-2);
+    step("instanceId:", censoredInstanceId);
   }
 
   const definitions = await getDefinitions({ url, token, instanceId, appName });
