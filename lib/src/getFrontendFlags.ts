@@ -9,7 +9,7 @@ import { getDefaultClientConfig } from "./utils";
 export const getFrontendFlags = async (
   config?: Partial<ConstructorParameters<typeof UnleashClient>[0]>
 ) =>
-  new Promise<{ toggles: IToggle[] }>((resolve) => {
+  new Promise<{ toggles: IToggle[] }>((resolve, reject) => {
     const unleash = new UnleashClient({
       ...getDefaultClientConfig(),
       ...(config || {}),
@@ -19,6 +19,11 @@ export const getFrontendFlags = async (
 
     unleash.on("ready", () => {
       resolve({ toggles: unleash.getAllToggles() });
+      unleash.stop();
+    });
+
+    unleash.on("error", (e) => {
+      reject(e)
       unleash.stop();
     });
 
