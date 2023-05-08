@@ -12,6 +12,13 @@ Flag in use is `nextjs-example`. https://app.unleash-hosted.com/demo/projects/de
 
 ## Available examples
 
+### App Router
+
+- `./src/app/app-page/page.tsx` - Server-side component page, with loader
+- `./src/app/api-route/route.tsx` - JSON API response
+
+### Pages Router
+
 - `./src/pages/csr.tsx` - Client-side rendering - simple use case, with loader
 - `./src/pages/ssr.tsx` - Server-side rendering - when you need to keep some data private
 - `./src/pages/ssg.tsx` - Static site generation - performance optimization
