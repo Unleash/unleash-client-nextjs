@@ -254,6 +254,12 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
 
 For server-side use with [App Router](https://nextjs.org/docs/app/building-your-application/routing) import `@unleash/next/server`. This path doesn't contain any client-side dependencies. See `example/src/app` directory for implementation details.
 
+Issues with TypeScript error:
+
+> Cannot find module `@unleash/nextjs/server` or its corresponding type declarations.
+
+can be fixed in `tsconfig.json`, by setting `compilerOptions.moduleResolution` to `node16` or `nodenext`.
+
 # ⚗️ CLI (experimental)
 
 You can use `unleash [action] [options]` in your `package.json` `scripts` section, or with:

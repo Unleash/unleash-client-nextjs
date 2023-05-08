@@ -30,11 +30,11 @@ export async function GET(request: NextRequest) {
     const flags = flagsClient(toggles);
     return new Response(
       JSON.stringify({
-        loadedDefinitions: definitions?.features?.length,
         activeToggles: toggles.length,
-        poc: {
-          isEnabled: flags.isEnabled("nextjs-poc"),
-          variant: flags.getVariant("nextjs-poc"),
+        exampleToggle: {
+          url: "https://app.unleash-hosted.com/demo/projects/default/features/nextjs-example",
+          isEnabled: flags.isEnabled("nextjs-example"),
+          variant: flags.getVariant("nextjs-example"),
         },
       }),
       {
@@ -55,4 +55,4 @@ export async function GET(request: NextRequest) {
       }
     );
   }
-}
+};
