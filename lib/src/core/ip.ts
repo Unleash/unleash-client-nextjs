@@ -1,5 +1,5 @@
 /**
- * Vendored and stropped down from node "OS" module dependency version of
+ * Vendored and pruned from node "OS" module dependency version of
  * @see https://github.com/indutny/node-ip
  */
 
