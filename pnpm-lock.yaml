@@ -87,8 +87,8 @@ importers:
         specifier: workspace:*
         version: link:../common/tsconfig
       typescript:
-        specifier: 4.9.5
-        version: 4.9.5
+        specifier: 5.0.4
+        version: 5.0.4
 
   lib:
     dependencies:
