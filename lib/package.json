@@ -8,6 +8,16 @@
   "bin": {
     "unleash": "./dist/cli/index.js"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "require": "./dist/server.js"
+    }
+  },
   "files": [
     "dist",
     "src"
