@@ -264,7 +264,7 @@ Issues with TypeScript error:
 
 > Cannot find module `@unleash/nextjs/server` or its corresponding type declarations.
 
-can be fixed in `tsconfig.json`, by setting `compilerOptions.moduleResolution` to `node16` or `nodenext`.
+can be fixed in `tsconfig.json`, by setting [`compilerOptions.moduleResolution` to `bundler`](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-beta/#moduleresolution-bundler).
 
 # ⚗️ CLI (experimental)
 

@@ -8,6 +8,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
