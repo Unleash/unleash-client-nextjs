@@ -132,7 +132,7 @@ const ExamplePage: NextPage<Data> = ({ isEnabled, variant }) => (
 export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
   /* Using server-side SDK: */
   const definitions = await getDefinitions();
-  const context = {} // optional, see https://docs.getunleash.io/reference/unleash-context 
+  const context = {}; // optional, see https://docs.getunleash.io/reference/unleash-context
   const { toggles } = evaluateFlags(definitions, context);
 
   /* Or with the proxy/front-end API */
@@ -249,6 +249,10 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
   };
 };
 ```
+
+# App directory
+
+For server-side use with [App Router](https://nextjs.org/docs/app/building-your-application/routing) import `@unleash/next/server`. This path doesn't contain any client-side dependencies. See `example/src/app` directory for implementation details.
 
 # ⚗️ CLI (experimental)
 
