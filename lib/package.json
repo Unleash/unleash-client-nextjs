@@ -1,6 +1,6 @@
 {
   "name": "@unleash/nextjs",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.3-alpha.2",
   "description": "Unleash SDK for Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

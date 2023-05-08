@@ -32,11 +32,12 @@ const getData = async () => {
     isEnabled: flags.isEnabled("nextjs-example"),
     count: definitions?.features?.length || 0,
     variant: flags.getVariant("nextjs-example")?.name || "N/A",
+    sessionId,
   };
 };
 
 export default async function Page() {
-  const { isEnabled, count, variant } = await getData();
+  const { isEnabled, count, variant, sessionId } = await getData();
 
   return (
     <>
@@ -55,8 +56,11 @@ export default async function Page() {
         Variant assigned is <strong>{variant}</strong>.
       </p>
       <p>
-        We loaded definitions for <strong>{count}</strong> feature flags from
-        Unleash.
+        We loaded and cached definitions for <strong>{count}</strong> feature
+        flags from Unleash.
+      </p>
+      <p>
+        Your session-id is <code>{sessionId}</code>.
       </p>
     </>
   );

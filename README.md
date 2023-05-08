@@ -79,7 +79,7 @@ With `<FlagProvider />` in place you can now use hooks like: `useFlag`, `useVari
 import { useFlag } from "@unleash/nextjs";
 
 const YourComponent = () => {
-  const isEnabled = useFlag("nextjs-poc");
+  const isEnabled = useFlag("nextjs-example");
 
   return <>{isEnabled ? "ENABLED" : "DISABLED"}</>;
 };
@@ -142,8 +142,8 @@ export const getStaticProps: GetStaticProps<Data> = async (_ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-poc"),
-      variant: flags.getVariant("nextjs-poc"),
+      isEnabled: flags.isEnabled("nextjs-example"),
+      variant: flags.getVariant("nextjs-example"),
     },
   };
 };
@@ -190,7 +190,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-poc"),
+      isEnabled: flags.isEnabled("nextjs-example"),
     },
   };
 };
@@ -249,6 +249,12 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
   };
 };
 ```
+
+## E). Middleware
+
+It's possible to run this SDK in Next.js Edge Middleware. This is a great use case for A/B testing, where you can transparently redirect users to different pages based on a feature flag. Target pages can be statically generated, improving performance.
+
+See [`./example/README.md#Middleware`](https://github.com/Unleash/unleash-client-nextjs/blob/main/example/README.md#middleware)
 
 # App directory
 
