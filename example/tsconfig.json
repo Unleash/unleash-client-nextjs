@@ -8,5 +8,9 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strictNullChecks": true
+  }
 }

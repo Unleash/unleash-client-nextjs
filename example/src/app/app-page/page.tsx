@@ -3,7 +3,7 @@ import {
   evaluateFlags,
   flagsClient,
   getDefinitions,
-} from "@unleash/nextjs/server";
+} from "@unleash/nextjs";
 import { Text } from "@vercel/examples-ui";
 
 export const runtime = "edge";

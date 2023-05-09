@@ -2,7 +2,7 @@ import {
   evaluateFlags,
   flagsClient,
   getDefinitions,
-} from "@unleash/nextjs/server";
+} from "@unleash/nextjs";
 import type { NextRequest } from "next/server";
 export const runtime = "edge";
 export const preferredRegion = "fra1";

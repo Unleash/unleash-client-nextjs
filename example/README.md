@@ -1,9 +1,11 @@
-## Getting Started
+## Next.js with Unleash
 
-First, run the development server:
-
+To run this code locally:
 ```bash
-yarn dev
+git clone https://github.com/Unleash/unleash-client-nextjs.git
+cd unleash-client-nextjs/example
+pnpm install
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

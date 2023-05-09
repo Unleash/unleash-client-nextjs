@@ -54,15 +54,68 @@ You can use both to have different values on client-side and server-side.
 
 # Usage
 
-## A). Client-side only - simple use case and for development purposes (CSR)
+## A). 🌟 **App directory** (new)
+
+This package is ready for server-side use with [App Router](https://nextjs.org/docs/app/building-your-application/routing).
+
+See [`./example/README.md#App-router`](https://github.com/Unleash/unleash-client-nextjs/tree/main/example#app-router)
+
+```tsx
+import { cookies } from "next/headers";
+import { evaluateFlags, flagsClient, getDefinitions } from "@unleash/nextjs";
+
+const getFlag = async () => {
+  const cookieStore = cookies();
+  const sessionId =
+    cookieStore.get("unleash-session-id")?.value ||
+    `${Math.floor(Math.random() * 1_000_000_000)}`;
+
+  const definitions = await getDefinitions({
+    fetchOptions: {
+      next: { revalidate: 15 }, // Cache layer like Unleash Proxy!
+    },
+  });
+
+  const { toggles } = await evaluateFlags(definitions, {
+    sessionId,
+  });
+  const flags = flagsClient(toggles);
+
+  return flags.isEnabled("nextjs-example");
+};
+
+export default async function Page() {
+  const isEnabled = await getFlag();
+
+  return (
+    <p>
+      Feature flag is{" "}
+      <strong>
+        <code>{isEnabled ? "ENABLED" : "DISABLED"}</code>
+      </strong>
+      .
+    </p>
+  );
+}
+```
+
+## B). Middleware
+
+It's possible to run this SDK in Next.js Edge Middleware. This is a great use case for A/B testing, where you can transparently redirect users to different pages based on a feature flag. Target pages can be statically generated, improving performance.
+
+See [`./example/README.md#Middleware`](https://github.com/Unleash/unleash-client-nextjs/tree/main/example#middleware)
+
+## C). Client-side only - simple use case and for development purposes (CSR)
 
 Fastest way to get started is to connect frontend directly to Unleash.
 You can find out more about direct [Front-end API access](https://docs.getunleash.io/reference/front-end-api) in our documentation,
 including a guide on how to [setup a client-side SDK key](https://docs.getunleash.io/how-to/how-to-create-api-tokens).
 
+Important: Hooks and provider are only available in `@unleash/nextjs/client`.
+
 ```tsx
 import type { AppProps } from "next/app";
-import { FlagProvider } from "@unleash/nextjs";
+import { FlagProvider } from "@unleash/nextjs/client";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -76,7 +129,7 @@ export default function App({ Component, pageProps }: AppProps) {
 With `<FlagProvider />` in place you can now use hooks like: `useFlag`, `useVariant`, or `useFlagsStatus` to block rendering until flags are ready.
 
 ```jsx
-import { useFlag } from "@unleash/nextjs";
+import { useFlag } from "@unleash/nextjs/client";
 
 const YourComponent = () => {
   const isEnabled = useFlag("nextjs-example");
@@ -102,7 +155,7 @@ Optionally, you can configure `FlagProvider` with the `config` prop. It will tak
 
 If you only plan to use [Unleash client-side React SDK](https://github.com/Unleash/proxy-client-react) now also works with Next.js. Check documentation there for more examples.
 
-## B). Static Site Generation, optimized performance (SSG)
+## D). Static Site Generation, optimized performance (SSG)
 
 With same access as in the client-side example above you can resolve Unleash feature flags when building static pages.
 
@@ -155,7 +208,7 @@ The same approach will work for [ISR (Incremental Static Regeneration)](https://
 
 Both `getDefinitions()` and `getFrontendFlags()` can take arguments overriding URL, token and other request parameters.
 
-## C). Server Side Rendering (SSR)
+## E). Server Side Rendering (SSR)
 
 ```tsx
 import {
@@ -198,7 +251,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 export default ExamplePage;
 ```
 
-## D). Bootstrapping / rehydration
+## F). Bootstrapping / rehydration
 
 You can bootstrap Unleash React SDK to have values loaded from the start.
 Initial value can be customized server-side.
@@ -249,22 +302,6 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
   };
 };
 ```
-
-## E). Middleware
-
-It's possible to run this SDK in Next.js Edge Middleware. This is a great use case for A/B testing, where you can transparently redirect users to different pages based on a feature flag. Target pages can be statically generated, improving performance.
-
-See [`./example/README.md#Middleware`](https://github.com/Unleash/unleash-client-nextjs/blob/main/example/README.md#middleware)
-
-# App directory
-
-For server-side use with [App Router](https://nextjs.org/docs/app/building-your-application/routing) import `@unleash/next/server`. This path doesn't contain any client-side dependencies. See `example/src/app` directory for implementation details.
-
-Issues with TypeScript error:
-
-> Cannot find module `@unleash/nextjs/server` or its corresponding type declarations.
-
-can be fixed in `tsconfig.json`, by setting [`compilerOptions.moduleResolution` to `bundler`](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-beta/#moduleresolution-bundler).
 
 # ⚗️ CLI (experimental)
 

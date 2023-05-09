@@ -1,2 +1,4 @@
 dist
 README.md
+/client.js
+/client.d.*
