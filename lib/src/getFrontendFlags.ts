@@ -22,10 +22,21 @@ export const getFrontendFlags = async (
       unleash.stop();
     });
 
-    unleash.on("error", (e) => {
-      reject(e)
-      unleash.stop();
-    });
+    unleash.on(
+      "error",
+      (
+        e:
+          | Error
+          | {
+              type: "HttpError";
+              code: number;
+            }
+          | unknown
+      ) => {
+        reject(e);
+        unleash.stop();
+      }
+    );
 
     unleash.start();
   });
