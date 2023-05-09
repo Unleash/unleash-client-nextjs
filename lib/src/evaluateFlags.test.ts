@@ -1,5 +1,6 @@
 import { evaluateFlags } from "./evaluateFlags";
 import clientSpecification from "@unleash/client-specification/specifications/index.json";
+import { flagsClient } from "./flagsClient";
 
 const files = clientSpecification.map((file) =>
   require(`@unleash/client-specification/specifications/${file}`)
@@ -18,8 +19,8 @@ describe.each(files)(
         }>
       )("$description", ({ context, toggleName, expectedResult }) => {
         const { toggles } = evaluateFlags(state, context);
-        const toggle = toggles.find((toggle) => toggle.name === toggleName);
-        expect(!!toggle?.enabled).toBe(expectedResult);
+        const result = flagsClient(toggles).isEnabled(toggleName);
+        expect(result).toStrictEqual(expectedResult);
       });
     }
 
@@ -29,12 +30,12 @@ describe.each(files)(
           description: string;
           context: any;
           toggleName: string;
-          expectedResult: string;
+          expectedResult: any;
         }>
       )("$description", ({ context, toggleName, expectedResult }) => {
         const { toggles } = evaluateFlags(state, context);
-        const toggle = toggles.find((toggle) => toggle.name === toggleName);
-        expect(toggle?.variant).toStrictEqual(expectedResult);
+        const result = flagsClient(toggles).getVariant(toggleName);
+        expect(result).toStrictEqual(expectedResult);
       });
     }
   }

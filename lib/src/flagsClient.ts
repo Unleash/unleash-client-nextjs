@@ -20,6 +20,15 @@ export const flagsClient = (toggles = [] as IToggle[]) => {
 
   return {
     isEnabled: (name: string) => client.isEnabled(name),
-    getVariant: (name: string) => client.getVariant(name),
+    getVariant: (name: string) => {
+      const variant = client.getVariant(name);
+
+      return variant !== undefined
+        ? variant
+        : {
+            name: "disabled",
+            enabled: false,
+          };
+    },
   };
 };
