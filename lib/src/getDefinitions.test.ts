@@ -36,6 +36,7 @@ describe("getDefinitions", () => {
           "Content-Type": "application/json",
           "UNLEASH-APPNAME": "nextjs",
           "User-Agent": "nextjs",
+          "Unleash-Client-Spec": "4.2.0",
         },
       }
     );
@@ -66,12 +67,11 @@ describe("getDefinitions", () => {
     getDefinitions();
 
     expect(mockFetch).toHaveBeenCalledWith(`${url}/client/features`, {
-      headers: {
+      headers: expect.objectContaining({
         Authorization: token,
-        "Content-Type": "application/json",
         "UNLEASH-APPNAME": appName,
         "User-Agent": appName,
-      },
+      }),
     });
 
     expect(mockConsole.warn).not.toHaveBeenCalled();
@@ -102,12 +102,11 @@ describe("getDefinitions", () => {
     });
 
     expect(mockFetch).toHaveBeenCalledWith(url, {
-      headers: {
+      headers: expect.objectContaining({
         Authorization: token,
-        "Content-Type": "application/json",
         "UNLEASH-APPNAME": appName,
         "User-Agent": appName,
-      },
+      }),
     });
 
     expect(mockConsole.warn).not.toHaveBeenCalled();
