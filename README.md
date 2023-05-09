@@ -103,7 +103,7 @@ export default async function Page() {
 
 It's possible to run this SDK in Next.js Edge Middleware. This is a great use case for A/B testing, where you can transparently redirect users to different pages based on a feature flag. Target pages can be statically generated, improving performance.
 
-See [`./example/README.md#Middleware`](https://github.com/Unleash/unleash-client-nextjs/tree/main/example#middleware)
+Refer to [`./example/README.md#Middleware`](https://github.com/Unleash/unleash-client-nextjs/tree/main/example#middleware) for more information.
 
 ## C). Client-side only - simple use case and for development purposes (CSR)
 
