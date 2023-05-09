@@ -24,7 +24,7 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.ts*",
+    "lint": "eslint src/**/*.ts* client.ts",
     "test": "vitest run --coverage",
     "test:dev": "vitest",
     "build": "tsc && tsc --p tsconfig.client.json",
