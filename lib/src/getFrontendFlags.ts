@@ -25,7 +25,7 @@ export const getFrontendFlags = async (
     unleash.on(
       "error",
       (
-        e:
+        error:
           | Error
           | {
               type: "HttpError";
@@ -33,7 +33,7 @@ export const getFrontendFlags = async (
             }
           | unknown
       ) => {
-        reject(e);
+        reject(error);
         unleash.stop();
       }
     );
