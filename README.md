@@ -58,7 +58,7 @@ You can use both to have different values on client-side and server-side.
 
 This package is ready for server-side use with [App Router](https://nextjs.org/docs/app/building-your-application/routing).
 
-See [`./example/README.md#App-router`](https://github.com/Unleash/unleash-client-nextjs/tree/main/example#app-router)
+Refer to [`./example/README.md#App-router`](https://github.com/Unleash/unleash-client-nextjs/tree/main/example#app-router) for more information and detailed instructions
 
 ```tsx
 import { cookies } from "next/headers";
