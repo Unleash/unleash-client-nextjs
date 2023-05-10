@@ -1,9 +1,11 @@
-## Getting Started
+## Next.js with Unleash
 
-First, run the development server:
-
+To run this code locally:
 ```bash
-yarn dev
+git clone https://github.com/Unleash/unleash-client-nextjs.git
+cd unleash-client-nextjs/example
+pnpm install
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -11,6 +13,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 Flag in use is `nextjs-example`. https://app.unleash-hosted.com/demo/projects/default/features/nextjs-example
 
 ## Available examples
+
+### App Router
+
+- `./src/app/app-page/page.tsx` - Server-side component page, with loader
+- `./src/app/api-route/route.tsx` - JSON API response
+
+### Pages Router
 
 - `./src/pages/csr.tsx` - Client-side rendering - simple use case, with loader
 - `./src/pages/ssr.tsx` - Server-side rendering - when you need to keep some data private

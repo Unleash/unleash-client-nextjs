@@ -1,6 +1,6 @@
 import { Strategy } from "./strategy";
 import { Context } from "../context";
-import ip from "ip";
+import ip from "../../ip";
 
 export default class RemoteAddressStrategy extends Strategy {
   constructor() {

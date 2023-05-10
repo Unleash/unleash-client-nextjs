@@ -3,6 +3,7 @@ import { removeTrailingSlash } from "./utils";
 
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
+const supportedSpecVersion = "4.2.0";
 
 export const getDefaultConfig = (defaultAppName = "nextjs") => {
   const baseUrl = removeTrailingSlash(
@@ -67,6 +68,7 @@ export const getDefinitions = async (
     "Content-Type": "application/json",
     "UNLEASH-APPNAME": appName,
     "User-Agent": appName,
+    "Unleash-Client-Spec": supportedSpecVersion,
     ...(instanceId ? { "UNLEASH-INSTANCEID": instanceId } : {}),
     ...(fetchOptions.headers || {}),
     ...(sendAuthorizationToken ? { Authorization: token } : {}),

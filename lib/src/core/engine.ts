@@ -1,4 +1,5 @@
-import { selectVariant, type Variant } from "unleash-client/lib/variant";
+import { selectVariant } from "./variant";
+import type { Variant } from "unleash-client/lib/variant";
 import type { Context } from "unleash-client/lib/context";
 import type { Constraint, Segment } from "unleash-client/lib/strategy/strategy";
 import type {

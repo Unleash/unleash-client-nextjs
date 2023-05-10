@@ -8,7 +8,7 @@ import {
 import { UNLEASH_COOKIE_NAME } from "../../utils";
 
 export const config = {
-  runtime: "experimental-edge",
+  runtime: "edge",
 };
 
 export default async function handler(req: NextRequest) {

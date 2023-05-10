@@ -1,4 +1,4 @@
-import { FlagProvider, useFlag, useFlagsStatus } from "@unleash/nextjs";
+import { FlagProvider, useFlag, useFlagsStatus } from "@unleash/nextjs/client";
 import { LoadingDots } from "@vercel/examples-ui";
 import type { NextPage } from "next";
 
