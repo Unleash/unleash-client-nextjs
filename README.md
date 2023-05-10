@@ -45,12 +45,20 @@ If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluate
 | `NEXT_PUBLIC_` | `UNLEASH_SERVER_API_URL`     | `http://localhost:4242/api`                               |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_URL`   | `<(NEXT_PUBLIC_)UNLEASH_SERVER_API_URL>/frontend`         |
 | **No**         | `UNLEASH_SERVER_API_TOKEN`   | `default:development.unleash-insecure-api-token`          |
+| **No**         | `UNLEASH_SERVER_INSTANCE_ID` | undefined                                                 |
 | `NEXT_PUBLIC_` | `UNLEASH_FRONTEND_API_TOKEN` | `default:development.unleash-insecure-frontend-api-token` |
 | `NEXT_PUBLIC_` | `UNLEASH_APP_NAME`           | `nextjs`                                                  |
 
 If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
+
+---
+
+💡 **Usage with GitLab's feature flags**: To use this SDK with [GitLab Feature Flags](https://docs.gitlab.com/ee/operations/feature_flags.html), use `UNLEASH_SERVER_INSTANCE_ID` instead of `UNLEASH_SERVER_API_TOKEN` to  [to authorize with GitLab's service](https://docs.gitlab.com/ee/operations/feature_flags.html#get-access-credentials). 
+
+---
+
 
 # Usage
 
