@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/ip": "1.1.0",
     "@types/murmurhash3js": "3.0.3",
-    "@types/node": "20.1.1",
+    "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "@types/semver": "7.5.0",
@@ -52,7 +52,7 @@
   "dependencies": {
     "@commander-js/extra-typings": "10.0.3",
     "@next/env": "13.4.1",
-    "@unleash/proxy-client-react": "3.5.2",
+    "@unleash/proxy-client-react": "3.6.0",
     "commander": "10.0.1",
     "ip": "1.1.8",
     "murmurhash3js": "3.0.1",
