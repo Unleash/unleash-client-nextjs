@@ -53,8 +53,10 @@ If you plan to use configuration in the browser, add `NEXT_PUBLIC_` prefix.
 If both are defined and available, private variable takes priority.
 You can use both to have different values on client-side and server-side.
 
-For use with [GitLab Feature Flags](https://docs.gitlab.com/ee/operations/feature_flags.html) provide Instance ID
-in `UNLEASH_SERVER_INSTANCE_ID` instead of `UNLEASH_SERVER_API_TOKEN`.
+---
+
+💡 **Usage with GitLab's feature flags**: To use this SDK with [GitLab Feature Flags](https://docs.gitlab.com/ee/operations/feature_flags.html), use `UNLEASH_SERVER_INSTANCE_ID` instead of `UNLEASH_SERVER_API_TOKEN` to  [to authorize with GitLab's service](https://docs.gitlab.com/ee/operations/feature_flags.html#get-access-credentials). 
+ instead of `UNLEASH_SERVER_API_TOKEN`.
 
 # Usage
 
