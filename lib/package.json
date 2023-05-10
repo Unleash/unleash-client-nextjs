@@ -40,13 +40,13 @@
   "dependencies": {
     "@commander-js/extra-typings": "^10.0.2",
     "@next/env": "^13.1.6",
-    "@unleash/proxy-client-react": "3.5.1",
+    "@unleash/proxy-client-react": "3.6.0",
     "commander": "^10.0.0",
     "ip": "1.1.8",
     "murmurhash3js": "3.0.1",
     "semver": "7.3.8",
-    "unleash-client": "3.18.0",
-    "unleash-proxy-client": "2.4.2"
+    "unleash-client": "3.19.1",
+    "unleash-proxy-client": "2.5.0"
   },
   "peerDependencies": {
     "next": ">=12",
