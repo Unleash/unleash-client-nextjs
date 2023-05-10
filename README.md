@@ -335,7 +335,7 @@ Try it now
 UNLEASH_SERVER_API_URL=https://app.unleash-hosted.com/demo/api \
 UNLEASH_SERVER_API_TOKEN=test-server:default.8a090f30679be7254af997864d66b86e44dcfc5291916adff72a0fb5 \
 npx @unleash/nextjs generate-types ./unleash.ts
-``
+```
 
 # Known limitation
 
