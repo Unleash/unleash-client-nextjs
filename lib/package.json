@@ -1,6 +1,6 @@
 {
   "name": "@unleash/nextjs",
-  "version": "0.1.3-rc.0",
+  "version": "1.0.0-rc.0",
   "description": "Unleash SDK for Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,15 +8,26 @@
   "bin": {
     "unleash": "./dist/cli/index.js"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./client.d.ts",
+      "default": "./client.js"
+    }
+  },
   "files": [
     "dist",
+    "client.*",
     "src"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.ts*",
+    "lint": "eslint src/**/*.ts* client.ts",
     "test": "vitest run --coverage",
     "test:dev": "vitest",
-    "build": "tsc",
+    "build": "tsc && tsc --p tsconfig.client.json",
     "dev": "tsc -w",
     "prepack": "cp ../README.md ./README.md"
   },

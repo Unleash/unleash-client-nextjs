@@ -25,7 +25,19 @@ export default function Home() {
           <Link href="/ssr">SSG &ndash; Static Site Generation</Link>
         </li>
         <li>
-          <Link href="/api/hello">API &ndash; JSON response</Link>
+          <Link href="/app-page">
+            <strong>App directory page &ndash; server component</strong>
+          </Link>
+        </li>
+        <li>
+          <Link href="/api-route">
+            App directory route handler &ndash; JSON response
+          </Link>
+        </li>
+        <li>
+          <Link href="/api/hello">
+            API &ndash; JSON response with Pages Router
+          </Link>
         </li>
         <li>
           <Link href="/ab">Middleware &ndash; A/B testing with Next.js</Link>

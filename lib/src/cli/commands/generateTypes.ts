@@ -12,7 +12,7 @@ export const typedExports = {
     useVariant as useVariantOriginal,
     useFlags as useFlagsOriginal,
     flagsClient as flagsClientOriginal,
-  } from "@unleash/nextjs";`,
+  } from "@unleash/nextjs/client";`,
   body: `
   export const useFlag = useFlagOriginal<FeatureName>;
   export const useVariant = <T extends FeatureName>(name: T) =>

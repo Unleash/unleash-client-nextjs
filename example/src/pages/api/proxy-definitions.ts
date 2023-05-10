@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { getDefinitions, safeCompare } from '@unleash/nextjs'
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
   // regions: ['sfo1', 'iad1'], // defaults to 'all'
 }
 
