@@ -335,15 +335,9 @@ Try it now
 UNLEASH_SERVER_API_URL=https://app.unleash-hosted.com/demo/api \
 UNLEASH_SERVER_API_TOKEN=test-server:default.8a090f30679be7254af997864d66b86e44dcfc5291916adff72a0fb5 \
 npx @unleash/nextjs generate-types ./unleash.ts
-```
+``
 
-# What's next
+# Known limitation
 
-## Experimental features support
-
-Unleash Next.js SDK can run on [Edge Runtime](https://nextjs.org/docs/api-reference/edge-runtime) and in [Middleware](https://nextjs.org/docs/advanced-features/middleware). We are also interested in providing an example with [App Directory](https://beta.nextjs.org/docs/app-directory-roadmap).
-
-## Known limitation
-
-- In current interation server-side SDK does not support metrics.
+- In current interation **server-side SDK does not support metrics**.
 - When used server-side, this SDK does not support the "Hostname" and "IP" strategies. Use custom context fields and constraints instead.
