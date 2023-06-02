@@ -2,7 +2,10 @@
   "extends": "tsconfig/react-library.json",
   "compilerOptions": {
     "outDir": ".",
-    "rootDir": "."
+    "rootDir": ".",
+    "alwaysStrict": false,
+    "noImplicitUseStrict": true,
+    "ignoreDeprecations": "5.0"
   },
-  "include": ["client.ts"]
+  "include": ["client.tsx"]
 }

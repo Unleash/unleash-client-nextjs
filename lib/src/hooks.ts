@@ -1,3 +1,5 @@
+"use client";
+
 import { IToggle, type IVariant } from "unleash-proxy-client";
 import {
   useFlag as useFlagOriginal,

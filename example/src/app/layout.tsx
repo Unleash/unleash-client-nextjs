@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import { Page } from "@vercel/examples-ui";
+import "@vercel/examples-ui/globals.css";
 
 export const metadata = {
   title: "Unleash Next.js App Directory Example",
@@ -8,7 +10,9 @@ export const metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Page>{children}</Page>
+      </body>
     </html>
   );
 }

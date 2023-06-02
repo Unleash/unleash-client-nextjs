@@ -3,7 +3,7 @@ import { LoadingDots } from "@vercel/examples-ui";
 import type { NextPage } from "next";
 
 const ExampleComponent = () => {
-  const isEnabled = useFlag("demoApp.step1");
+  const isEnabled = useFlag("nextjs-example");
   const { flagsReady } = useFlagsStatus();
 
   if (!flagsReady) {

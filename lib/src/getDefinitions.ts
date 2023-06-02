@@ -5,6 +5,13 @@ const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
 const supportedSpecVersion = "4.2.0";
 
+type FetchOptions = RequestInit & {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+};
+
 export const getDefaultConfig = (defaultAppName = "nextjs") => {
   const baseUrl = removeTrailingSlash(
     process.env.UNLEASH_SERVER_API_URL ||
@@ -30,7 +37,7 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
     url: baseUrl ? `${baseUrl}/client/features` : defaultUrl,
     ...(token ? { token } : {}),
     ...(instanceId ? { instanceId } : {}),
-    fetchOptions: {} as RequestInit,
+    fetchOptions: {} as FetchOptions,
   };
 };
 
@@ -69,6 +76,7 @@ export const getDefinitions = async (
     "UNLEASH-APPNAME": appName,
     "User-Agent": appName,
     "Unleash-Client-Spec": supportedSpecVersion,
+    // "UNLEASH-SERVERLESS-CLIENT": "TRUE", // TODO: Add serverless client without registration
     ...(instanceId ? { "UNLEASH-INSTANCEID": instanceId } : {}),
     ...(fetchOptions.headers || {}),
     ...(sendAuthorizationToken ? { Authorization: token } : {}),
