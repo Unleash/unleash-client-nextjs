@@ -3,6 +3,7 @@ import * as _helpers from "./helpers";
 import { loadEnvConfig } from "@next/env";
 
 vi.mock("./helpers");
+
 vi.mock("@next/env", () => ({
   loadEnvConfig: vi.fn(),
 }));

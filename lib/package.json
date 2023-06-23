@@ -24,12 +24,12 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.ts* client.ts",
+    "lint": "eslint src/**/*.ts* client.tsx",
     "test": "vitest run --coverage",
     "test:dev": "vitest",
     "build": "tsc && tsc --p tsconfig.client.json",
     "dev": "tsc -w",
-    "prepack": "cp ../README.md ./README.md"
+    "prepack": "npm build && cp ../README.md ./README.md"
   },
   "devDependencies": {
     "@types/murmurhash3js": "3.0.3",
@@ -38,6 +38,7 @@
     "@types/react-dom": "18.2.6",
     "@types/semver": "7.5.0",
     "@unleash/client-specification": "4.2.2",
+    "@vitest/coverage-c8": "^0.32.2",
     "@vitest/coverage-v8": "^0.32.2",
     "eslint-config-custom": "workspace:*",
     "next": "13.4.7",
@@ -49,7 +50,7 @@
     "vitest": "0.32.2"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "10.0.3",
+    "@commander-js/extra-typings": "11.0.0",
     "@next/env": "13.4.7",
     "@unleash/proxy-client-react": "3.6.0",
     "commander": "11.0.0",
