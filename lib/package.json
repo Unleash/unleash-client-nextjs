@@ -24,12 +24,12 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.ts* client.tsx",
+    "lint": "eslint src/**/*.ts* client.ts",
     "test": "vitest run --coverage",
     "test:dev": "vitest",
-    "build": "tsc && tsc --p tsconfig.client.json",
+    "build": "tsc && tsc --p tsconfig.client.json && cp ../README.md ./README.md",
     "dev": "tsc -w",
-    "prepack": "npm build && cp ../README.md ./README.md"
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "@types/murmurhash3js": "3.0.3",

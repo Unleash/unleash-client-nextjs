@@ -5,3 +5,5 @@ export * from "./flagsClient";
 export * from "./getFrontendFlags";
 export * from "./types";
 export * from "./flag";
+export * from "./FlagProvider";
+export * from "./hooks";

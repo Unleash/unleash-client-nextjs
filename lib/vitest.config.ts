@@ -6,7 +6,7 @@ export default defineConfig({
     globals: true,
     coverage: {
       all: true,
-      include: ["src/**/*.ts*"],
+      include: ["client.ts", "src/**/*.ts*"],
       exclude: [
         "src/**/*.test.ts*",
         "src/core/**", // TODO: e2e Unleash client tests
