@@ -19,7 +19,6 @@ jobs:
       - uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: 7
           run_install: false
 
       - uses: actions/checkout@v3
@@ -71,7 +70,6 @@ jobs:
       - uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: 7
           run_install: false
 
       - uses: actions/cache@v3
@@ -99,7 +97,6 @@ jobs:
       - uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: 7
           run_install: false
 
       - uses: actions/cache@v3
