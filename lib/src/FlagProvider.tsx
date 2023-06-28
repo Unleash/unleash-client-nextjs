@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, FC } from "react";
 import { FlagProvider as ReactFlagProvider } from "@unleash/proxy-client-react";
 import { getDefaultClientConfig } from "./utils";
@@ -8,7 +10,7 @@ type FlagProviderProps = {
   config?: Partial<Config>;
 } & Omit<ComponentProps<typeof ReactFlagProvider>, "config">;
 
-export const FlagProvider: FC<FlagProviderProps> = ({ ...props }) => (
+export const FlagProvider: FC<FlagProviderProps> = ({ children, ...props }) => (
   <ReactFlagProvider
     {...props}
     startClient={
@@ -20,5 +22,7 @@ export const FlagProvider: FC<FlagProviderProps> = ({ ...props }) => (
       ...getDefaultClientConfig(),
       ...props.config,
     }}
-  />
+  >
+    {children}
+  </ReactFlagProvider>
 );

@@ -2,8 +2,13 @@ import { fetchDefinitions } from "./helpers";
 import * as getDefinitionsModule from "../getDefinitions";
 
 describe("fetchDefinitions", () => {
-  const getDefinitions = vi.spyOn(getDefinitionsModule, "getDefinitions");
   const getDefaultConfig = vi.spyOn(getDefinitionsModule, "getDefaultConfig");
+  const getDefinitions = vi.spyOn(getDefinitionsModule, "getDefinitions").mockImplementation(() =>
+    Promise.resolve({
+      version: 1,
+      features: [],
+    })
+  );
   const clg = {
     log: vi.fn(),
     warn: vi.fn(),
@@ -12,17 +17,14 @@ describe("fetchDefinitions", () => {
 
   beforeEach(() => {
     vi.stubGlobal("console", clg);
-    getDefinitions.mockImplementation(() =>
-      Promise.resolve({
-        version: 1,
-        features: [],
-      })
-    );
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.unstubAllEnvs();
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
   });
 
   it("returns a call to getDefinitions with default config", async () => {
