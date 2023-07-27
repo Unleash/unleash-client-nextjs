@@ -34,7 +34,7 @@ const getData = async () => {
 
     return {
       isEnabled: flags.isEnabled("nextjs-example"),
-      count: definitions?.features?.length || 0,
+      count: definitions?.features?.length || "0",
       sessionId,
     };
   } catch (_error: unknown) {}
@@ -53,11 +53,11 @@ export default async function Page() {
   const { variant } = await flag(
     "nextjs-example",
     {
-      sessionId: cookies().get(COOKIE_NAME)?.value || 0, // context
+      sessionId: cookies().get(COOKIE_NAME)?.value || "0", // context
     },
     { fetchOptions: { next: { revalidate: 30 } } } // getDefinitions options
   );
-  const name = variant?.payload?.value || 'N/A';
+  const name = variant?.payload?.value || "N/A";
 
   return (
     <>
