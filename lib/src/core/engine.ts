@@ -6,13 +6,11 @@ import type {
   ClientFeaturesResponse,
   FeatureInterface,
 } from "unleash-client/lib/feature";
-
 import {
   defaultStrategies,
   type Strategy,
   type StrategyTransportInterface,
 } from "./client/strategy";
-
 import { getDefaultVariant } from "./variant";
 
 function processFeatures(
@@ -74,20 +72,6 @@ export class ToggleEngine {
     yield* this.yieldSegmentConstraints(segments);
   }
 
-  // *yieldSegmentConstraints(
-  //   segments: (Segment | undefined)[]
-  // ): IterableIterator<Constraint | undefined> {
-  //   for (const segment of segments) {
-  //     if (segment) {
-  //       for (const constraint of segment.constraints) {
-  //         yield constraint;
-  //       }
-  //     } else {
-  //       yield undefined;
-  //     }
-  //   }
-  // }
-
   yieldSegmentConstraints(segments: (Segment | undefined)[]) {
     let constraints: Array<Constraint | undefined> = [];
     for (const segment of segments) {
@@ -100,59 +84,50 @@ export class ToggleEngine {
     return constraints;
   }
 
-  getVariant(name: string, context: Context): Variant {
+  getValue(name: string, context: Context): Variant | undefined {
+    let strategyVariant: Variant | undefined = undefined;
+
     const feature = this.features.get(name);
 
-    if (
-      !feature ||
-      !feature.variants ||
-      !Array.isArray(feature.variants) ||
-      feature.variants.length === 0
-    ) {
-      return getDefaultVariant();
-    }
+    const isEnabled = feature?.strategies?.some((strategySelector): boolean => {
+      const strategy = this.getStrategy(strategySelector.name);
+      if (!strategy) {
+        return false;
+      }
+      const constraints = this.yieldConstraintsFor(strategySelector);
+      const result = strategy.getResult(
+        strategySelector.parameters,
+        context,
+        constraints,
+        strategySelector.variants
+      );
 
-    const enabled = this.isEnabled(name, context);
-    if (!enabled) {
-      return getDefaultVariant();
-    }
-
-    const variant = selectVariant(feature, context);
-    if (!variant) {
-      return getDefaultVariant();
-    }
-
-    return { name: variant.name, payload: variant.payload, enabled };
-  }
-
-  isEnabled(featureName: string, context: Context): boolean {
-    const feature = this.features.get(featureName);
-    if (!feature || !feature.enabled) {
+      if (result.enabled) {
+        strategyVariant = result.variant;
+        return true;
+      }
       return false;
+    });
+
+    if (strategyVariant) {
+      return strategyVariant;
     }
 
-    if (!Array.isArray(feature.strategies)) {
-      return false;
+    if (feature?.variants) {
+      const featureVariant = selectVariant(feature, context);
+      if (featureVariant) {
+        return {
+          name: featureVariant.name,
+          payload: featureVariant.payload,
+          enabled: true,
+        };
+      }
     }
 
-    if (feature.strategies.length === 0) {
-      return feature.enabled;
+    if (isEnabled) {
+      return getDefaultVariant();
     }
 
-    return (
-      feature.strategies.length > 0 &&
-      feature.strategies.some((strategySelector): boolean => {
-        const strategy = this.getStrategy(strategySelector.name);
-        if (!strategy) {
-          return false;
-        }
-        const constraints = this.yieldConstraintsFor(strategySelector);
-        return strategy.isEnabledWithConstraints(
-          strategySelector.parameters,
-          context,
-          constraints
-        );
-      })
-    );
+    return undefined;
   }
 }

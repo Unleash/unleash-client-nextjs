@@ -1,12 +1,20 @@
-import { gt as semverGt, lt as semverLt, eq as semverEq, clean as cleanSemver } from 'semver';
-import { Context } from '../context';
-import { resolveContextValue } from '../helpers';
+import {
+  gt as semverGt,
+  lt as semverLt,
+  eq as semverEq,
+  clean as cleanSemver,
+} from "semver";
+import type { Context } from "../context";
+import { resolveContextValue } from "../helpers";
+import { selectVariantDefinition } from "../../variant";
+import type { Variant, VariantDefinition } from "unleash-client/lib/variant";
 
 export interface StrategyTransportInterface {
   name: string;
   parameters: any;
   constraints: Constraint[];
   segments?: number[];
+  variants?: VariantDefinition[];
 }
 
 export interface Constraint {
@@ -20,34 +28,34 @@ export interface Constraint {
 
 export interface Segment {
   id: number;
-  name: string;
-  description?: string;
   constraints: Constraint[];
-  createdBy: string;
-  createdAt: string;
 }
 
 export enum Operator {
-  IN = 'IN',
-  NOT_IN = 'NOT_IN',
-  STR_ENDS_WITH = 'STR_ENDS_WITH',
-  STR_STARTS_WITH = 'STR_STARTS_WITH',
-  STR_CONTAINS = 'STR_CONTAINS',
-  NUM_EQ = 'NUM_EQ',
-  NUM_GT = 'NUM_GT',
-  NUM_GTE = 'NUM_GTE',
-  NUM_LT = 'NUM_LT',
-  NUM_LTE = 'NUM_LTE',
-  DATE_AFTER = 'DATE_AFTER',
-  DATE_BEFORE = 'DATE_BEFORE',
-  SEMVER_EQ = 'SEMVER_EQ',
-  SEMVER_GT = 'SEMVER_GT',
-  SEMVER_LT = 'SEMVER_LT',
+  IN = "IN",
+  NOT_IN = "NOT_IN",
+  STR_ENDS_WITH = "STR_ENDS_WITH",
+  STR_STARTS_WITH = "STR_STARTS_WITH",
+  STR_CONTAINS = "STR_CONTAINS",
+  NUM_EQ = "NUM_EQ",
+  NUM_GT = "NUM_GT",
+  NUM_GTE = "NUM_GTE",
+  NUM_LT = "NUM_LT",
+  NUM_LTE = "NUM_LTE",
+  DATE_AFTER = "DATE_AFTER",
+  DATE_BEFORE = "DATE_BEFORE",
+  SEMVER_EQ = "SEMVER_EQ",
+  SEMVER_GT = "SEMVER_GT",
+  SEMVER_LT = "SEMVER_LT",
 }
 
-export type OperatorImpl = (constraint: Constraint, context: Context) => boolean;
+export type OperatorImpl = (
+  constraint: Constraint,
+  context: Context
+) => boolean;
 
-const cleanValues = (values: string[]) => values.filter((v) => !!v).map((v) => v.trim());
+const cleanValues = (values: string[]) =>
+  values.filter((v) => !!v).map((v) => v.trim());
 const isStrictSemver = (version: string) => cleanSemver(version) === version;
 
 const InOperator = (constraint: Constraint, context: Context) => {
@@ -56,7 +64,7 @@ const InOperator = (constraint: Constraint, context: Context) => {
   const contextValue = resolveContextValue(context, field);
 
   const isIn = values.some((val) => val === contextValue);
-  
+
   return constraint.operator === Operator.IN ? isIn : !isIn;
 };
 
@@ -70,7 +78,7 @@ const StringOperator = (constraint: Constraint, context: Context) => {
     contextValue = contextValue?.toLocaleLowerCase();
   }
 
-  if(typeof contextValue !== 'string') {
+  if (typeof contextValue !== "string") {
     return false;
   }
 
@@ -113,7 +121,9 @@ const SemverOperator = (constraint: Constraint, context: Context) => {
 const DateOperator = (constraint: Constraint, context: Context) => {
   const { operator } = constraint;
   const value = new Date(constraint.value as string);
-  const currentTime = context.currentTime ? new Date(context.currentTime) : new Date();
+  const currentTime = context.currentTime
+    ? new Date(context.currentTime)
+    : new Date();
 
   if (operator === Operator.DATE_AFTER) {
     return currentTime > value;
@@ -168,13 +178,18 @@ operators.set(Operator.DATE_BEFORE, DateOperator);
 operators.set(Operator.SEMVER_EQ, SemverOperator);
 operators.set(Operator.SEMVER_GT, SemverOperator);
 operators.set(Operator.SEMVER_LT, SemverOperator);
+
+export type StrategyResult =
+  | { enabled: true; variant?: Variant }
+  | { enabled: false };
+
 export class Strategy {
   public name: string;
 
   private returnValue: boolean;
 
   constructor(name: string, returnValue: boolean = false) {
-    this.name = name || 'unknown';
+    this.name = name || "unknown";
     this.returnValue = returnValue;
   }
 
@@ -192,11 +207,14 @@ export class Strategy {
     return evaluator(constraint, context);
   }
 
-  checkConstraints(context: Context, constraints?: IterableIterator<Constraint | undefined>) {
+  checkConstraints(
+    context: Context,
+    constraints?: IterableIterator<Constraint | undefined>
+  ) {
     if (!constraints) {
       return true;
     }
-    // @ts-ignore
+
     for (const constraint of constraints) {
       if (!constraint || !this.checkConstraint(constraint, context)) {
         return false;
@@ -205,15 +223,55 @@ export class Strategy {
     return true;
   }
 
-  isEnabled(parameters: any, context: Context): boolean {
+  isEnabled(_parameters: any, _context: Context): boolean {
     return this.returnValue;
   }
 
   isEnabledWithConstraints(
     parameters: any,
     context: Context,
-    constraints: IterableIterator<Constraint | undefined>,
+    constraints: IterableIterator<Constraint | undefined>
   ) {
-    return this.checkConstraints(context, constraints) && this.isEnabled(parameters, context);
+    return (
+      this.checkConstraints(context, constraints) &&
+      this.isEnabled(parameters, context)
+    );
+  }
+
+  getResult(
+    parameters: any,
+    context: Context,
+    constraints: IterableIterator<Constraint | undefined>,
+    variants?: VariantDefinition[]
+  ): StrategyResult {
+    const enabled = this.isEnabledWithConstraints(
+      parameters,
+      context,
+      constraints
+    );
+
+    if (enabled && Array.isArray(variants) && variants.length > 0) {
+      const variantDefinition = selectVariantDefinition(
+        parameters.groupId,
+        variants,
+        context
+      );
+      return variantDefinition
+        ? {
+            enabled: true,
+            variant: {
+              name: variantDefinition.name,
+              enabled: true,
+              payload: variantDefinition.payload,
+            },
+          }
+        : { enabled: true };
+    }
+
+    if (enabled) {
+      return { enabled: true };
+    }
+
+    return { enabled: false };
   }
 }

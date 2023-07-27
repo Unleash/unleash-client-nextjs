@@ -23,19 +23,18 @@ export const evaluateFlags = (
   };
 
   definitions?.features?.forEach((feature) => {
-    const enabled = engine.isEnabled(feature.name, contextWithDefaults);
-    if (!enabled) {
-      return;
-    }
+    const variant = engine.getValue(
+      feature.name,
+      contextWithDefaults
+    );
 
-    const variant = engine.getVariant(feature.name, contextWithDefaults);
-    if (variant.payload === undefined) {
-      delete variant.payload; // cleanup before serialization
+    if (!variant) {
+      return;
     }
 
     toggles.push({
       name: feature.name,
-      enabled,
+      enabled: true,
       impressionData: feature.impressionData,
       variant,
     });
