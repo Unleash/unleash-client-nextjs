@@ -89,25 +89,31 @@ export class ToggleEngine {
 
     const feature = this.features.get(name);
 
-    const isEnabled = feature?.strategies?.some((strategySelector): boolean => {
-      const strategy = this.getStrategy(strategySelector.name);
-      if (!strategy) {
+    if (!feature?.enabled) {
+      return undefined;
+    }
+
+    const hasEnabledStrategy = feature?.strategies?.some(
+      (strategySelector): boolean => {
+        const strategy = this.getStrategy(strategySelector.name);
+        if (!strategy) {
+          return false;
+        }
+        const constraints = this.yieldConstraintsFor(strategySelector);
+        const result = strategy.getResult(
+          strategySelector.parameters,
+          context,
+          constraints,
+          strategySelector.variants
+        );
+
+        if (result.enabled) {
+          strategyVariant = result.variant;
+          return true;
+        }
         return false;
       }
-      const constraints = this.yieldConstraintsFor(strategySelector);
-      const result = strategy.getResult(
-        strategySelector.parameters,
-        context,
-        constraints,
-        strategySelector.variants
-      );
-
-      if (result.enabled) {
-        strategyVariant = result.variant;
-        return true;
-      }
-      return false;
-    });
+    );
 
     if (strategyVariant) {
       return strategyVariant;
@@ -124,7 +130,7 @@ export class ToggleEngine {
       }
     }
 
-    if (isEnabled) {
+    if (hasEnabledStrategy || !feature?.strategies?.length) {
       return getDefaultVariant();
     }
 
