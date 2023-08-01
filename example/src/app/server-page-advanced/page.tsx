@@ -34,7 +34,7 @@ const getData = async () => {
 
     return {
       isEnabled: flags.isEnabled("nextjs-example"),
-      count: definitions?.features?.length || "0",
+      count: definitions?.features?.length || 0,
       sessionId,
     };
   } catch (_error: unknown) {}
