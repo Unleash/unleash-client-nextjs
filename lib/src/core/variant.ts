@@ -1,13 +1,13 @@
-import type { Context } from "unleash-client/lib";
+import type { Context, Variant } from "unleash-client/lib";
 import type { FeatureInterface } from "unleash-client/lib/feature";
 import { resolveContextValue } from "./client/helpers";
-import type { Variant, VariantDefinition } from "unleash-client/lib/variant";
 import normalizedValue from "./hash";
+import { VariantDefinition } from "unleash-client/lib/variant";
 
-interface IOverride {
+type Override = {
   contextName: string;
   values: string[];
-}
+};
 
 export function getDefaultVariant(): Variant {
   return {
@@ -21,7 +21,8 @@ function randomString() {
 }
 
 const stickinessSelectors = ["userId", "sessionId", "remoteAddress"];
-function getSeed(context: Context, stickiness = "default"): string {
+
+function getSeed(context: Context, stickiness: string = "default"): string {
   if (stickiness !== "default") {
     const value = resolveContextValue(context, stickiness);
     return value ? value.toString() : randomString();
@@ -38,45 +39,48 @@ function getSeed(context: Context, stickiness = "default"): string {
   return result || randomString();
 }
 
-function overrideMatchesContext(context: Context): (o: IOverride) => boolean {
-  return (o: IOverride) =>
+function overrideMatchesContext(context: Context): (o: Override) => boolean {
+  return (o: Override) =>
     o.values.some(
       (value) => value === resolveContextValue(context, o.contextName)
     );
 }
 
 function findOverride(
-  feature: FeatureInterface,
+  variants: VariantDefinition[],
   context: Context
 ): VariantDefinition | undefined {
-  return feature.variants
+  return variants
     .filter((variant) => variant.overrides)
-    .find((variant) => variant.overrides.some(overrideMatchesContext(context)));
+    .find((variant) =>
+      variant.overrides?.some(overrideMatchesContext(context))
+    );
 }
 
-export function selectVariant(
-  feature: FeatureInterface,
+export function selectVariantDefinition(
+  groupId: string,
+  variants: VariantDefinition[],
   context: Context
 ): VariantDefinition | null {
-  const totalWeight = feature.variants.reduce((acc, v) => acc + v.weight, 0);
+  const totalWeight = variants.reduce((acc, v) => acc + v.weight, 0);
   if (totalWeight <= 0) {
     return null;
   }
-  const variantOverride = findOverride(feature, context);
+  const variantOverride = findOverride(variants, context);
   if (variantOverride) {
     return variantOverride;
   }
 
-  const { stickiness } = feature.variants[0];
+  const { stickiness } = variants[0];
 
   const target = normalizedValue(
     getSeed(context, stickiness),
-    feature.name,
+    groupId,
     totalWeight
   );
 
   let counter = 0;
-  const variant = feature.variants.find(
+  const variant = variants.find(
     (v: VariantDefinition): VariantDefinition | undefined => {
       if (v.weight === 0) {
         return undefined;
@@ -89,4 +93,11 @@ export function selectVariant(
     }
   );
   return variant || null;
+}
+
+export function selectVariant(
+  feature: FeatureInterface,
+  context: Context
+): VariantDefinition | null {
+  return selectVariantDefinition(feature.name, feature.variants, context);
 }
