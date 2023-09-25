@@ -114,12 +114,14 @@ export class ToggleEngine {
         return false;
       }
     );
-
     if (strategyVariant) {
       return strategyVariant;
     }
 
-    if (feature?.variants) {
+    if (
+      (feature?.strategies.length === 0 || hasEnabledStrategy) &&
+      feature?.variants
+    ) {
       const featureVariant = selectVariant(feature, context);
       if (featureVariant) {
         return {
