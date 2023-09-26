@@ -24,7 +24,7 @@ const files = clientSpecification.map((file) =>
 // using @unleash/client-specification
 describe.each(files)("$name", ({ state, tests, variantTests }) => {
   beforeAll(() => {
-    vi.stubGlobal("console", { warn: vi.fn() });
+    vi.stubGlobal("console", { warn: vi.fn(), error: vi.fn() });
   });
 
   afterAll(() => {
