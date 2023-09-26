@@ -9,9 +9,10 @@ import { ToggleEngine } from "./core/engine";
 export const evaluateFlags = (
   definitions: ClientFeaturesResponse,
   context: Context = {}
-) => {
+): {
+  toggles: IToggle[];
+} => {
   const engine = new ToggleEngine(definitions);
-  let toggles: IToggle[] = [];
   const defaultContext: Context = {
     currentTime: new Date(),
     appName:
@@ -22,57 +23,63 @@ export const evaluateFlags = (
     ...context,
   };
 
-  definitions?.features?.forEach((feature) => {
+  const features = definitions?.features?.map((feature) => {
     const variant = engine.getValue(feature.name, contextWithDefaults);
 
-    if (!variant) {
-      return;
-    }
-
-    toggles.push({
+    return {
       name: feature.name,
-      enabled: true,
+      enabled: Boolean(variant),
       impressionData: feature.impressionData,
-      variant,
-    });
+      variant: variant || { enabled: false, name: "disabled" },
+      dependencies: feature.dependencies,
+    };
   });
 
-  toggles = toggles.filter((toggle) => {
-    const feature = definitions.features.find(
-      (feature) => feature.name === toggle.name
-    );
+  const toggles = features
+    .filter((feature) => {
+      if (feature.enabled === false) return false;
 
-    if (!feature?.dependencies?.length) {
-      return true;
-    }
+      if (!feature?.dependencies?.length) return true;
 
-    return feature.dependencies.every((dependencyDefinition) => {
-      const parentToggle = toggles.find(
-        (toggle) => toggle.name === dependencyDefinition.feature
-      );
+      return feature.dependencies.every((dependency) => {
+        const parentToggle = features.find(
+          (toggle) => toggle.name === dependency.feature
+        );
 
-      if (parentToggle) {
-        if (dependencyDefinition.enabled === false) {
+        if (parentToggle?.dependencies?.length) {
+          console.warn(
+            `Unleash: \`${feature.name}\` cannot depend on \`${dependency.feature}\` which also has dependencies.`
+          );
           return false;
         }
-      } else {
-        if (dependencyDefinition.enabled !== false) {
-          return false;
-        }
-      }
 
-      if (dependencyDefinition.variants?.length) {
+        if (parentToggle?.enabled) {
+          if (dependency.enabled === false) return false;
+        } else {
+          if (!parentToggle) {
+            console.warn(
+              `Unleash: \`${feature.name}\` has unresolved dependency \`${dependency.feature}\`.`
+            );
+          }
+          if (dependency.enabled !== false) return false;
+        }
+
         if (
-          !parentToggle?.variant?.name ||
-          !dependencyDefinition.variants.includes(parentToggle?.variant?.name)
-        ) {
+          dependency.variants?.length &&
+          (!parentToggle?.variant.name ||
+            !dependency.variants.includes(parentToggle.variant.name))
+        )
           return false;
-        }
-      }
 
-      return true;
-    });
-  });
+        return true;
+      });
+    })
+    .map((feature) => ({
+      name: feature.name,
+      enabled: feature.enabled,
+      variant: feature.variant,
+      impressionData: feature.impressionData,
+    }));
 
   return { toggles };
 };
