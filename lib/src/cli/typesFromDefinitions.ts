@@ -1,4 +1,4 @@
-import { ClientFeaturesResponse } from "unleash-client";
+import type { ClientFeaturesResponse } from "unleash-client";
 
 export const typesFromDefinitions = (definitions: ClientFeaturesResponse) => {
   const { features } = definitions;
