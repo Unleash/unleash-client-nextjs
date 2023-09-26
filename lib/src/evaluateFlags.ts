@@ -46,6 +46,11 @@ export const evaluateFlags = (
           (toggle) => toggle.name === dependency.feature
         );
 
+        if (!parentToggle)
+          console.warn(
+            `Unleash: \`${feature.name}\` has unresolved dependency \`${dependency.feature}\`.`
+          );
+
         if (parentToggle?.dependencies?.length) {
           console.warn(
             `Unleash: \`${feature.name}\` cannot depend on \`${dependency.feature}\` which also has dependencies.`
@@ -53,16 +58,9 @@ export const evaluateFlags = (
           return false;
         }
 
-        if (parentToggle?.enabled) {
-          if (dependency.enabled === false) return false;
-        } else {
-          if (!parentToggle) {
-            console.warn(
-              `Unleash: \`${feature.name}\` has unresolved dependency \`${dependency.feature}\`.`
-            );
-          }
-          if (dependency.enabled !== false) return false;
-        }
+        if (parentToggle?.enabled && dependency.enabled === false) return false;
+        if (!parentToggle?.enabled && dependency.enabled !== false)
+          return false;
 
         if (
           dependency.variants?.length &&
