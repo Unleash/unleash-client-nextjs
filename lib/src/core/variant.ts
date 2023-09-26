@@ -1,8 +1,8 @@
 import type { Context, Variant } from "unleash-client/lib";
 import type { FeatureInterface } from "unleash-client/lib/feature";
+import type { VariantDefinition } from "unleash-client/lib/variant";
 import { resolveContextValue } from "./client/helpers";
 import normalizedValue from "./hash";
-import { VariantDefinition } from "unleash-client/lib/variant";
 
 type Override = {
   contextName: string;

@@ -9,9 +9,10 @@ import { ToggleEngine } from "./core/engine";
 export const evaluateFlags = (
   definitions: ClientFeaturesResponse,
   context: Context = {}
-) => {
+): {
+  toggles: IToggle[];
+} => {
   const engine = new ToggleEngine(definitions);
-  const toggles: IToggle[] = [];
   const defaultContext: Context = {
     currentTime: new Date(),
     appName:
@@ -22,23 +23,61 @@ export const evaluateFlags = (
     ...context,
   };
 
-  definitions?.features?.forEach((feature) => {
-    const variant = engine.getValue(
-      feature.name,
-      contextWithDefaults
-    );
+  const features = definitions?.features?.map((feature) => {
+    const variant = engine.getValue(feature.name, contextWithDefaults);
 
-    if (!variant) {
-      return;
-    }
-
-    toggles.push({
+    return {
       name: feature.name,
-      enabled: true,
+      enabled: Boolean(variant),
       impressionData: feature.impressionData,
-      variant,
-    });
+      variant: variant || { enabled: false, name: "disabled" },
+      dependencies: feature.dependencies,
+    };
   });
+
+  const toggles = features
+    .filter((feature) => {
+      if (feature.enabled === false) return false;
+
+      if (!feature?.dependencies?.length) return true;
+
+      return feature.dependencies.every((dependency) => {
+        const parentToggle = features.find(
+          (toggle) => toggle.name === dependency.feature
+        );
+
+        if (!parentToggle)
+          console.warn(
+            `Unleash: \`${feature.name}\` has unresolved dependency \`${dependency.feature}\`.`
+          );
+
+        if (parentToggle?.dependencies?.length) {
+          console.warn(
+            `Unleash: \`${feature.name}\` cannot depend on \`${dependency.feature}\` which also has dependencies.`
+          );
+          return false;
+        }
+
+        if (parentToggle?.enabled && dependency.enabled === false) return false;
+        if (!parentToggle?.enabled && dependency.enabled !== false)
+          return false;
+
+        if (
+          dependency.variants?.length &&
+          (!parentToggle?.variant.name ||
+            !dependency.variants.includes(parentToggle.variant.name))
+        )
+          return false;
+
+        return true;
+      });
+    })
+    .map((feature) => ({
+      name: feature.name,
+      enabled: feature.enabled,
+      variant: feature.variant,
+      impressionData: feature.impressionData,
+    }));
 
   return { toggles };
 };

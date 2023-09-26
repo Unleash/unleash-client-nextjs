@@ -23,6 +23,14 @@ const files = clientSpecification.map((file) =>
 // Test `evaluateFlags` and `flagsClient` together
 // using @unleash/client-specification
 describe.each(files)("$name", ({ state, tests, variantTests }) => {
+  beforeAll(() => {
+    vi.stubGlobal("console", { warn: vi.fn(), error: vi.fn() });
+  });
+
+  afterAll(() => {
+    vi.unstubAllGlobals();
+  });
+
   if (tests) {
     test.each(tests)(
       "$description",
