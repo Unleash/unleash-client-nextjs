@@ -1,6 +1,7 @@
 ## Next.js with Unleash
 
 To run this code locally:
+
 ```bash
 git clone https://github.com/Unleash/unleash-client-nextjs.git
 cd unleash-client-nextjs/example

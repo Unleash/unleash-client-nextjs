@@ -1,6 +1,6 @@
 import { Strategy } from './strategy';
 import { Context } from '../context';
-import normalizedValue from './util';
+import normalizedValue from '../../hash';
 
 export default class GradualRolloutUserIdStrategy extends Strategy {
   constructor() {
