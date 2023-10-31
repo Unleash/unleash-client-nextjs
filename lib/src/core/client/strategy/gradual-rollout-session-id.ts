@@ -1,5 +1,5 @@
 import { Strategy } from './strategy';
-import normalizedValue from './util';
+import normalizedValue from '../../hash';
 import { Context } from '../context';
 
 export default class GradualRolloutSessionIdStrategy extends Strategy {

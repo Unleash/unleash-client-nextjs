@@ -9,6 +9,8 @@ type Override = {
   values: string[];
 };
 
+const VARIANT_HASH_SEED = 86028157;
+
 export function getDefaultVariant(): Variant {
   return {
     name: "disabled",
@@ -76,7 +78,8 @@ export function selectVariantDefinition(
   const target = normalizedValue(
     getSeed(context, stickiness),
     groupId,
-    totalWeight
+    totalWeight,
+    VARIANT_HASH_SEED
   );
 
   let counter = 0;
