@@ -15,6 +15,7 @@ export function getDefaultVariant(): Variant {
   return {
     name: "disabled",
     enabled: false,
+    feature_enabled: false,
   };
 }
 
@@ -54,8 +55,8 @@ function findOverride(
 ): VariantDefinition | undefined {
   return variants
     .filter((variant) => variant.overrides)
-    .find((variant) =>
-      variant.overrides?.some(overrideMatchesContext(context))
+    .find(
+      (variant) => variant.overrides?.some(overrideMatchesContext(context))
     );
 }
 

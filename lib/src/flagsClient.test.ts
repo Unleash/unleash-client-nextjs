@@ -56,6 +56,7 @@ describe("flagsClient", () => {
     expect(client.getVariant("foo")).toEqual({
       name: "A",
       enabled: true,
+      feature_enabled: true,
       payload: {
         type: "string",
         value: "FOO",
@@ -64,6 +65,7 @@ describe("flagsClient", () => {
     expect(client.getVariant("bar")).toEqual({
       name: "disabled",
       enabled: false,
+      feature_enabled: true,
     });
   });
 });
