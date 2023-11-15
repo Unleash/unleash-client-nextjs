@@ -26,7 +26,7 @@ export default function Page() {
           </Link>
         </li>
         <li>
-          <Link href="/ssr">
+          <Link href="/ssg">
             Pages router, SSG &ndash; Static Site Generation
           </Link>
         </li>

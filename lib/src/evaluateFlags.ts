@@ -75,7 +75,7 @@ export const evaluateFlags = (
     .map((feature) => ({
       name: feature.name,
       enabled: feature.enabled,
-      variant: feature.variant,
+      variant: { ...feature.variant, feature_enabled: feature.enabled },
       impressionData: feature.impressionData,
     }));
 
