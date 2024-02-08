@@ -217,7 +217,7 @@ Both `getDefinitions()` and `getFrontendFlags()` can take arguments overriding U
 import {
   flagsClient,
   evaluateFlags,
-  getDefinitions,
+  getFrontendFlags,
   type IVariant,
 } from "@unleash/nextjs";
 import type { GetServerSideProps, NextPage } from "next";
