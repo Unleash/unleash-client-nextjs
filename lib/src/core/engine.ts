@@ -119,7 +119,7 @@ export class ToggleEngine {
     }
 
     if (
-      (feature?.strategies.length === 0 || hasEnabledStrategy) &&
+      (feature?.strategies?.length === 0 || hasEnabledStrategy) &&
       feature?.variants
     ) {
       const featureVariant = selectVariant(feature, context);

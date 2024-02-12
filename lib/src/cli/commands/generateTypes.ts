@@ -61,7 +61,7 @@ export const generateTypes = (program: Command) => {
       }
 
       const withVariant = definitions?.features.filter(
-        ({ variants }) => variants.length > 0
+        ({ variants }) => (variants || []).length > 0
       ).length;
       step(
         "found feature toggle definitions:",

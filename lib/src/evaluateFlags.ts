@@ -29,7 +29,7 @@ export const evaluateFlags = (
     return {
       name: feature.name,
       enabled: Boolean(variant),
-      impressionData: feature.impressionData,
+      impressionData: Boolean(feature.impressionData),
       variant: variant || { enabled: false, name: "disabled" },
       dependencies: feature.dependencies,
     };
