@@ -103,5 +103,5 @@ export function selectVariant(
   feature: FeatureInterface,
   context: Context
 ): VariantDefinition | null {
-  return selectVariantDefinition(feature.name, feature.variants, context);
+  return selectVariantDefinition(feature.name, feature.variants || [], context);
 }
