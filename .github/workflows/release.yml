@@ -1,5 +1,9 @@
 name: 🚀 Release
 
+env:
+  # https://github.com/yarnpkg/yarn/issues/9015 remove after we switch to one package manager (yarn)
+  SKIP_YARN_COREPACK_CHECK: 1
+
 on:
   workflow_dispatch:
     inputs:
