@@ -51,12 +51,12 @@
   "dependencies": {
     "@commander-js/extra-typings": "11.1.0",
     "@next/env": "14.0.0",
-    "@unleash/proxy-client-react": "4.1.0",
+    "@unleash/proxy-client-react": "4.1.2",
     "commander": "11.1.0",
     "murmurhash3js": "3.0.1",
     "semver": "7.5.4",
-    "unleash-client": "5.5.0",
-    "unleash-proxy-client": "3.2.0"
+    "unleash-client": "5.5.1",
+    "unleash-proxy-client": "3.3.1"
   },
   "peerDependencies": {
     "next": ">=12",
