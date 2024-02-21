@@ -217,7 +217,7 @@ Both `getDefinitions()` and `getFrontendFlags()` can take arguments overriding U
 import {
   flagsClient,
   evaluateFlags,
-  getFrontendFlags,
+  getDefinitions,
   type IVariant,
 } from "@unleash/nextjs";
 import type { GetServerSideProps, NextPage } from "next";
@@ -241,12 +241,17 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
     // userId: "123" // etc
   };
 
-  const { toggles } = await getFrontendFlags({ context }); // Use Proxy/Frontend API
-  const flags = flagsClient(toggles);
+  const definitions = await getDefinitions(); // Uses UNLEASH_SERVER_API_URL
+  const { toggles } = evaluateFlags(definitions, context);
+
+  const flags = flagsClient(toggles); // instantiates a static (non-syncing) unleash-proxy-client
 
   return {
     props: {
       isEnabled: flags.isEnabled("nextjs-example"),
+      // Or you can skip the flagsClient and access the toggles directly, but this will skip impression logging
+      // and other client logic from unleash-proxy-client
+      isEnabled: toggles.find((t) => t.name === 'FEATURE_NAME').enabled
     },
   };
 };
