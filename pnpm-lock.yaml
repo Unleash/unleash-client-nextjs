@@ -109,8 +109,8 @@ importers:
         specifier: 14.0.0
         version: 14.0.0
       '@unleash/proxy-client-react':
-        specifier: 4.1.2
-        version: 4.1.2(unleash-proxy-client@3.3.1)
+        specifier: 4.2.2
+        version: 4.2.2(unleash-proxy-client@3.3.1)
       commander:
         specifier: 11.1.0
         version: 11.1.0
@@ -1015,8 +1015,8 @@ packages:
     resolution: {integrity: sha512-703U1Sw2hXg5MrVXXfEwAIWMinUxTfOHpbcjdjbTyxejaK0mjx4S8zBc5pffs/jlmwSct9eJuRNWnRvWGPQaxg==}
     dev: true
 
-  /@unleash/proxy-client-react@4.1.2(unleash-proxy-client@3.3.1):
-    resolution: {integrity: sha512-AW6CKMHfLoUDzLahXHTD9bCKMKC31kC0kYLDrg089vf9gTAuGNnrY0bIEmrkh0M06JVkbXq9H8As3EIXdioizg==}
+  /@unleash/proxy-client-react@4.2.2(unleash-proxy-client@3.3.1):
+    resolution: {integrity: sha512-KRg1dAQfxLSBe8O2i6GIGDM+7HUdUu/ntREy+JeYbmJ2b6ApFtLX/wt+3T/CjrTYjwRlZKZYJDx5E4fRDOQqpQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       unleash-proxy-client: ^3.2.0
