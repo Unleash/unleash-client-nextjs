@@ -9,7 +9,7 @@ describe("getDefinitions", () => {
     expect(() =>
       program.parse(["get-definitions"], { from: "user" })
     ).toThrowErrorMatchingInlineSnapshot(
-      "\"error: missing required argument 'file'\""
+      `[CommanderError: error: missing required argument 'file']`
     );
   });
 });

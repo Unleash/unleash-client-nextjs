@@ -26,14 +26,14 @@ describe("createProgram", () => {
   it("should create a program", () => {
     expect(program).toBeDefined();
     expect(() => program.parse([])).toThrowErrorMatchingInlineSnapshot(
-      '"(outputHelp)"'
+      `[CommanderError: (outputHelp)]`
     );
   });
 
   it("should display help", () => {
     expect(() =>
       program.parse(["-h"], { from: "user" })
-    ).toThrowErrorMatchingInlineSnapshot('"(outputHelp)"');
+    ).toThrowErrorMatchingInlineSnapshot(`[CommanderError: (outputHelp)]`);
     expect(writeOut.mock.calls).toMatchInlineSnapshot(`
       [
         [
@@ -55,13 +55,13 @@ describe("createProgram", () => {
         ],
       ]
     `);
-    expect(writeErr.mock.calls).toMatchInlineSnapshot("[]");
+    expect(writeErr.mock.calls).toMatchInlineSnapshot(`[]`);
   });
 
   it("should display version", () => {
     expect(() =>
       program.parse(["-V"], { from: "user" })
-    ).toThrowErrorMatchingInlineSnapshot('"VERSION"');
+    ).toThrowErrorMatchingInlineSnapshot(`[CommanderError: VERSION]`);
     expect(writeOut.mock.calls).toMatchInlineSnapshot(`
       [
         [
@@ -70,17 +70,17 @@ describe("createProgram", () => {
         ],
       ]
     `);
-    expect(writeErr.mock.calls).toMatchInlineSnapshot("[]");
+    expect(writeErr.mock.calls).toMatchInlineSnapshot(`[]`);
   });
 
   it("should have an ability to attach commands", () => {
     const action = vi.fn().mockReturnValueOnce("action");
     const newProgram = program
-      .command("test")
+      .command("testCommand")
       .description("description")
       .action(action);
 
-    newProgram.parse(["test"], { from: "user" });
+    newProgram.parse(["testCommand"], { from: "user" });
     expect(action).toHaveBeenCalled();
   });
 
