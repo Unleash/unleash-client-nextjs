@@ -3,12 +3,14 @@ import * as getDefinitionsModule from "../getDefinitions";
 
 describe("fetchDefinitions", () => {
   const getDefaultConfig = vi.spyOn(getDefinitionsModule, "getDefaultConfig");
-  const getDefinitions = vi.spyOn(getDefinitionsModule, "getDefinitions").mockImplementation(() =>
-    Promise.resolve({
-      version: 1,
-      features: [],
-    })
-  );
+  const getDefinitions = vi
+    .spyOn(getDefinitionsModule, "getDefinitions")
+    .mockImplementation(() =>
+      Promise.resolve({
+        version: 1,
+        features: [],
+      })
+    );
   const clg = {
     log: vi.fn(),
     warn: vi.fn(),

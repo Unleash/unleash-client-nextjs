@@ -1,7 +1,6 @@
 import { flagsClient } from "./flagsClient";
 
 describe("flagsClient", () => {
-  // @ts-expect-error undici-types polluting global TS namespace
   global.fetch = vi.fn();
 
   it("should return methods", () => {

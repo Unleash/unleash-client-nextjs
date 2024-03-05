@@ -74,18 +74,18 @@ describe("typesFromDefinitions", () => {
       } as any)
     ).toMatchInlineSnapshot(`
       "export type FeaturesVariantMap = {
-        \\"feature1\\": [{ \\"name\\": \\"variant1\\"; \\"enabled\\": true; \\"payload\\": {\\"type\\":\\"string\\",\\"value\\":\\"variant1\\"} }],
-        \\"feature2\\": [
-          { \\"name\\": \\"variant1\\"; \\"enabled\\": true; \\"payload\\": {\\"type\\":\\"string\\",\\"value\\":\\"variant1\\"} } |
-          { \\"name\\": \\"variant2\\"; \\"enabled\\": true; \\"payload\\": {\\"type\\":\\"string\\",\\"value\\":\\"variant2\\"} }]
+        "feature1": [{ "name": "variant1"; "enabled": true; "payload": {"type":"string","value":"variant1"} }],
+        "feature2": [
+          { "name": "variant1"; "enabled": true; "payload": {"type":"string","value":"variant1"} } |
+          { "name": "variant2"; "enabled": true; "payload": {"type":"string","value":"variant2"} }]
       };
-      
+
       export type FeatureName = keyof FeaturesVariantMap;
-      
+
       export type FeatureVariants = {
         [T in FeatureName]: FeaturesVariantMap[T];
       };
-      
+
       type FeaturesMap = {
         [T in FeatureName]: {
           name: T;
@@ -97,7 +97,7 @@ describe("typesFromDefinitions", () => {
 
       export type Features = Array<FeaturesMap[keyof FeaturesMap]>;
       "
-      `);
+    `);
   });
 
   it("should deal with features without variants", () => {
@@ -115,11 +115,11 @@ describe("typesFromDefinitions", () => {
       } as any)
     ).toMatchInlineSnapshot(`
       "export type FeaturesVariantMap = {
-        \\"feature1\\": [{ \\"name\\": \\"disabled\\", \\"enabled\\": false }]
+        "feature1": [{ "name": "disabled", "enabled": false }]
       };
 
       export type FeatureName = keyof FeaturesVariantMap;
-      
+
       export type FeatureVariants = {
         [T in FeatureName]: FeaturesVariantMap[T];
       };
@@ -135,6 +135,6 @@ describe("typesFromDefinitions", () => {
 
       export type Features = Array<FeaturesMap[keyof FeaturesMap]>;
       "
-      `);
+    `);
   });
 });

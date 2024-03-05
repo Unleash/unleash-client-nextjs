@@ -9,7 +9,7 @@ describe("generateTypes", () => {
     expect(() =>
       program.parse(["generate-types"], { from: "user" })
     ).toThrowErrorMatchingInlineSnapshot(
-      "\"error: missing required argument 'file'\""
+      `[CommanderError: error: missing required argument 'file']`
     );
   });
 });
