@@ -248,10 +248,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-example"),
-      // Or you can skip the flagsClient and access the toggles directly, but this will skip impression logging
-      // and other client logic from unleash-proxy-client
-      isEnabled: toggles.find((t) => t.name === 'FEATURE_NAME').enabled
+      isEnabled: flags.isEnabled("nextjs-example")
     },
   };
 };
