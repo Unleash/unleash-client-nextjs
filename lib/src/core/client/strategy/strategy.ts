@@ -251,8 +251,10 @@ export class Strategy {
     );
 
     if (enabled && Array.isArray(variants) && variants.length > 0) {
+      const stickiness = variants[0].stickiness || parameters.stickiness;
       const variantDefinition = selectVariantDefinition(
         parameters.groupId,
+        stickiness,
         variants,
         context
       );

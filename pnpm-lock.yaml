@@ -143,8 +143,8 @@ importers:
         specifier: 7.5.8
         version: 7.5.8
       '@unleash/client-specification':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.4
+        version: 5.1.4
       '@vitest/coverage-v8':
         specifier: ^1.3.1
         version: 1.3.1(vitest@1.3.1)
@@ -1167,8 +1167,8 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  /@unleash/client-specification@5.1.0:
-    resolution: {integrity: sha512-703U1Sw2hXg5MrVXXfEwAIWMinUxTfOHpbcjdjbTyxejaK0mjx4S8zBc5pffs/jlmwSct9eJuRNWnRvWGPQaxg==}
+  /@unleash/client-specification@5.1.4:
+    resolution: {integrity: sha512-zJMQT0olV9LKlYXbgJrnv08Tbh6G+tXh9s07Z8UvCroItmxJEO/+f6lIhtZh5b+79TdrROt8Sg85mAr+rRnhlQ==}
     dev: true
 
   /@unleash/proxy-client-react@4.2.2(unleash-proxy-client@3.3.1):

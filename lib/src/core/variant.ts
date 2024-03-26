@@ -62,6 +62,7 @@ function findOverride(
 
 export function selectVariantDefinition(
   groupId: string,
+  stickiness: string | undefined,
   variants: VariantDefinition[],
   context: Context
 ): VariantDefinition | null {
@@ -73,8 +74,6 @@ export function selectVariantDefinition(
   if (variantOverride) {
     return variantOverride;
   }
-
-  const { stickiness } = variants[0];
 
   const target = normalizedValue(
     getSeed(context, stickiness),
@@ -103,5 +102,6 @@ export function selectVariant(
   feature: FeatureInterface,
   context: Context
 ): VariantDefinition | null {
-  return selectVariantDefinition(feature.name, feature.variants || [], context);
+  const stickiness = feature.variants?.[0]?.stickiness ?? undefined;
+  return selectVariantDefinition(feature.name, stickiness, feature.variants || [], context);
 }
