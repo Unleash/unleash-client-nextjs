@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -109,8 +105,8 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       '@unleash/proxy-client-react':
-        specifier: 4.2.2
-        version: 4.2.2(unleash-proxy-client@3.3.1)
+        specifier: 4.2.3
+        version: 4.2.3(unleash-proxy-client@3.4.0)
       commander:
         specifier: 12.0.0
         version: 12.0.0
@@ -124,8 +120,8 @@ importers:
         specifier: 5.5.1
         version: 5.5.1
       unleash-proxy-client:
-        specifier: 3.3.1
-        version: 3.3.1
+        specifier: 3.4.0
+        version: 3.4.0
     devDependencies:
       '@types/murmurhash3js':
         specifier: 3.0.7
@@ -1171,13 +1167,13 @@ packages:
     resolution: {integrity: sha512-zJMQT0olV9LKlYXbgJrnv08Tbh6G+tXh9s07Z8UvCroItmxJEO/+f6lIhtZh5b+79TdrROt8Sg85mAr+rRnhlQ==}
     dev: true
 
-  /@unleash/proxy-client-react@4.2.2(unleash-proxy-client@3.3.1):
-    resolution: {integrity: sha512-KRg1dAQfxLSBe8O2i6GIGDM+7HUdUu/ntREy+JeYbmJ2b6ApFtLX/wt+3T/CjrTYjwRlZKZYJDx5E4fRDOQqpQ==}
+  /@unleash/proxy-client-react@4.2.3(unleash-proxy-client@3.4.0):
+    resolution: {integrity: sha512-ssXeGq9PQFjLN7PjQXXHs4oqax+G324LZ8mbxrep/9nzF2bhDCJaj4jP4Rf80zvJc3tgk9aOXGiqpvo8Ef9hpg==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       unleash-proxy-client: ^3.2.0
     dependencies:
-      unleash-proxy-client: 3.3.1
+      unleash-proxy-client: 3.4.0
     dev: false
 
   /@vercel/examples-ui@2.0.3(next@14.1.2)(react-dom@18.2.0)(react@18.2.0):
@@ -4271,8 +4267,8 @@ packages:
       semver: 7.6.0
     dev: false
 
-  /unleash-proxy-client@3.3.1:
-    resolution: {integrity: sha512-tekoTRWBK+B0uG9o/5CJ+LAKNZv+OdLPFVXFESQU2JHnyjtedLyTAmdWhPIxC/eCKiBBay1/2BEWOUCJaL1vzQ==}
+  /unleash-proxy-client@3.4.0:
+    resolution: {integrity: sha512-ivCzm//z+S2T3gSBSZY7HN+5GfoLXZIovMyH6lIZRe2/vCicEdXtXD6cnLTQ2LAiXGV7DpoSM1m8WZGoiLRzkw==}
     dependencies:
       tiny-emitter: 2.1.0
       uuid: 9.0.1
@@ -4528,3 +4524,7 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
