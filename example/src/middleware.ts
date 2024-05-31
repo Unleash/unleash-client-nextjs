@@ -9,7 +9,7 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
     const sessionId =
-        req.cookies.get(UNLEASH_COOKIE_NAME)?.value || `${Math.floor(Math.random() * 1_000_000_000)}`;
+        req.cookies.get(UNLEASH_COOKIE_NAME)?.value || randomSessionId();
     let res: NextResponse;
     if (req.nextUrl.pathname.startsWith('/ab')) {
         const context = { sessionId }; // You can extend context with other server-side properties
