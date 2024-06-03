@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -47,8 +51,8 @@ importers:
   example:
     dependencies:
       '@unleash/nextjs':
-        specifier: workspace:*
-        version: link:../lib
+        specifier: ^1.4.2
+        version: 1.4.2(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
       '@vercel/examples-ui':
         specifier: 2.0.3
         version: 2.0.3(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
@@ -1166,6 +1170,36 @@ packages:
   /@unleash/client-specification@5.1.4:
     resolution: {integrity: sha512-zJMQT0olV9LKlYXbgJrnv08Tbh6G+tXh9s07Z8UvCroItmxJEO/+f6lIhtZh5b+79TdrROt8Sg85mAr+rRnhlQ==}
     dev: true
+
+  /@unleash/nextjs@1.4.2(next@14.1.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-7wUdtFh6I+6FyIJjJMQFipzxqckZvAgQrNr+YNlt7yBGhyC0GpF9EVpgjnvlBWM3X2Xc9rofMu410mSNmgvLYw==}
+    hasBin: true
+    peerDependencies:
+      next: '>=12'
+      react: '>=17'
+      react-dom: '>=17'
+    dependencies:
+      '@commander-js/extra-typings': 12.0.1(commander@12.0.0)
+      '@next/env': 14.1.2
+      '@unleash/proxy-client-react': 4.2.2(unleash-proxy-client@3.3.1)
+      commander: 12.0.0
+      murmurhash3js: 3.0.1
+      next: 14.1.2(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      semver: 7.6.0
+      unleash-client: 5.5.1
+      unleash-proxy-client: 3.3.1
+    dev: false
+
+  /@unleash/proxy-client-react@4.2.2(unleash-proxy-client@3.3.1):
+    resolution: {integrity: sha512-KRg1dAQfxLSBe8O2i6GIGDM+7HUdUu/ntREy+JeYbmJ2b6ApFtLX/wt+3T/CjrTYjwRlZKZYJDx5E4fRDOQqpQ==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      unleash-proxy-client: ^3.2.0
+    dependencies:
+      unleash-proxy-client: 3.3.1
+    dev: false
 
   /@unleash/proxy-client-react@4.2.3(unleash-proxy-client@3.4.0):
     resolution: {integrity: sha512-ssXeGq9PQFjLN7PjQXXHs4oqax+G324LZ8mbxrep/9nzF2bhDCJaj4jP4Rf80zvJc3tgk9aOXGiqpvo8Ef9hpg==}
@@ -4267,6 +4301,13 @@ packages:
       semver: 7.6.0
     dev: false
 
+  /unleash-proxy-client@3.3.1:
+    resolution: {integrity: sha512-tekoTRWBK+B0uG9o/5CJ+LAKNZv+OdLPFVXFESQU2JHnyjtedLyTAmdWhPIxC/eCKiBBay1/2BEWOUCJaL1vzQ==}
+    dependencies:
+      tiny-emitter: 2.1.0
+      uuid: 9.0.1
+    dev: false
+
   /unleash-proxy-client@3.4.0:
     resolution: {integrity: sha512-ivCzm//z+S2T3gSBSZY7HN+5GfoLXZIovMyH6lIZRe2/vCicEdXtXD6cnLTQ2LAiXGV7DpoSM1m8WZGoiLRzkw==}
     dependencies:
@@ -4524,7 +4565,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
