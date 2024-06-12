@@ -8,6 +8,8 @@ export const flagsClient = (toggles = [] as IToggle[]) => {
   const client = new UnleashClient({
     bootstrap: toggles,
     ...getDefaultClientConfig(),
+    fetch: () => null,
+    createAbortController: () => null,
     refreshInterval: 0,
     disableRefresh: true,
     bootstrapOverride: true,
