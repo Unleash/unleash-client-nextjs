@@ -21,7 +21,9 @@ export async function middleware(req: NextRequest) {
     const token = process.env.UNLEASH_RELAY_SECRET || "";
     const definitionsUrl = `${protocol}${host}${endpoint}?token=${token}`;
 
-    // Make a request to the edge-cached endpoint
+    // Make a request to the edge-cached endpoint. This is a workaround for the lack of
+    // fetch cache in middleware. It will also not work in preview deployments.
+    // see: https://github.com/vercel/next.js/issues/48169
     const definitions = await fetch(definitionsUrl).then((res) => res.json());
 
     // Evaluate based on provided context
