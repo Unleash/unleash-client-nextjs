@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -105,8 +109,8 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       '@unleash/proxy-client-react':
-        specifier: 4.2.3
-        version: 4.2.3(unleash-proxy-client@3.4.0)
+        specifier: 4.2.4
+        version: 4.2.4(unleash-proxy-client@3.4.1)
       commander:
         specifier: 12.0.0
         version: 12.0.0
@@ -117,11 +121,11 @@ importers:
         specifier: 7.6.0
         version: 7.6.0
       unleash-client:
-        specifier: 5.5.1
-        version: 5.5.1
+        specifier: 5.5.3
+        version: 5.5.3
       unleash-proxy-client:
-        specifier: 3.4.0
-        version: 3.4.0
+        specifier: 3.4.1
+        version: 3.4.1
     devDependencies:
       '@types/murmurhash3js':
         specifier: 3.0.7
@@ -139,8 +143,8 @@ importers:
         specifier: 7.5.8
         version: 7.5.8
       '@unleash/client-specification':
-        specifier: 5.1.4
-        version: 5.1.4
+        specifier: 5.1.6
+        version: 5.1.6
       '@vitest/coverage-v8':
         specifier: ^1.3.1
         version: 1.3.1(vitest@1.3.1)
@@ -1163,17 +1167,17 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  /@unleash/client-specification@5.1.4:
-    resolution: {integrity: sha512-zJMQT0olV9LKlYXbgJrnv08Tbh6G+tXh9s07Z8UvCroItmxJEO/+f6lIhtZh5b+79TdrROt8Sg85mAr+rRnhlQ==}
+  /@unleash/client-specification@5.1.6:
+    resolution: {integrity: sha512-Yoc+fea2Hd1tw3nf5EgluhzX++5xhhbAZ15CB0pBICBVvsZejNb5S9rKhO+Gr30MhNyG4LHoG4rl+UBxKqe79A==}
     dev: true
 
-  /@unleash/proxy-client-react@4.2.3(unleash-proxy-client@3.4.0):
-    resolution: {integrity: sha512-ssXeGq9PQFjLN7PjQXXHs4oqax+G324LZ8mbxrep/9nzF2bhDCJaj4jP4Rf80zvJc3tgk9aOXGiqpvo8Ef9hpg==}
+  /@unleash/proxy-client-react@4.2.4(unleash-proxy-client@3.4.1):
+    resolution: {integrity: sha512-FWzKDqE28ZmogdXgL9caqMJTWnrVEMJWly8Ofbo1xNZHsk7R9jcWgozIXCWEPto/qijfyCBoat5xjsduT09l1g==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
-      unleash-proxy-client: ^3.2.0
+      unleash-proxy-client: ^3.4.0
     dependencies:
-      unleash-proxy-client: 3.4.0
+      unleash-proxy-client: 3.4.1
     dev: false
 
   /@vercel/examples-ui@2.0.3(next@14.1.2)(react-dom@18.2.0)(react@18.2.0):
@@ -4257,8 +4261,8 @@ packages:
       imurmurhash: 0.1.4
     dev: false
 
-  /unleash-client@5.5.1:
-    resolution: {integrity: sha512-3pFBsXajlZvi9KROmcSDhMhfhLW2jvvoZQGDnUHvXmuiO04Mw3Srxbme8VkmnyUg4y+IZ3DDC+Mwq/XzFsoU1g==}
+  /unleash-client@5.5.3:
+    resolution: {integrity: sha512-QFIsjHhuKQwkkTdICxgp0czDVzdZEPwT9BEcqcLfyxNg129+oYQpQMSnFsW3d+qcRSID1FYoth4ueaOkh7odLQ==}
     engines: {node: '>=16'}
     dependencies:
       ip: 2.0.1
@@ -4267,8 +4271,8 @@ packages:
       semver: 7.6.0
     dev: false
 
-  /unleash-proxy-client@3.4.0:
-    resolution: {integrity: sha512-ivCzm//z+S2T3gSBSZY7HN+5GfoLXZIovMyH6lIZRe2/vCicEdXtXD6cnLTQ2LAiXGV7DpoSM1m8WZGoiLRzkw==}
+  /unleash-proxy-client@3.4.1:
+    resolution: {integrity: sha512-IkotnF4GHwZKyBtEmP3TXBotkdVD9GkR3ClZYNTmczAQsfk0lssTWWkyO7KbJc/sEcLMZ82USV9KI38tx+WwQA==}
     dependencies:
       tiny-emitter: 2.1.0
       uuid: 9.0.1
@@ -4524,7 +4528,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
