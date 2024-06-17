@@ -3,9 +3,6 @@ name: 📋 Verify pull requests
 on:
   pull_request:
 
-env:
-  PNPM_VERSION: 8
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,7 +19,6 @@ jobs:
       - uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: ${{ env.PNPM_VERSION }}
           run_install: false
 
       - uses: actions/checkout@v3
@@ -64,7 +60,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 21.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - uses: actions/setup-node@v3
@@ -74,7 +70,6 @@ jobs:
       - uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: ${{ env.PNPM_VERSION }}
           run_install: false
 
       - uses: actions/cache@v3
@@ -102,7 +97,6 @@ jobs:
       - uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: ${{ env.PNPM_VERSION }}
           run_install: false
 
       - uses: actions/cache@v3
