@@ -15,11 +15,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
+    "eslint-config-custom": "*",
     "prettier": "^3.3.2",
     "turbo": "^2.0.4"
   },
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=18.0.0"
   }
