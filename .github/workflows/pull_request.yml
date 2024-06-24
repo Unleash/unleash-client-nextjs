@@ -4,7 +4,7 @@ on:
   pull_request:
 
 env:
-  PNPM_VERSION: 8
+  PNPM_VERSION: 9
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
           node-version: 'lts/*'
 
       - uses: pnpm/action-setup@v2
-        id: pnpm-install
+        id: pnpm-setup
         with:
           version: ${{ env.PNPM_VERSION }}
           run_install: false
@@ -64,7 +64,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 21.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - uses: actions/setup-node@v3
@@ -72,7 +72,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - uses: pnpm/action-setup@v2
-        id: pnpm-install
+        id: pnpm-setup
         with:
           version: ${{ env.PNPM_VERSION }}
           run_install: false
@@ -100,7 +100,7 @@ jobs:
           node-version: 'lts/*'
 
       - uses: pnpm/action-setup@v2
-        id: pnpm-install
+        id: pnpm-setup
         with:
           version: ${{ env.PNPM_VERSION }}
           run_install: false

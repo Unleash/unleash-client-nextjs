@@ -19,10 +19,15 @@
     "UNLEASH_RELAY_SECRET",
     "NEXT_PUBLIC_UNLEASH_SERVER_API_TOKEN"
   ],
-  "pipeline": {
+  "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ]
     },
     "test": {
       "outputs": []
