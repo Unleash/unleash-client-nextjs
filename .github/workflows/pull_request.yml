@@ -48,12 +48,6 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
 
     steps:
-      - uses: actions/setup-node@v4
-        id: setup-node
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-
       - uses: actions/cache@v3
         name: 🗃️ Restore build cache
         timeout-minutes: 5
@@ -61,6 +55,12 @@ jobs:
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
+
+      - uses: actions/setup-node@v4
+        id: setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
       - name: 🧪 Tests
         run: yarn test
@@ -72,11 +72,6 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/setup-node@v4
-        id: setup-node
-        with:
-          cache: 'yarn'
-
       - uses: actions/cache@v3
         name: 🗃️ Restore build cache
         timeout-minutes: 5
@@ -84,6 +79,11 @@ jobs:
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
+
+      - uses: actions/setup-node@v4
+        id: setup-node
+        with:
+          cache: 'yarn'
 
       - name: ✨ Lint
         run: yarn lint
