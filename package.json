@@ -17,7 +17,7 @@
   "devDependencies": {
     "eslint-config-custom": "*",
     "prettier": "^3.3.2",
-    "turbo": "^2.0.4"
+    "turbo": "^2.0.5"
   },
   "packageManager": "yarn@1.22.22",
   "engines": {
