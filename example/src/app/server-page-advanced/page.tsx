@@ -27,7 +27,7 @@ const getData = async () => {
       },
     });
 
-    const { toggles } = await evaluateFlags(definitions, {
+    const { toggles } = evaluateFlags(definitions, {
       sessionId, // it is important to provide sticky field for a consistent user experience (https://docs.getunleash.io/reference/stickiness#calculation)
     });
     const flags = flagsClient(toggles);

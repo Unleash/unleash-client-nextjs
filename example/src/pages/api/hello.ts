@@ -29,7 +29,7 @@ export default async function handler(req: NextRequest) {
     };
 
     const definitions = await getDefinitions();
-    const { toggles } = await evaluateFlags(definitions, context);
+    const { toggles } = evaluateFlags(definitions, context);
 
     return new Response(JSON.stringify({ toggles }), {
       status: 200,

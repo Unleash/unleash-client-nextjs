@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const definitions = await getDefinitions();
-    const { toggles } = await evaluateFlags(definitions, {
+    const { toggles } = evaluateFlags(definitions, {
       sessionId,
     });
     const flags = flagsClient(toggles);
