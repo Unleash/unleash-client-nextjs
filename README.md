@@ -79,7 +79,7 @@ const getFlag = async () => {
     },
   });
 
-  const { toggles } = await evaluateFlags(definitions, {
+  const { toggles } = evaluateFlags(definitions, {
     sessionId,
   });
   const flags = flagsClient(toggles);
