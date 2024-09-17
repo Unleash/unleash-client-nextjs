@@ -28,6 +28,7 @@ When using Unleash **client-side**, with `<FlagProvider />` or `getFrontendFlags
   if you're using the [front-end API](https://docs.getunleash.io/reference/front-end-api),
   or a [proxy client key](https://docs.getunleash.io/reference/api-tokens-and-client-keys#proxy-client-keys)
   if you're using a [proxy](https://docs.getunleash.io/reference/unleash-proxy)
+- Using [Edge](https://docs.getunleash.io/reference/unleash-edge) is the same as using the frontend API, so you'll need a FRONTEND_API_TOKEN, and your URL should end with `/api/frontend`.
 
 If using **server-side** (SSR, SSG, API), using `getDefinitions()` and `evaluateFlags()`, set:
 
