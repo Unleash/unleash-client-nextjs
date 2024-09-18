@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
         const definitions = await fetch(definitionsUrl).then((res) => res.json());
       
         // Evaluate based on provided context
-        const evaluated = await evaluateFlags(definitions, context);
+        const evaluated = evaluateFlags(definitions, context);
         const variant = flagsClient(evaluated.toggles).getVariant("nextjs-example")
           ?.payload?.value;
       
