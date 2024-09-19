@@ -1,5 +1,8 @@
 ## Next.js with Unleash
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FUnleash%2Funleash-client-nextjs%2Ftree%2Fmain%2Fexample)
+[![Edit in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/Unleash/unleash-client-nextjs/tree/main/example)
+
 To run this code locally:
 
 ```bash
