@@ -4,7 +4,6 @@
     "outDir": ".",
     "rootDir": ".",
     "alwaysStrict": false,
-    "noImplicitUseStrict": true,
     "ignoreDeprecations": "5.0",
     "paths": {
       "baseUrl": ["."],
