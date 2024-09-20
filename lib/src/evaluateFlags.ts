@@ -12,7 +12,17 @@ export const evaluateFlags = (
 ): {
   toggles: IToggle[];
 } => {
-  const engine = new ToggleEngine(definitions);
+  let engine: ToggleEngine;
+  try {
+    engine = new ToggleEngine(definitions);
+  } catch (error) {
+    console.error(
+      "Unleash: Failed to evaluate flags from provided definitions",
+      error
+    );
+    return { toggles: [] };
+  }
+
   const defaultContext: Context = {
     currentTime: new Date(),
     appName:
