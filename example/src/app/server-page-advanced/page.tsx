@@ -33,7 +33,7 @@ const getData = async () => {
     const flags = flagsClient(toggles);
 
     return {
-      isEnabled: flags.isEnabled("nextjs-example"),
+      isEnabled: flags.isEnabled("example-flag"),
       count: definitions?.features?.length || 0,
       sessionId,
     };
@@ -51,7 +51,7 @@ export default async function Page() {
 
   // 'flag' function from SDK is configurable
   const { variant } = await flag(
-    "nextjs-example",
+    "example-flag",
     {
       sessionId: cookies().get(COOKIE_NAME)?.value || "0", // context
     },
@@ -66,7 +66,7 @@ export default async function Page() {
       </Text>
       <p>This page is server-side rendered.</p>
       <p>
-        Feature flag <code>nextjs-example</code> is{" "}
+        Feature flag <code>example-flag</code> is{" "}
         <strong>
           <code>{isEnabled ? "ENABLED" : "DISABLED"}</code>
         </strong>

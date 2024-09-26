@@ -4,7 +4,7 @@ import { Text } from "@vercel/examples-ui";
 export const runtime = "edge";
 
 export default async function Page() {
-  const { enabled } = await flag("nextjs-example");
+  const { enabled } = await flag("example-flag");
 
   return (
     <>
@@ -13,7 +13,7 @@ export default async function Page() {
       </Text>
       <p>This page is server-side rendered.</p>
       <p>
-        Feature flag <code>nextjs-example</code> is{" "}
+        Feature flag <code>example-flag</code> is{" "}
         <strong>
           <code>{enabled ? "ENABLED" : "DISABLED"}</code>
         </strong>

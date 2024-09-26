@@ -4,7 +4,7 @@ import "@vercel/examples-ui/globals.css";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Page>
+    <Page className="p-6">
       <Component {...pageProps} />
     </Page>
   );

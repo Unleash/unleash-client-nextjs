@@ -26,7 +26,7 @@ export async function middleware(req: NextRequest) {
       
         // Evaluate based on provided context
         const evaluated = evaluateFlags(definitions, context);
-        const variant = flagsClient(evaluated.toggles).getVariant("nextjs-example")
+        const variant = flagsClient(evaluated.toggles).getVariant("example-flag")
           ?.payload?.value;
       
         const newUrl = req.nextUrl.clone();

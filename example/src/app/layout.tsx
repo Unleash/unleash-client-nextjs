@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Page>{children}</Page>
+        <Page className="p-6">{children}</Page>
       </body>
     </html>
   );
