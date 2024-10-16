@@ -6,12 +6,13 @@ const getMetricsConfig = () => {
 
   if (backendUrl && process.env.UNLEASH_SERVER_API_TOKEN){
     return {
+      ...getDefaultClientConfig(),
       url: backendUrl,
       clientKey: process.env.UNLEASH_SERVER_API_TOKEN,
     }
   }
 
-  return {}
+  return getDefaultClientConfig()
 }
 
 /**
@@ -20,7 +21,6 @@ const getMetricsConfig = () => {
 export const flagsClient = (toggles = [] as IToggle[]) => {
   const client = new UnleashClient({
     bootstrap: toggles,
-    ...getDefaultClientConfig(),
     ...getMetricsConfig(),
     createAbortController: () => null,
     refreshInterval: 0,
