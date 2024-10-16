@@ -4,8 +4,8 @@ import { useFlag, useFlagsStatus, useVariant } from "@unleash/nextjs/client";
 import { LoadingDots } from "@vercel/examples-ui";
 
 export default function ClientComponent() {
-  const isEnabled = useFlag("nextjs-example");
-  const variant = useVariant("nextjs-example");
+  const isEnabled = useFlag("example-flag");
+  const variant = useVariant("example-flag");
   const { flagsReady } = useFlagsStatus();
 
   if (!flagsReady) {

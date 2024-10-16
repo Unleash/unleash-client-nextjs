@@ -16,6 +16,8 @@ yarn add @unleash/nextjs
 pnpm add @unleash/nextjs
 ```
 
+There is an [`./example`](./example) project that you can [deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FUnleash%2Funleash-client-nextjs%2Ftree%2Fmain%2Fexample) or [edit in CodeSandbox](https://codesandbox.io/s/github/Unleash/unleash-client-nextjs/tree/main/example).
+
 ### Environment variables
 
 This package will attempt to load configuration from

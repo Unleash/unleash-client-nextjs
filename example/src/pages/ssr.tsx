@@ -44,8 +44,8 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 
   return {
     props: {
-      isEnabled: flags.isEnabled("nextjs-example"),
-      variant: flags.getVariant("nextjs-example"),
+      isEnabled: flags.isEnabled("example-flag"),
+      variant: flags.getVariant("example-flag"),
       percent: Math.round((toggles.length / definitions.features.length) * 100),
     },
   };

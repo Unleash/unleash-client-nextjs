@@ -6,12 +6,11 @@ import {
 import type { NextRequest } from "next/server";
 export const runtime = "edge";
 export const preferredRegion = "fra1";
-
-const COOKIE_NAME = "unleash-session-id";
+import { UNLEASH_COOKIE_NAME } from "../../utils";
 
 export async function GET(request: NextRequest) {
   const sessionId =
-    request.cookies.get(COOKIE_NAME)?.value ||
+    request.cookies.get(UNLEASH_COOKIE_NAME)?.value ||
     `${Math.floor(Math.random() * 1_000_000_000)}`;
 
   const headers = {
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Set-Cookie": `${COOKIE_NAME}=${sessionId}`,
+    "Set-Cookie": `${UNLEASH_COOKIE_NAME}=${sessionId}`,
   };
 
   try {
@@ -32,9 +31,9 @@ export async function GET(request: NextRequest) {
       JSON.stringify({
         activeToggles: toggles.length,
         exampleToggle: {
-          url: "https://app.unleash-hosted.com/demo/projects/default/features/nextjs-example",
-          isEnabled: flags.isEnabled("nextjs-example"),
-          variant: flags.getVariant("nextjs-example"),
+          url: "https://app.unleash-hosted.com/demo/projects/codesandbox/features/example-flag",
+          isEnabled: flags.isEnabled("example-flag"),
+          variant: flags.getVariant("example-flag"),
         },
       }),
       {
