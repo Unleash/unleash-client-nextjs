@@ -5,8 +5,8 @@
  *
  * @see https://github.com/Bruce17/safe-compare/blob/a96e0fb1dd1b6e998f657b43987c5b7a6d48186e/index.js#L12-L38
  */
-export const safeCompare = function safeCompare(a: string, b: string) {
-  let strA = String(a);
+export const safeCompare = (a: string, b: string) => {
+  const strA = String(a);
   let strB = String(b);
   const lenA = strA.length;
   let result = 0;
@@ -38,7 +38,7 @@ const getFrontendUrl = () =>
   process.env.UNLEASH_FRONTEND_API_URL ||
   process.env.NEXT_PUBLIC_UNLEASH_FRONTEND_API_URL;
 
-const getServerBaseUrl = () =>
+export const getServerBaseUrl = () =>
   process.env.UNLEASH_SERVER_API_URL ||
   process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;
 
@@ -61,4 +61,4 @@ export const getDefaultClientConfig = () => {
 };
 
 export const removeTrailingSlash = (url?: string) =>
-  url && url.replace(/\/$/, "");
+  url?.replace(/\/$/, "");
