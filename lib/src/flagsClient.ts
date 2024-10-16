@@ -2,12 +2,12 @@ import { UnleashClient, type IToggle } from "unleash-proxy-client";
 import { getDefaultClientConfig, getServerBaseUrl } from "./utils";
 
 const getMetricsConfig = () => {
-  const backendUrl = getServerBaseUrl()
+  const serverUrl = getServerBaseUrl()
 
-  if (backendUrl && process.env.UNLEASH_SERVER_API_TOKEN){
+  if (serverUrl && process.env.UNLEASH_SERVER_API_TOKEN){
     return {
       ...getDefaultClientConfig(),
-      url: backendUrl,
+      url: serverUrl,
       clientKey: process.env.UNLEASH_SERVER_API_TOKEN,
     }
   }
