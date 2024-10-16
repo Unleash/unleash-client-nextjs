@@ -11,9 +11,9 @@ export const flagsClient = (toggles = [] as IToggle[]) => {
     fetch: () => null,
     createAbortController: () => null,
     refreshInterval: 0,
+    metricsInterval: 0,
     disableRefresh: true,
     bootstrapOverride: true,
-    disableMetrics: true,
     storageProvider: {
       get: async (_name: string) => {},
       save: async (_name: string, _value: string) => {},
@@ -23,5 +23,6 @@ export const flagsClient = (toggles = [] as IToggle[]) => {
   return {
     isEnabled: (name: string) => client.isEnabled(name),
     getVariant: (name: string) => client.getVariant(name),
+    sendMetrics: () => client.sendMetrics(),
   };
 };
