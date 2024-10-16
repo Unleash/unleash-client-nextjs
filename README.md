@@ -259,6 +259,26 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
 export default ExamplePage;
 ```
 
+
+### SSR and metrics (experimental)
+
+Next.js applications using Server-Side Rendering (SSR) are often deployed in serverless or short-lived environments, such as Vercel. This creates challenges for server-side metrics reporting.
+
+Typically, Unleash backend SDKs (like the [Node.js SDK](https://github.com/Unleash/unleash-client-node) run in long-lived processes, allowing them to cache metrics locally and send them to the Unleash API or Edge API at scheduled intervals.
+
+However, in short-lived serverless environments where Next.js is commonly hosted (e.g., Vercel), there is no persistent in-memory cache across multiple requests. As a result, metrics must be reported on each request.
+
+To address this, the SDK provides a sendMetrics function that can be called wherever needed, but it should be executed after feature flag checks `client.isEnabled()` or variant checks `client.getVariant()`.
+
+We also recommend setting up the [Edge API](https://github.com/Unleash/unleash-edge)  in front of your Unleash API. This helps protect your Unleash API from excessive traffic caused by per-request metrics reporting.
+
+```tsx
+const enabled = flags.isEnabled("nextjs-example");
+
+await flags.sendMetrics();
+```
+
+
 ## F). Bootstrapping / rehydration
 
 You can bootstrap Unleash React SDK to have values loaded from the start.
