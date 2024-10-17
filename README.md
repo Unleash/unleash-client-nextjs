@@ -266,9 +266,9 @@ Next.js applications using Server-Side Rendering (SSR) are often deployed in ser
 
 Typically, Unleash backend SDKs (like the [Node.js SDK](https://github.com/Unleash/unleash-client-node) run in long-lived processes, allowing them to cache metrics locally and send them to the Unleash API or Edge API at scheduled intervals.
 
-However, in short-lived serverless environments where Next.js is commonly hosted (e.g., Vercel), there is no persistent in-memory cache across multiple requests. As a result, metrics must be reported on each request.
+However, in some short-lived serverless environments where Next.js is commonly hosted (e.g., Vercel), there is no persistent in-memory cache across multiple requests. As a result, metrics must be reported on each request.
 
-To address this, the SDK provides a sendMetrics function that can be called wherever needed, but it should be executed after feature flag checks `client.isEnabled()` or variant checks `client.getVariant()`.
+To address this, the SDK provides a `sendMetrics` function that can be called wherever needed, but it should be executed after feature flag checks `client.isEnabled()` or variant checks `client.getVariant()`.
 
 We also recommend setting up the [Edge API](https://github.com/Unleash/unleash-edge)  in front of your Unleash API. This helps protect your Unleash API from excessive traffic caused by per-request metrics reporting.
 
@@ -278,6 +278,63 @@ const enabled = flags.isEnabled("nextjs-example");
 await flags.sendMetrics();
 ```
 
+#### Long-running process or `setInterval` support
+
+If your runtime environment supports long-running processes and `setInterval` you can throttle metrics reporting with `sendMetrics` running at a regular interval. 
+
+```tsx
+import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
+
+const definitions = await getDefinitions();
+const context = {};
+const {toggles} = evaluateFlags(definitions, context);
+const client = flagsClient(toggles);
+
+
+// reports metrics at regular intervals
+setInterval(() => {
+    client.sendMetrics();
+}, 5000);
+
+// reports metrics at process termination
+process.on("SIGTERM", async () => {
+    await client.sendMetrics();
+});
+
+export default async function Page() {
+    const enabled = client.isEnabled('nextjs-example');
+
+    return  <>
+      Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
+    </>
+}
+```
+
+If your Next application resolves flags only in SSR mode and `setInterval` is supported then you may consider using [Node.js SDK](https://github.com/Unleash/unleash-client-node) instead, which handles the `setInterval` calls under the hood.
+Check [this blog post](https://docs.getunleash.io/feature-flag-tutorials/serverless/lambda) for more information.
+
+#### Short-running process and no `setInterval` support
+
+If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario. 
+```tsx
+import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
+
+const definitions = await getDefinitions();
+const context = {};
+const {toggles} = evaluateFlags(definitions, context);
+const client = flagsClient(toggles);
+
+export default async function Page() {
+    const enabled = client.isEnabled('nextjs-example');
+
+    // reports metrics on each request
+    await client.sendMetrics();
+
+    return  <>
+      Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
+    </>
+}
+```
 
 ## F). Bootstrapping / rehydration
 
