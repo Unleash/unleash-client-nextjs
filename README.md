@@ -283,7 +283,6 @@ await flags.sendMetrics();
 If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario. 
 ```tsx
 import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
-import {waitUntil} from "@vercel/functions";
 
 const definitions = await getDefinitions();
 const context = {};
@@ -294,9 +293,7 @@ export default async function Page() {
     const enabled = client.isEnabled('nextjs-example');
 
     // reports metrics on each request
-    waitUntil(client.sendMetrics());
-    // when waitUntil is not available
-    // await client.sendMetrics();
+    await client.sendMetrics();
 
     return  <>
       Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
