@@ -350,14 +350,14 @@ export const getServerSideProps: GetServerSideProps<Data> = async () => {
   });
   const context = {};
   const { toggles } = evaluateFlags(definitions, context);
-  let client = flagsClient(toggles);
+  const flags = flagsClient(toggles);
 
-  const enabled = client.isEnabled("nextjs-example");
+  const enabled = flags.isEnabled("nextjs-example");
 
   // blocking metrics
   // await client.sendMetrics().catch(() => {});
   // non-blocking metrics
-  client.sendMetrics().catch(() => {});
+  flags.sendMetrics().catch(() => {});
 
   return {
     props: { isEnabled: enabled },
@@ -384,14 +384,14 @@ export default async function Page() {
    });
    const context = {};
    const { toggles } = evaluateFlags(definitions, context);
-   let client = flagsClient(toggles);
+   let flags = flagsClient(toggles);
 
-   const enabled = client.isEnabled("nextjs-example");
+   const enabled = flags.isEnabled("nextjs-example");
 
    // blocking metrics
    // await client.sendMetrics().catch(() => {});
    // non-blocking metrics
-    client.sendMetrics().catch(() => {});
+   flags.sendMetrics().catch(() => {});
 
     return  <>Flag status: {enabled ? "ENABLED" : "DISABLED"}</>
 }
