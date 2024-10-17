@@ -320,36 +320,6 @@ export default ExamplePage;
 
 #### `setInterval` support (e.g. long-running Node process or AWS lambda)
 
-If your runtime environment supports `setInterval` you can throttle metrics reporting with `sendMetrics` running at a regular interval.
-
-```tsx
-import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
-
-const definitions = await getDefinitions();
-const context = {};
-const {toggles} = evaluateFlags(definitions, context);
-const client = flagsClient(toggles);
-
-
-// reports metrics at regular intervals
-setInterval(() => {
-    client.sendMetrics();
-}, 5000);
-
-// reports metrics at process termination
-process.on("SIGTERM", async () => {
-    await client.sendMetrics();
-});
-
-export default async function Page() {
-    const enabled = client.isEnabled('nextjs-example');
-
-    return  <>
-      Flag status: {enabled ? "ENABLED" : "DISABLED"}
-    </>
-}
-```
-
 If your Next application resolves flags only in SSR mode and `setInterval` is supported then you may also consider using [Node.js SDK](https://github.com/Unleash/unleash-client-node) instead, which handles the `setInterval` calls under the hood.
 Check [this blog post](https://docs.getunleash.io/feature-flag-tutorials/serverless/lambda) for more information on short-running lambdas that still support `setInterval`.
 
