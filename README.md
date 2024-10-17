@@ -347,7 +347,7 @@ export default async function Page() {
 }
 ```
 
-If your Next application resolves flags only in SSR mode and `setInterval` is supported then you may consider using [Node.js SDK](https://github.com/Unleash/unleash-client-node) instead, which handles the `setInterval` calls under the hood.
+If your Next application resolves flags only in SSR mode and `setInterval` is supported then you may also consider using [Node.js SDK](https://github.com/Unleash/unleash-client-node) instead, which handles the `setInterval` calls under the hood.
 Check [this blog post](https://docs.getunleash.io/feature-flag-tutorials/serverless/lambda) for more information on short-running lambdas that still support `setInterval`.
 
 
