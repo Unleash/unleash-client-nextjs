@@ -302,9 +302,9 @@ export const getServerSideProps: GetServerSideProps<Data> = async () => {
   const enabled = client.isEnabled("nextjs-example");
 
   // blocking metrics
-  await Promise.allSettled([client.sendMetrics()]);
+  await client.sendMetrics().catch(() => {});
   // non-blocking metrics
-  // Promise.allSettled([client.sendMetrics()]);;
+  client.sendMetrics().catch(() => {});
 
   return {
     props: { isEnabled: enabled },
