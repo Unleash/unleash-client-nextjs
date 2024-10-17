@@ -384,7 +384,7 @@ export default async function Page() {
    });
    const context = {};
    const { toggles } = evaluateFlags(definitions, context);
-   let flags = flagsClient(toggles);
+   const flags = flagsClient(toggles);
 
    const enabled = flags.isEnabled("nextjs-example");
 
