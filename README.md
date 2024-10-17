@@ -393,6 +393,21 @@ export default async function Page() {
 }
 ```
 
+## Next.js middleware
+
+In `middleware.ts` you can use [`event.waitUntil()`](https://nextjs.org/docs/app/building-your-application/routing/middleware#waituntil-and-nextfetchevent) to reliably send metrics without delaying the response.
+
+```tsx
+export async function middleware(req: NextRequest, event: NextFetchEvent) {
+    // ...
+    const evaluated = evaluateFlags(definitions, context);
+    const flags = flagsClient(evaluated.toggles)
+    const isEnabled = flags.isEnabled("example-flag")
+
+    event.waitUntil(flags.sendMetrics())
+    // ...
+}
+```
 
 ## `setInterval` support (e.g. long-running Node process or AWS lambda)
 
@@ -436,5 +451,4 @@ npx @unleash/nextjs generate-types ./unleash.ts
 
 # Known limitation
 
-- In current interation **server-side SDK does not support metrics**.
 - When used server-side, this SDK does not support the "Hostname" and "IP" strategies. Use custom context fields and constraints instead.
