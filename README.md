@@ -299,7 +299,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async () => {
   const { toggles } = evaluateFlags(definitions, context);
   let client = flagsClient(toggles);
 
-  const enabled = client.isEnabled("example-flag");
+  const enabled = client.isEnabled("nextjs-example");
 
   await client.sendMetrics();
 
@@ -342,7 +342,7 @@ export default async function Page() {
     const enabled = client.isEnabled('nextjs-example');
 
     return  <>
-      Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
+      Flag status: {enabled ? "ENABLED" : "DISABLED"}
     </>
 }
 ```
