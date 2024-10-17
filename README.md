@@ -282,23 +282,37 @@ await flags.sendMetrics();
 
 If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario. 
 ```tsx
-import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
+import { evaluateFlags, flagsClient, getDefinitions } from "@unleash/nextjs";
+import {GetServerSideProps, NextPage} from "next";
 
-const definitions = await getDefinitions();
-const context = {};
-const {toggles} = evaluateFlags(definitions, context);
-const client = flagsClient(toggles);
+type Data = {
+  isEnabled: boolean;
+};
 
-export default async function Page() {
-    const enabled = client.isEnabled('nextjs-example');
+export const getServerSideProps: GetServerSideProps<Data> = async () => {
+  const definitions = await getDefinitions({
+    fetchOptions: {
+      next: { revalidate: 15 }, // Cache layer like Unleash Proxy!
+    },
+  });
+  const context = {};
+  const { toggles } = evaluateFlags(definitions, context);
+  let client = flagsClient(toggles);
 
-    // reports metrics on each request
-    await client.sendMetrics();
+  const enabled = client.isEnabled("example-flag");
 
-    return  <>
-      Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
-    </>
-}
+  await client.sendMetrics();
+
+  return {
+    props: { isEnabled: enabled },
+  };
+};
+
+const ExamplePage: NextPage<Data> = ({ isEnabled }) => (
+        <>Flag status: {isEnabled ? "ENABLED" : "DISABLED"}</>
+);
+
+export default ExamplePage;
 ```
 
 #### `setInterval` support (e.g. long-running Node process or AWS lambda)
