@@ -278,9 +278,35 @@ const enabled = flags.isEnabled("nextjs-example");
 await flags.sendMetrics();
 ```
 
-#### Long-running process or `setInterval` support
+#### No `setInterval` support (e.g. Vercel)
 
-If your runtime environment supports long-running processes and `setInterval` you can throttle metrics reporting with `sendMetrics` running at a regular interval. 
+If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario. 
+```tsx
+import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
+import {waitUntil} from "@vercel/functions";
+
+const definitions = await getDefinitions();
+const context = {};
+const {toggles} = evaluateFlags(definitions, context);
+const client = flagsClient(toggles);
+
+export default async function Page() {
+    const enabled = client.isEnabled('nextjs-example');
+
+    // reports metrics on each request
+    waitUntil(client.sendMetrics());
+    // when waitUntil is not available
+    // await client.sendMetrics();
+
+    return  <>
+      Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
+    </>
+}
+```
+
+#### `setInterval` support (e.g. long-running Node process or AWS lambda)
+
+If your runtime environment supports `setInterval` you can throttle metrics reporting with `sendMetrics` running at a regular interval.
 
 ```tsx
 import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
@@ -311,30 +337,8 @@ export default async function Page() {
 ```
 
 If your Next application resolves flags only in SSR mode and `setInterval` is supported then you may consider using [Node.js SDK](https://github.com/Unleash/unleash-client-node) instead, which handles the `setInterval` calls under the hood.
-Check [this blog post](https://docs.getunleash.io/feature-flag-tutorials/serverless/lambda) for more information.
+Check [this blog post](https://docs.getunleash.io/feature-flag-tutorials/serverless/lambda) for more information on short-running lambdas that still support `setInterval`.
 
-#### Short-running process and no `setInterval` support
-
-If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario. 
-```tsx
-import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
-
-const definitions = await getDefinitions();
-const context = {};
-const {toggles} = evaluateFlags(definitions, context);
-const client = flagsClient(toggles);
-
-export default async function Page() {
-    const enabled = client.isEnabled('nextjs-example');
-
-    // reports metrics on each request
-    await client.sendMetrics();
-
-    return  <>
-      Flag status: {isEnabled ? "ENABLED" : "DISABLED"}
-    </>
-}
-```
 
 ## F). Bootstrapping / rehydration
 
