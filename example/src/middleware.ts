@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextFetchEvent, type NextRequest, NextResponse } from "next/server";
 import { UNLEASH_API_PROXY_DEFINITIONS, UNLEASH_COOKIE_NAME } from "./utils";
 import { addBasePath } from "next/dist/client/add-base-path";
 import { flagsClient, evaluateFlags, randomSessionId } from "@unleash/nextjs";
@@ -7,7 +7,7 @@ export const config = {
     runtime: "experimental-edge",
 };
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, event: NextFetchEvent) {
     const sessionId =
         req.cookies.get(UNLEASH_COOKIE_NAME)?.value || randomSessionId();
     let res: NextResponse;
@@ -26,13 +26,16 @@ export async function middleware(req: NextRequest) {
       
         // Evaluate based on provided context
         const evaluated = evaluateFlags(definitions, context);
-        const variant = flagsClient(evaluated.toggles).getVariant("example-flag")
+        const flags = flagsClient(evaluated.toggles)
+        const variant = flags.getVariant("example-flag")
           ?.payload?.value;
       
         const newUrl = req.nextUrl.clone();
         // Redirect to variant
         newUrl.pathname = `/ab/${variant === "a" ? "a" : "b"}`;
         res = NextResponse.rewrite(newUrl);
+
+        event.waitUntil(flags.sendMetrics()) // Experimental, since 1.5.0-beta.3
     }
     else {
         res = NextResponse.next();
@@ -40,4 +43,3 @@ export async function middleware(req: NextRequest) {
     res.cookies.set(UNLEASH_COOKIE_NAME, sessionId);
     return res; 
 }
-      
