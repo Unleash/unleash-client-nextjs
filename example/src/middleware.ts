@@ -34,8 +34,6 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
         // Redirect to variant
         newUrl.pathname = `/ab/${variant === "a" ? "a" : "b"}`;
         res = NextResponse.rewrite(newUrl);
-
-        event.waitUntil(flags.sendMetrics()) // Experimental, since 1.5.0-beta.3
     }
     else {
         res = NextResponse.next();
