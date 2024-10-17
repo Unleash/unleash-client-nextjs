@@ -260,7 +260,7 @@ export default ExamplePage;
 ```
 
 
-### SSR and metrics (experimental since 1.5.0-beta.3)
+### Server-side flags and metrics (experimental since 1.5.0-beta.3)
 
 Next.js applications using Server-Side Rendering (SSR) are often deployed in serverless or short-lived environments, such as Vercel. This creates challenges for server-side metrics reporting.
 
