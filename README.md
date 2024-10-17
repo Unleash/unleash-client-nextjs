@@ -386,10 +386,8 @@ export default async function Page() {
 
    const enabled = flags.isEnabled("nextjs-example");
 
-   // blocking metrics
-   // await client.sendMetrics().catch(() => {});
-   // non-blocking metrics
-   flags.sendMetrics().catch(() => {});
+   // await client.sendMetrics().catch(() => {}); // blocking metrics
+   flags.sendMetrics().catch(() => {}); // non-blocking metrics
 
     return  <>Flag status: {enabled ? "ENABLED" : "DISABLED"}</>
 }
