@@ -311,6 +311,95 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
 };
 ```
 
+# Server-side flags and metrics (experimental since 1.5.0-beta.3)
+
+Next.js applications using Server-Side Rendering (SSR) are often deployed in serverless or short-lived environments, such as Vercel. This creates challenges for server-side metrics reporting.
+
+Typically, Unleash backend SDKs (like the [Node.js SDK](https://github.com/Unleash/unleash-client-node) run in long-lived processes, allowing them to cache metrics locally and send them to the Unleash API or Edge API at scheduled intervals.
+
+However, in some short-lived serverless environments where Next.js is commonly hosted (e.g., Vercel), there is no persistent in-memory cache across multiple requests. As a result, metrics must be reported on each request.
+
+To address this, the SDK provides a `sendMetrics` function that can be called wherever needed, but it should be executed after feature flag checks `client.isEnabled()` or variant checks `client.getVariant()`.
+
+We also recommend setting up the [Edge API](https://github.com/Unleash/unleash-edge)  in front of your Unleash API. This helps protect your Unleash API from excessive traffic caused by per-request metrics reporting.
+
+```tsx
+const enabled = flags.isEnabled("nextjs-example");
+
+await flags.sendMetrics();
+```
+
+## No `setInterval` support (e.g. Vercel)
+
+If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario.
+
+### Page router
+```tsx
+import { evaluateFlags, flagsClient, getDefinitions } from "@unleash/nextjs";
+import {GetServerSideProps, NextPage} from "next";
+
+type Data = {
+  isEnabled: boolean;
+};
+
+export const getServerSideProps: GetServerSideProps<Data> = async () => {
+  const definitions = await getDefinitions({
+    fetchOptions: {
+      next: { revalidate: 15 }, // Cache layer like Unleash Proxy!
+    },
+  });
+  const context = {};
+  const { toggles } = evaluateFlags(definitions, context);
+  const flags = flagsClient(toggles);
+
+  const enabled = flags.isEnabled("nextjs-example");
+
+  // await client.sendMetrics().catch(() => {}); // blocking metrics
+  flags.sendMetrics().catch(() => {}); // non-blocking metrics
+
+  return {
+    props: { isEnabled: enabled },
+  };
+};
+
+const ExamplePage: NextPage<Data> = ({ isEnabled }) => (
+        <>Flag status: {isEnabled ? "ENABLED" : "DISABLED"}</>
+);
+
+export default ExamplePage;
+```
+
+### App router
+
+```tsx
+import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
+
+export default async function Page() {
+   const definitions = await getDefinitions({
+     fetchOptions: {
+       next: { revalidate: 15 }, // Cache layer like Unleash Proxy!
+     },
+   });
+   const context = {};
+   const { toggles } = evaluateFlags(definitions, context);
+   const flags = flagsClient(toggles);
+
+   const enabled = flags.isEnabled("nextjs-example");
+
+   // await client.sendMetrics().catch(() => {}); // blocking metrics
+   flags.sendMetrics().catch(() => {}); // non-blocking metrics
+
+    return  <>Flag status: {enabled ? "ENABLED" : "DISABLED"}</>
+}
+```
+
+
+## `setInterval` support (e.g. long-running Node process or AWS lambda)
+
+If your Next application resolves flags only in SSR mode and `setInterval` is supported then you may also consider using [Node.js SDK](https://github.com/Unleash/unleash-client-node) instead, which is less taxing on metrics reporting.
+Check [this blog post](https://docs.getunleash.io/feature-flag-tutorials/serverless/lambda) for more information on short-running lambdas that still support `setInterval`.
+
+
 # ⚗️ CLI (experimental)
 
 You can use `unleash [action] [options]` in your `package.json` `scripts` section, or with:
