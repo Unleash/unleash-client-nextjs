@@ -311,7 +311,7 @@ CustomApp.getInitialProps = async (ctx: AppContext) => {
 };
 ```
 
-# Server-side flags and metrics (experimental since 1.5.0-beta.3)
+# Server-side flags and metrics (new in v1.5.0)
 
 Next.js applications using Server-Side Rendering (SSR) are often deployed in serverless or short-lived environments, such as Vercel. This creates challenges for server-side metrics reporting.
 
@@ -332,6 +332,30 @@ await flags.sendMetrics();
 ## No `setInterval` support (e.g. Vercel)
 
 If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario.
+
+### App router
+
+```tsx
+import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
+
+export default async function Page() {
+  const definitions = await getDefinitions({
+    fetchOptions: {
+      next: { revalidate: 15 }, // Cache layer like Unleash Proxy!
+    },
+  });
+  const context = {};
+  const { toggles } = evaluateFlags(definitions, context);
+  const flags = flagsClient(toggles);
+
+  const enabled = flags.isEnabled("nextjs-example");
+
+  // await client.sendMetrics().catch(() => {}); // blocking metrics
+  flags.sendMetrics().catch(() => {}); // non-blocking metrics
+
+  return  <>Flag status: {enabled ? "ENABLED" : "DISABLED"}</>
+}
+```
 
 ### Page router
 ```tsx
@@ -363,35 +387,12 @@ export const getServerSideProps: GetServerSideProps<Data> = async () => {
 };
 
 const ExamplePage: NextPage<Data> = ({ isEnabled }) => (
-        <>Flag status: {isEnabled ? "ENABLED" : "DISABLED"}</>
+  <>Flag status: {isEnabled ? "ENABLED" : "DISABLED"}</>
 );
 
 export default ExamplePage;
 ```
 
-### App router
-
-```tsx
-import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
-
-export default async function Page() {
-   const definitions = await getDefinitions({
-     fetchOptions: {
-       next: { revalidate: 15 }, // Cache layer like Unleash Proxy!
-     },
-   });
-   const context = {};
-   const { toggles } = evaluateFlags(definitions, context);
-   const flags = flagsClient(toggles);
-
-   const enabled = flags.isEnabled("nextjs-example");
-
-   // await client.sendMetrics().catch(() => {}); // blocking metrics
-   flags.sendMetrics().catch(() => {}); // non-blocking metrics
-
-    return  <>Flag status: {enabled ? "ENABLED" : "DISABLED"}</>
-}
-```
 
 ## Next.js middleware
 
