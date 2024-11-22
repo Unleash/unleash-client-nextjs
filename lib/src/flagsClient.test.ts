@@ -1,7 +1,12 @@
 import { flagsClient } from "./flagsClient";
 
+const fetchMock = vi.fn();
+global.fetch = fetchMock;
+
 describe("flagsClient", () => {
-  global.fetch = vi.fn();
+  beforeEach(() => {
+    fetchMock.mockReset();
+  });
 
   it("should return methods", () => {
     const client = flagsClient();
@@ -66,5 +71,62 @@ describe("flagsClient", () => {
       enabled: false,
       feature_enabled: true,
     });
+  });
+
+  it("should not send metrics", async () => {
+    const client = flagsClient(
+      [
+        {
+          name: "foo",
+          enabled: true,
+          variant: { name: "disabled", enabled: false },
+          impressionData: false,
+        },
+      ],
+      {
+        url: 'http://test.com/api',
+        appName: 'custom-app-name',
+        clientKey: 'a-very-nice-very-secure-custom-key'
+      }
+    );
+
+    await client.sendMetrics();
+
+    expect(fetchMock).toHaveBeenCalledTimes(0);
+  });
+
+  it("should send metrics", async () => {
+    const client = flagsClient(
+      [
+        {
+          name: "foo",
+          enabled: true,
+          variant: { name: "disabled", enabled: false },
+          impressionData: false,
+        },
+      ],
+      {
+        url: 'http://test.com/api',
+        appName: 'custom-app-name',
+        clientKey: 'a-very-nice-very-secure-custom-key'
+      }
+    );
+
+    client.getVariant('foo');
+
+    await client.sendMetrics();
+
+    expect(fetchMock).toHaveBeenCalled();
+
+    expect(fetchMock).toHaveBeenCalledWith('http://test.com/api/client/metrics', expect.objectContaining({
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        Authorization: 'a-very-nice-very-secure-custom-key',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: expect.stringContaining('custom-app-name'),
+    }));
   });
 });
