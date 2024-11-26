@@ -26,7 +26,7 @@ export const safeCompare = (a: string, b: string) => {
 export const randomSessionId = () =>
   `${Math.floor(Math.random() * 1_000_000_000)}`;
 
-const validateEnviromentVariables = () => {
+const validateEnvironmentVariables = () => {
   if (process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_TOKEN) {
     console.warn(
       "You are trying to set `NEXT_PUBLIC_UNLEASH_SERVER_API_TOKEN`. Server keys shouldn't be public. Use frontend keys or skip `NEXT_PUBLIC_ prefix."
@@ -43,7 +43,7 @@ export const getServerBaseUrl = () =>
   process.env.NEXT_PUBLIC_UNLEASH_SERVER_API_URL;
 
 export const getDefaultClientConfig = () => {
-  validateEnviromentVariables();
+  validateEnvironmentVariables();
 
   return {
     url:
@@ -57,6 +57,21 @@ export const getDefaultClientConfig = () => {
       process.env.UNLEASH_FRONTEND_API_TOKEN ||
       process.env.NEXT_PUBLIC_UNLEASH_FRONTEND_API_TOKEN ||
       "default:development.unleash-insecure-frontend-api-token",
+  };
+};
+
+export const getDefaultServerConfig = () => {
+  validateEnvironmentVariables();
+
+  return {
+    url: getServerBaseUrl() || "http://localhost:4242/api",
+    appName:
+      process.env.UNLEASH_APP_NAME ||
+      process.env.NEXT_PUBLIC_UNLEASH_APP_NAME ||
+      "nextjs",
+    clientKey:
+      process.env.UNLEASH_SERVER_API_TOKEN ||
+      "default:development.unleash-insecure-server-api-token",
   };
 };
 
