@@ -43,9 +43,5 @@ export const flagsClient = (
     },
   });
 
-  return {
-    isEnabled: (name: string) => client.isEnabled(name),
-    getVariant: (name: string) => client.getVariant(name),
-    sendMetrics: () => client.sendMetrics(),
-  };
+  return client;
 };
