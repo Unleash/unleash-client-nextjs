@@ -125,6 +125,9 @@ describe("flagsClient", () => {
         Authorization: 'a-very-nice-very-secure-custom-key',
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'x-unleash-appname': 'custom-app-name',
+        'x-unleash-connection-id': expect.stringMatching(/[a-f0-9-]{36}/),
+        'x-unleash-sdk': 'unleash-js@3.7.1',
       },
       body: expect.stringContaining('custom-app-name'),
     }));
