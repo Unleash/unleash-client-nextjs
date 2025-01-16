@@ -127,7 +127,7 @@ describe("flagsClient", () => {
         'Content-Type': 'application/json',
         'x-unleash-appname': 'custom-app-name',
         'x-unleash-connection-id': expect.stringMatching(/[a-f0-9-]{36}/),
-        'x-unleash-sdk': expect.stringMatching(/^unleash-js@\d\.\d\.\d/),
+        'x-unleash-sdk': expect.stringMatching(/^unleash-js@\d+\.\d+\.\d+/),
       },
       body: expect.stringContaining('custom-app-name'),
     }));
