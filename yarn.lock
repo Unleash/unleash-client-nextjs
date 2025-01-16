@@ -4331,10 +4331,10 @@ unleash-client@6.1.1:
     murmurhash3js "^3.0.1"
     semver "^7.6.2"
 
-unleash-client@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-6.4.0.tgz#bd148e3290e46f24365fe379353b526a99b19a84"
-  integrity sha512-jxnqYNFLDRVaBIwocsDHKBmEaiY1HG+yjQCrILy0g8LWIrYLwRV9P+pfqRFdNiD3gaGXqfqjfxXR0IwjrofKLg==
+unleash-client@^6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-6.4.1.tgz#ae9a570e23488a250c74fb1576611bca5130eeb1"
+  integrity sha512-Tu2fNqu2Gy3u0KnJh0kPmyCAnEi1hr6319ct3rSjE1e4kEIlML6ZDwqUNZk2t6/yzijrGfgFfVJRxTivYEBVfQ==
   dependencies:
     http-proxy-agent "^7.0.2"
     https-proxy-agent "^7.0.5"
