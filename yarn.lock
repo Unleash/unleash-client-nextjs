@@ -1003,6 +1003,20 @@
   resolved "https://registry.yarnpkg.com/@unleash/client-specification/-/client-specification-5.1.7.tgz#8f8363803cca96afca4e65938d97951ffa8facc4"
   integrity sha512-PIaVKrFuXS/HMaWFOmLVAKssNlPKVvQ1+EgUMZ+SL+4d1U2bMevR8QJB0Efk2F6FhjSvJTN1vPlpuacfc/F25A==
 
+"@unleash/nextjs@*":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@unleash/nextjs/-/nextjs-1.5.0.tgz#d6df6347c090a4f385327df5320dbb26de94ee63"
+  integrity sha512-c0X+3/xVoPszOJknJwByw4L5tKJqxGPIufeI5dtL2m9KX/KoBRHuYc1YtxG1kE8Uf6Bv+faTnKWHB02w09pEHw==
+  dependencies:
+    "@commander-js/extra-typings" "12.1.0"
+    "@next/env" "14.2.13"
+    "@unleash/proxy-client-react" "4.3.1"
+    commander "12.1.0"
+    murmurhash3js "3.0.1"
+    semver "7.6.3"
+    unleash-client "6.1.1"
+    unleash-proxy-client "3.6.1"
+
 "@unleash/proxy-client-react@4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-4.3.1.tgz#49d43224aa493fc8e589f043c8ff983c526099f8"
@@ -4311,6 +4325,14 @@ unleash-proxy-client@3.6.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/unleash-proxy-client/-/unleash-proxy-client-3.6.1.tgz#ec709bd03010d190977f99a0900117f9e9ab6ea4"
   integrity sha512-gbvkob/cBewLHMh9aAwWLDLN8D1efJ5FdUMva7wGBVykJMIqyYIlUsJpVNXnpq+feNBn6Qc1D1huXD2bk9bEmA==
+  dependencies:
+    tiny-emitter "^2.1.0"
+    uuid "^9.0.1"
+
+unleash-proxy-client@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/unleash-proxy-client/-/unleash-proxy-client-3.7.1.tgz#c51483aebaad664e6d6ea70828f5f10bece61a40"
+  integrity sha512-ri3cauGfQBjvRvwwJIQfnHlpOfFvQz0iy5hVd82Tr4t0LkqpqFr248tuO8jkI39JXelUcX7TCGNHneeMMPZM1A==
   dependencies:
     tiny-emitter "^2.1.0"
     uuid "^9.0.1"

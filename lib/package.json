@@ -54,7 +54,7 @@
     "murmurhash3js": "3.0.1",
     "semver": "7.6.3",
     "unleash-client": "6.1.1",
-    "unleash-proxy-client": "3.6.1"
+    "unleash-proxy-client": "^3.7.1"
   },
   "peerDependencies": {
     "next": ">=12",
