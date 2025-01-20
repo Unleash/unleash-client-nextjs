@@ -333,7 +333,32 @@ await flags.sendMetrics();
 
 If your runtime does not allow `setInterval` calls then you can report metrics on each request as shown below. Consider using Unleash Edge in this scenario.
 
-### App router
+### Next.js 15 and newer
+
+Latest versions of Next.js allow to run code after the response is sent, with [`after` function](https://nextjs.org/docs/app/api-reference/functions/after).
+
+```ts
+import { after } from 'next/server'
+// ...
+export default async function Page() {
+
+  // ...
+  const flags = flagsClient(evaluated.toggles)
+  const isEnabled = flags.isEnabled("example-flag")
+
+  after(async () => {
+    flags.sendMetrics()
+  })
+
+  return (
+    // ...
+  )
+}
+```
+
+### Next.js 14 and older
+
+#### App router
 
 ```tsx
 import {evaluateFlags, flagsClient, getDefinitions,} from "@unleash/nextjs";
@@ -357,7 +382,7 @@ export default async function Page() {
 }
 ```
 
-### Page router
+#### Page router
 ```tsx
 import { evaluateFlags, flagsClient, getDefinitions } from "@unleash/nextjs";
 import {GetServerSideProps, NextPage} from "next";

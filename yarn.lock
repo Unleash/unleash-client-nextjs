@@ -1003,20 +1003,6 @@
   resolved "https://registry.yarnpkg.com/@unleash/client-specification/-/client-specification-5.1.7.tgz#8f8363803cca96afca4e65938d97951ffa8facc4"
   integrity sha512-PIaVKrFuXS/HMaWFOmLVAKssNlPKVvQ1+EgUMZ+SL+4d1U2bMevR8QJB0Efk2F6FhjSvJTN1vPlpuacfc/F25A==
 
-"@unleash/nextjs@*":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@unleash/nextjs/-/nextjs-1.5.0.tgz#d6df6347c090a4f385327df5320dbb26de94ee63"
-  integrity sha512-c0X+3/xVoPszOJknJwByw4L5tKJqxGPIufeI5dtL2m9KX/KoBRHuYc1YtxG1kE8Uf6Bv+faTnKWHB02w09pEHw==
-  dependencies:
-    "@commander-js/extra-typings" "12.1.0"
-    "@next/env" "14.2.13"
-    "@unleash/proxy-client-react" "4.3.1"
-    commander "12.1.0"
-    murmurhash3js "3.0.1"
-    semver "7.6.3"
-    unleash-client "6.1.1"
-    unleash-proxy-client "3.6.1"
-
 "@unleash/proxy-client-react@4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-4.3.1.tgz#49d43224aa493fc8e589f043c8ff983c526099f8"
@@ -4319,18 +4305,6 @@ unique-slug@^4.0.0:
   dependencies:
     imurmurhash "^0.1.4"
 
-unleash-client@6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-6.1.1.tgz#0a53f2646f100c098708b860aa0b7991f0986e39"
-  integrity sha512-nAQw4SDjPd1J7JN6KD9o+5R1zhGOVhdbAWbpwXwhCi25ofpQVLpsVMpJvaztog1EZUrRd7oZcS21zvrrqZpP9A==
-  dependencies:
-    http-proxy-agent "^7.0.2"
-    https-proxy-agent "^7.0.5"
-    ip-address "^9.0.5"
-    make-fetch-happen "^13.0.1"
-    murmurhash3js "^3.0.1"
-    semver "^7.6.2"
-
 unleash-client@^6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-6.4.1.tgz#ae9a570e23488a250c74fb1576611bca5130eeb1"
@@ -4344,14 +4318,6 @@ unleash-client@^6.4.1:
     murmurhash3js "^3.0.1"
     proxy-from-env "^1.1.0"
     semver "^7.6.2"
-
-unleash-proxy-client@3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/unleash-proxy-client/-/unleash-proxy-client-3.6.1.tgz#ec709bd03010d190977f99a0900117f9e9ab6ea4"
-  integrity sha512-gbvkob/cBewLHMh9aAwWLDLN8D1efJ5FdUMva7wGBVykJMIqyYIlUsJpVNXnpq+feNBn6Qc1D1huXD2bk9bEmA==
-  dependencies:
-    tiny-emitter "^2.1.0"
-    uuid "^9.0.1"
 
 unleash-proxy-client@^3.7.2:
   version "3.7.2"
