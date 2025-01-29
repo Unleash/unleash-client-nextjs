@@ -36,7 +36,9 @@ describe("getDefinitions", () => {
           "Content-Type": "application/json",
           "UNLEASH-APPNAME": "nextjs",
           "User-Agent": "nextjs",
-          "Unleash-Client-Spec": "4.2.0",
+          "Unleash-Client-Spec": expect.stringMatching(/\d+\.\d+\.\d+.*/),
+          "x-unleash-sdk": expect.stringContaining("unleash-client-nextjs:"),
+          "x-unleash-appname": "nextjs",
         },
       }
     );

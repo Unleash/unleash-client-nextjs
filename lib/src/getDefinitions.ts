@@ -1,9 +1,10 @@
 import type { ClientFeaturesResponse } from "unleash-client";
 import { removeTrailingSlash } from "./utils";
+import { version, devDependencies } from '../package.json'
 
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
-const supportedSpecVersion = "4.2.0";
+const supportedSpecVersion = devDependencies["@unleash/client-specification"];
 
 type FetchOptions = RequestInit & {
   next?: {
@@ -76,7 +77,8 @@ export const getDefinitions = async (
     "UNLEASH-APPNAME": appName,
     "User-Agent": appName,
     "Unleash-Client-Spec": supportedSpecVersion,
-    // "UNLEASH-SERVERLESS-CLIENT": "TRUE", // TODO: Add serverless client without registration
+    "x-unleash-sdk": `unleash-client-nextjs:${version}`,
+    "x-unleash-appname": appName,
     ...(instanceId ? { "UNLEASH-INSTANCEID": instanceId } : {}),
     ...(fetchOptions.headers || {}),
     ...(sendAuthorizationToken ? { Authorization: token } : {}),

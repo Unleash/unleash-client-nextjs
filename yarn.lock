@@ -1003,10 +1003,10 @@
   resolved "https://registry.yarnpkg.com/@unleash/client-specification/-/client-specification-5.1.7.tgz#8f8363803cca96afca4e65938d97951ffa8facc4"
   integrity sha512-PIaVKrFuXS/HMaWFOmLVAKssNlPKVvQ1+EgUMZ+SL+4d1U2bMevR8QJB0Efk2F6FhjSvJTN1vPlpuacfc/F25A==
 
-"@unleash/proxy-client-react@4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-4.3.1.tgz#49d43224aa493fc8e589f043c8ff983c526099f8"
-  integrity sha512-AZ53XY+M/TVG1LRqULiikxc+IMUZMvfr4Sb7axWBOJbNwmQ39vHOWXy19dEFS3ha2b9EpHA1bC3IdaDWzR3euQ==
+"@unleash/proxy-client-react@4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@unleash/proxy-client-react/-/proxy-client-react-4.5.1.tgz#35d64afcea0b83c53354ef830818dd5dc23eee3d"
+  integrity sha512-vo9fcAbSM7SItBF0XuKqD/nderEfXCA5EC30ozm1HHWZr2tE4RxodsN26Nh1rGqgDkNVr2MssMX13p9G4P2aSw==
 
 "@vercel/examples-ui@2.0.3":
   version "2.0.3"
