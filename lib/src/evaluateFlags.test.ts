@@ -30,6 +30,8 @@ describe("evaluateFlags", () => {
   });
 
   it("should return empty toggles when engine initialization fails", () => {
+    vi.spyOn(console, "error").mockImplementationOnce(() => {});
+
     const definitions = {
       message: "Invalid definitions",
     };
@@ -39,5 +41,12 @@ describe("evaluateFlags", () => {
     expect(result).toEqual({
       toggles: [],
     });
+
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "Unleash: Failed to evaluate flags from provided definitions"
+      ),
+      expect.anything()
+    );
   });
 });
