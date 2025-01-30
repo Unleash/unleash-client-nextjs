@@ -46,7 +46,9 @@ export const getServerSideProps: GetServerSideProps<Data> = async (ctx) => {
     props: {
       isEnabled: flags.isEnabled("example-flag"),
       variant: flags.getVariant("example-flag"),
-      percent: Math.round((toggles.length / definitions.features.length) * 100),
+      percent: definitions.features.length
+        ? Math.round((toggles.length / definitions.features.length) * 100)
+        : 0,
     },
   };
 };
