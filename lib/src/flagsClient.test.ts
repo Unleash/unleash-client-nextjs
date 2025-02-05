@@ -118,18 +118,21 @@ describe("flagsClient", () => {
 
     expect(fetchMock).toHaveBeenCalled();
 
-    expect(fetchMock).toHaveBeenCalledWith('http://test.com/api/client/metrics', expect.objectContaining({
-      method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        Authorization: 'a-very-nice-very-secure-custom-key',
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-unleash-appname': 'custom-app-name',
-        'x-unleash-connection-id': expect.stringMatching(/[a-f0-9-]{36}/),
-        'x-unleash-sdk': expect.stringMatching(/^unleash-js@\d+\.\d+\.\d+/),
-      },
-      body: expect.stringContaining('custom-app-name'),
-    }));
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://test.com/api/client/metrics',
+      expect.objectContaining({
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          authorization: 'a-very-nice-very-secure-custom-key',
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'unleash-appname': 'custom-app-name',
+          'unleash-connection-id': expect.stringMatching(/[a-f0-9-]{36}/),
+          'unleash-sdk': expect.stringMatching(/^unleash-client-js:\d+\.\d+\.\d+/),
+        },
+        body: expect.stringContaining('custom-app-name'),
+      })
+    );
   });
 });

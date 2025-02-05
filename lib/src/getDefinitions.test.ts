@@ -32,13 +32,12 @@ describe("getDefinitions", () => {
       "http://localhost:4242/api/client/features",
       {
         headers: {
-          Authorization: "default:development.unleash-insecure-api-token",
-          "Content-Type": "application/json",
-          "UNLEASH-APPNAME": "nextjs",
-          "User-Agent": "nextjs",
-          "Unleash-Client-Spec": expect.stringMatching(/\d+\.\d+\.\d+.*/),
-          "x-unleash-sdk": expect.stringContaining("unleash-client-nextjs:"),
-          "x-unleash-appname": "nextjs",
+          authorization: "default:development.unleash-insecure-api-token",
+          "content-type": "application/json",
+          "user-agent": "nextjs",
+          "unleash-client-spec": expect.stringMatching(/\d+\.\d+\.\d+.*/),
+          "unleash-sdk": expect.stringContaining("unleash-client-nextjs:"),
+          "unleash-appname": "nextjs",
         },
       }
     );
@@ -70,9 +69,9 @@ describe("getDefinitions", () => {
 
     expect(mockFetch).toHaveBeenCalledWith(`${url}/client/features`, {
       headers: expect.objectContaining({
-        Authorization: token,
-        "UNLEASH-APPNAME": appName,
-        "User-Agent": appName,
+        authorization: token,
+        "unleash-appname": appName,
+        "user-agent": appName,
       }),
     });
 
@@ -105,9 +104,9 @@ describe("getDefinitions", () => {
 
     expect(mockFetch).toHaveBeenCalledWith(url, {
       headers: expect.objectContaining({
-        Authorization: token,
-        "UNLEASH-APPNAME": appName,
-        "User-Agent": appName,
+        authorization: token,
+        "unleash-appname": appName,
+        "user-agent": appName,
       }),
     });
 
@@ -133,7 +132,7 @@ describe("getDefinitions", () => {
       "http://localhost:4242/api/client/features",
       {
         headers: expect.objectContaining({
-          "UNLEASH-INSTANCEID": "my-instance-id",
+          "unleash-instanceid": "my-instance-id",
         }),
       }
     );
