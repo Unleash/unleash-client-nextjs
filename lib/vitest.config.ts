@@ -10,6 +10,7 @@ export default defineConfig({
       exclude: [
         "src/**/*.test.ts*",
         "src/core/**", // TODO: e2e Unleash client tests
+        "**/__mocks__/**",
       ],
     },
   },

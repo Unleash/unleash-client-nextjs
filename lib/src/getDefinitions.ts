@@ -1,9 +1,10 @@
 import type { ClientFeaturesResponse } from "unleash-client";
 import { removeTrailingSlash } from "./utils";
+import { version, devDependencies } from '../package.json'
 
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
-const supportedSpecVersion = "4.2.0";
+const supportedSpecVersion = devDependencies["@unleash/client-specification"];
 
 type FetchOptions = RequestInit & {
   next?: {
@@ -71,16 +72,27 @@ export const getDefinitions = async (
 
   const sendAuthorizationToken = !instanceId || token !== defaultToken;
 
-  const headers = {
-    "Content-Type": "application/json",
-    "UNLEASH-APPNAME": appName,
-    "User-Agent": appName,
-    "Unleash-Client-Spec": supportedSpecVersion,
-    // "UNLEASH-SERVERLESS-CLIENT": "TRUE", // TODO: Add serverless client without registration
-    ...(instanceId ? { "UNLEASH-INSTANCEID": instanceId } : {}),
-    ...(fetchOptions.headers || {}),
-    ...(sendAuthorizationToken ? { Authorization: token } : {}),
+  const headers: Record<string, string> = {
+    "content-type": "application/json",
+    "user-agent": appName,
+    "unleash-client-spec": supportedSpecVersion,
+    "unleash-sdk": `unleash-client-nextjs:${version}`,
+    "unleash-appname": appName,
   };
+
+  if (sendAuthorizationToken && token) {
+    headers['authorization'] = token;
+  }
+
+  if (instanceId) {
+    headers["unleash-instanceid"] = instanceId;
+  }
+
+  if (fetchOptions.headers) {
+    Object.entries(fetchOptions.headers).forEach(([key, value]) => {
+      headers[key.toLowerCase()] = value;
+    });
+  }
 
   const response = await fetch(fetchUrl.toString(), {
     ...fetchOptions,
