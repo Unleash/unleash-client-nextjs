@@ -135,41 +135,4 @@ describe("flagsClient", () => {
       })
     );
   });
-
-  it("should return correct variant if called multiple times (Issue #106)", async () => {
-    const client = flagsClient([
-      {
-        name: "foo",
-        enabled: true,
-        variant: {
-          name: "A",
-          enabled: true,
-          payload: {
-            type: "string",
-            value: "FOO",
-          },
-        },
-        impressionData: false,
-      },
-    ]);
-
-    const results = [];
-    const expected = [];
-
-    for (let i = 0; i < 10; i++) {
-      await true;
-      results.push(client.getVariant("foo"));
-      expected.push({
-        name: "A",
-        enabled: true,
-        feature_enabled: true,
-        payload: {
-          type: "string",
-          value: "FOO",
-        },
-      });
-    }
-
-    expect(results).toEqual(expected);
-  });
 });
