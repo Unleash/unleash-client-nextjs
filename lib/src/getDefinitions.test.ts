@@ -44,9 +44,7 @@ describe("getDefinitions", () => {
   });
 
   it("should fetch with default config", () => {
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
+    mockFetch.mockResolvedValue({ json: () => ({ version: 1, features: [] }) });
 
     expect(getDefinitions()).resolves.toEqual({
       version: 1,
@@ -69,18 +67,12 @@ describe("getDefinitions", () => {
   });
 
   it("should warn about default config", () => {
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
     getDefinitions();
 
     expect(mockConsole.warn).toHaveBeenCalled();
   });
 
   it("should show an error when using default token", () => {
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
     getDefinitions();
 
     expect(mockConsole.error).toHaveBeenCalledWith(
@@ -95,10 +87,6 @@ describe("getDefinitions", () => {
     vi.stubEnv("NEXT_PUBLIC_UNLEASH_SERVER_API_URL", url);
     vi.stubEnv("UNLEASH_SERVER_API_TOKEN", token);
     vi.stubEnv("UNLEASH_APP_NAME", appName);
-
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
 
     getDefinitions();
 
@@ -118,10 +106,6 @@ describe("getDefinitions", () => {
     vi.stubEnv("NEXT_PUBLIC_UNLEASH_SERVER_API_URL", "http://example.com/api");
     vi.stubEnv("UNLEASH_SERVER_API_URL", "http://example.org/api");
 
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
-
     getDefinitions();
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -134,10 +118,6 @@ describe("getDefinitions", () => {
     const url = "http://example.com/api/client/features";
     const token = "secure-token";
     const appName = "my-awesome-app";
-
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
 
     getDefinitions({
       url,
@@ -159,9 +139,6 @@ describe("getDefinitions", () => {
 
   it('should not modify "url" in config', () => {
     const url = "http://example.com/api/";
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
     getDefinitions({
       url,
     });
@@ -170,9 +147,6 @@ describe("getDefinitions", () => {
   });
 
   it('should add "instanceId"', () => {
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
     getDefinitions({
       instanceId: "my-instance-id",
     });
@@ -188,9 +162,6 @@ describe("getDefinitions", () => {
   });
 
   it('should not set default token when "instanceId" is set', () => {
-    mockFetch.mockResolvedValue(
-      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
-    );
     getDefinitions({
       instanceId: "my-instance-id",
     });
@@ -200,6 +171,25 @@ describe("getDefinitions", () => {
         Authorization: expect.anything(),
       }),
     });
+  });
+
+  it("should skip null and undefined header values from fetchOptions", async () => {
+    mockFetch.mockResolvedValue({ json: () => ({ version: 1, features: [] }) });
+
+    await getDefinitions({
+      fetchOptions: {
+        headers: {
+          "x-defined": "value",
+          "x-null": null,
+          "x-undefined": undefined,
+        },
+      } as never,
+    });
+
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.headers).toHaveProperty("x-defined", "value");
+    expect(options.headers).not.toHaveProperty("x-null");
+    expect(options.headers).not.toHaveProperty("x-undefined");
   });
 
   it("should reuse ETag on subsequent requests", async () => {
@@ -257,6 +247,83 @@ describe("getDefinitions", () => {
 
     await expect(getDefinitions()).rejects.toThrow(
       /Received 304 Not Modified/
+    );
+  });
+
+  it("should not reuse the ETag across requests with different headers", async () => {
+    mockFetch.mockResolvedValue(
+      createResponse({ version: 1, features: [] }, { etag: "etag-1" })
+    );
+
+    await getDefinitions({ fetchOptions: { headers: { "x-tenant": "a" } } });
+    await getDefinitions({ fetchOptions: { headers: { "x-tenant": "b" } } });
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      "http://localhost:4242/api/client/features",
+      expect.objectContaining({
+        headers: expect.not.objectContaining({
+          "if-none-match": expect.anything(),
+        }),
+      })
+    );
+  });
+
+  it("should update the cached ETag when a 304 returns a new one", async () => {
+    mockFetch
+      .mockResolvedValueOnce(
+        createResponse({ version: 1, features: [] }, { etag: "etag-1" })
+      )
+      .mockResolvedValueOnce(
+        createResponse(undefined, { status: 304, etag: "etag-2" })
+      )
+      .mockResolvedValueOnce(
+        createResponse(undefined, { status: 304, etag: "etag-2" })
+      );
+
+    await getDefinitions();
+    await getDefinitions();
+    await getDefinitions();
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      3,
+      "http://localhost:4242/api/client/features",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          "if-none-match": "etag-2",
+        }),
+      })
+    );
+  });
+
+  it("should evict the oldest entry once the cache is full", async () => {
+    const MAX_CACHE_ENTRIES = 100;
+    mockFetch.mockImplementation(() =>
+      Promise.resolve(
+        createResponse({ version: 1, features: [] }, { etag: "etag" })
+      )
+    );
+
+    // First request for the oldest key populates the cache.
+    await getDefinitions({ fetchOptions: { headers: { "x-key": "0" } } });
+
+    // Fill the cache with enough distinct keys to evict key "0".
+    for (let i = 1; i <= MAX_CACHE_ENTRIES; i++) {
+      await getDefinitions({ fetchOptions: { headers: { "x-key": `${i}` } } });
+    }
+
+    mockFetch.mockClear();
+
+    // Re-requesting the evicted key must not send a cached ETag.
+    await getDefinitions({ fetchOptions: { headers: { "x-key": "0" } } });
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://localhost:4242/api/client/features",
+      expect.objectContaining({
+        headers: expect.not.objectContaining({
+          "if-none-match": expect.anything(),
+        }),
+      })
     );
   });
 });
