@@ -53,12 +53,12 @@ type CacheEntry = {
 // per-call config override never gets served another config's cached body.
 let definitionsCache: CacheEntry | undefined;
 
+// The response depends only on the URL and the token (which scopes
+// project + environment); other headers are identity metadata, not selectors.
 const getCacheKey = (url: string, headers: Record<string, string>) =>
   JSON.stringify({
     url,
     authorization: headers["authorization"] || "",
-    instanceId: headers["unleash-instanceid"] || "",
-    appName: headers["unleash-appname"] || "",
   });
 
 /** @internal Test utility to clear the in-memory cache. */
