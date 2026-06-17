@@ -47,44 +47,15 @@ type CacheEntry = {
   definitions?: ClientFeaturesResponse;
 };
 
-/**
- * Upper bound on cached entries. The cache is keyed by request identity, so in
- * practice it holds a handful of entries, but this guards against unbounded
- * growth if `getDefinitions` is called with many distinct configs/headers.
- */
-const MAX_CACHE_ENTRIES = 100;
-
 const definitionsCache = new Map<string, CacheEntry>();
 
-/**
- * Build a cache key from the request identity: the URL plus every header that
- * will be sent, except `if-none-match`. That header is the caching mechanism
- * itself, so keying on it would be circular. Any other header that
- * distinguishes a request therefore distinguishes its cache entry.
- */
-const getCacheKey = (url: string, headers: Record<string, string>) => {
-  const relevant = Object.keys(headers)
-    .filter((key) => key !== "if-none-match")
-    .sort()
-    .map((key) => [key, headers[key]]);
-
-  return JSON.stringify({ url, headers: relevant });
-};
-
-const setCacheEntry = (key: string, entry: CacheEntry) => {
-  // Map preserves insertion order: once the cap is reached, drop the oldest
-  // entry before inserting a new one.
-  if (
-    !definitionsCache.has(key) &&
-    definitionsCache.size >= MAX_CACHE_ENTRIES
-  ) {
-    const oldest = definitionsCache.keys().next().value;
-    if (oldest !== undefined) {
-      definitionsCache.delete(oldest);
-    }
-  }
-  definitionsCache.set(key, entry);
-};
+const getCacheKey = (url: string, headers: Record<string, string>) =>
+  JSON.stringify({
+    url,
+    authorization: headers["authorization"] || "",
+    instanceId: headers["unleash-instanceid"] || "",
+    appName: headers["unleash-appname"] || "",
+  });
 
 /** @internal Test utility to clear the in-memory cache. */
 export const __resetDefinitionsCache = () => {
@@ -159,14 +130,6 @@ export const getDefinitions = async (
 
   if (response.status === 304) {
     if (cached?.definitions) {
-      // A 304 may carry a refreshed ETag (RFC 7232); keep the cache current.
-      const refreshedEtag = response.headers?.get?.("etag");
-      if (refreshedEtag && refreshedEtag !== cached.etag) {
-        setCacheEntry(cacheKey, {
-          etag: refreshedEtag,
-          definitions: cached.definitions,
-        });
-      }
       return cached.definitions;
     }
     throw new Error(
@@ -179,7 +142,7 @@ export const getDefinitions = async (
   if (response.ok) {
     const etag = response.headers?.get?.("etag");
     if (etag) {
-      setCacheEntry(cacheKey, {
+      definitionsCache.set(cacheKey, {
         etag,
         definitions,
       });
