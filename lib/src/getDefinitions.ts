@@ -43,11 +43,15 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
 };
 
 type CacheEntry = {
+  key: string;
   etag?: string;
   definitions?: ClientFeaturesResponse;
 };
 
-const definitionsCache = new Map<string, CacheEntry>();
+// A single slot is enough: a given app has one configuration, so the cache
+// collapses to one entry. We tag it with the request identity so that a
+// per-call config override never gets served another config's cached body.
+let definitionsCache: CacheEntry | undefined;
 
 const getCacheKey = (url: string, headers: Record<string, string>) =>
   JSON.stringify({
@@ -59,7 +63,7 @@ const getCacheKey = (url: string, headers: Record<string, string>) =>
 
 /** @internal Test utility to clear the in-memory cache. */
 export const __resetDefinitionsCache = () => {
-  definitionsCache.clear();
+  definitionsCache = undefined;
 };
 
 /**
@@ -117,7 +121,8 @@ export const getDefinitions = async (
   }
 
   const cacheKey = getCacheKey(fetchUrl.toString(), headers);
-  const cached = definitionsCache.get(cacheKey);
+  const cached =
+    definitionsCache?.key === cacheKey ? definitionsCache : undefined;
 
   if (!headers["if-none-match"] && cached?.etag) {
     headers["if-none-match"] = cached.etag;
@@ -142,12 +147,13 @@ export const getDefinitions = async (
   if (response.ok) {
     const etag = response.headers?.get?.("etag");
     if (etag) {
-      definitionsCache.set(cacheKey, {
+      definitionsCache = {
+        key: cacheKey,
         etag,
         definitions,
-      });
-    } else {
-      definitionsCache.delete(cacheKey);
+      };
+    } else if (definitionsCache?.key === cacheKey) {
+      definitionsCache = undefined;
     }
   }
 
