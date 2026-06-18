@@ -1,6 +1,6 @@
 import type { ClientFeaturesResponse } from "unleash-client";
 import { removeTrailingSlash } from "./utils";
-import { version, devDependencies } from '../package.json'
+import { version, devDependencies } from "../package.json";
 
 const defaultUrl = "http://localhost:4242/api/client/features";
 const defaultToken = "default:development.unleash-insecure-api-token";
@@ -42,6 +42,30 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
   };
 };
 
+type CacheEntry = {
+  key: string;
+  etag: string;
+  definitions: ClientFeaturesResponse;
+};
+
+// A single slot is enough: a given app has one configuration, so the cache
+// collapses to one entry. We tag it with the request identity so that a
+// per-call config override never gets served another config's cached body.
+let definitionsCache: CacheEntry | undefined;
+
+// The response depends only on the URL and the token (which scopes
+// project + environment); other headers are identity metadata, not selectors.
+const getCacheKey = (url: string, headers: Record<string, string>) =>
+  JSON.stringify({
+    url,
+    authorization: headers["authorization"] || "",
+  });
+
+/** @internal Test utility to clear the in-memory cache. */
+export const __resetDefinitionsCache = () => {
+  definitionsCache = undefined;
+};
+
 /**
  * Fetch Server-side feature flags definitions from Unleash API
  *
@@ -81,7 +105,7 @@ export const getDefinitions = async (
   };
 
   if (sendAuthorizationToken && token) {
-    headers['authorization'] = token;
+    headers["authorization"] = token;
   }
 
   if (instanceId) {
@@ -90,8 +114,18 @@ export const getDefinitions = async (
 
   if (fetchOptions.headers) {
     Object.entries(fetchOptions.headers).forEach(([key, value]) => {
-      headers[key.toLowerCase()] = value;
+      if (value != null) {
+        headers[key.toLowerCase()] = String(value);
+      }
     });
+  }
+
+  const cacheKey = getCacheKey(fetchUrl.toString(), headers);
+  const cached =
+    definitionsCache?.key === cacheKey ? definitionsCache : undefined;
+
+  if (!headers["if-none-match"] && cached) {
+    headers["if-none-match"] = cached.etag;
   }
 
   const response = await fetch(fetchUrl.toString(), {
@@ -99,5 +133,32 @@ export const getDefinitions = async (
     headers,
   });
 
-  return response?.json() as Promise<ClientFeaturesResponse>;
+  if (response.status === 304) {
+    // We only send If-None-Match when we hold a cached body, so a 304 with no
+    // matching entry means a caller-supplied If-None-Match (or a misbehaving
+    // server) — we have nothing to return.
+    if (cached) {
+      return cached.definitions;
+    }
+    throw new Error(
+      "Unleash: Received 304 Not Modified but no cached definitions are available."
+    );
+  }
+
+  const definitions = (await response.json()) as ClientFeaturesResponse;
+
+  if (response.ok) {
+    const etag = response.headers?.get?.("etag");
+    if (etag) {
+      definitionsCache = {
+        key: cacheKey,
+        etag,
+        definitions,
+      };
+    } else if (definitionsCache?.key === cacheKey) {
+      definitionsCache = undefined;
+    }
+  }
+
+  return definitions;
 };

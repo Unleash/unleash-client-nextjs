@@ -1,9 +1,31 @@
-import { getDefinitions, getDefaultConfig } from "./getDefinitions";
+import {
+  getDefinitions,
+  getDefaultConfig,
+  __resetDefinitionsCache,
+} from "./getDefinitions";
 
 const mockFetch = vi.fn();
 const mockConsole = {
   warn: vi.fn(),
   error: vi.fn(),
+};
+
+const createResponse = (
+  body: unknown,
+  init: { status?: number; etag?: string } = {}
+) => {
+  const status = init.status ?? 200;
+  const etag = init.etag;
+
+  return {
+    status,
+    ok: status >= 200 && status < 300,
+    headers: {
+      get: (header: string) =>
+        header?.toLowerCase() === "etag" ? etag ?? null : null,
+    },
+    json: vi.fn(() => Promise.resolve(body)),
+  };
 };
 
 describe("getDefinitions", () => {
@@ -18,6 +40,7 @@ describe("getDefinitions", () => {
   afterEach(() => {
     vi.clearAllMocks();
     vi.unstubAllEnvs();
+    __resetDefinitionsCache();
   });
 
   it("should fetch with default config", () => {
@@ -148,6 +171,83 @@ describe("getDefinitions", () => {
         Authorization: expect.anything(),
       }),
     });
+  });
+
+  it("should skip null and undefined header values from fetchOptions", async () => {
+    mockFetch.mockResolvedValue({ json: () => ({ version: 1, features: [] }) });
+
+    await getDefinitions({
+      fetchOptions: {
+        headers: {
+          "x-defined": "value",
+          "x-null": null,
+          "x-undefined": undefined,
+        },
+      } as never,
+    });
+
+    const [, options] = mockFetch.mock.calls[0];
+    expect(options.headers).toHaveProperty("x-defined", "value");
+    expect(options.headers).not.toHaveProperty("x-null");
+    expect(options.headers).not.toHaveProperty("x-undefined");
+  });
+
+  it("should reuse ETag on subsequent requests", async () => {
+    mockFetch
+      .mockResolvedValueOnce(
+        createResponse({ version: 1, features: [] }, { etag: "etag-1" })
+      )
+      .mockResolvedValueOnce(
+        createResponse({ version: 1, features: [] }, { etag: "etag-2" })
+      );
+
+    await getDefinitions();
+    await getDefinitions();
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      "http://localhost:4242/api/client/features",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          "if-none-match": "etag-1",
+        }),
+      })
+    );
+  });
+
+  it("should return cached definitions on 304 response", async () => {
+    const firstResponse = { version: 1, features: [] };
+
+    mockFetch
+      .mockResolvedValueOnce(
+        createResponse(firstResponse, { etag: "etag-1" })
+      )
+      .mockResolvedValueOnce(
+        createResponse(undefined, { status: 304, etag: "etag-1" })
+      );
+
+    await getDefinitions();
+    await expect(getDefinitions()).resolves.toEqual(firstResponse);
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      "http://localhost:4242/api/client/features",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          "if-none-match": "etag-1",
+        }),
+      })
+    );
+  });
+
+  it("should throw when receiving 304 without cache", async () => {
+    mockFetch.mockResolvedValue(
+      createResponse(undefined, { status: 304, etag: "etag-1" })
+    );
+
+    await expect(getDefinitions()).rejects.toThrow(
+      /Received 304 Not Modified/
+    );
   });
 });
 
