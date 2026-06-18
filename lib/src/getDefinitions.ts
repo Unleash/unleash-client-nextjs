@@ -44,8 +44,8 @@ export const getDefaultConfig = (defaultAppName = "nextjs") => {
 
 type CacheEntry = {
   key: string;
-  etag?: string;
-  definitions?: ClientFeaturesResponse;
+  etag: string;
+  definitions: ClientFeaturesResponse;
 };
 
 // A single slot is enough: a given app has one configuration, so the cache
@@ -124,7 +124,7 @@ export const getDefinitions = async (
   const cached =
     definitionsCache?.key === cacheKey ? definitionsCache : undefined;
 
-  if (!headers["if-none-match"] && cached?.etag) {
+  if (!headers["if-none-match"] && cached) {
     headers["if-none-match"] = cached.etag;
   }
 
@@ -134,7 +134,10 @@ export const getDefinitions = async (
   });
 
   if (response.status === 304) {
-    if (cached?.definitions) {
+    // We only send If-None-Match when we hold a cached body, so a 304 with no
+    // matching entry means a caller-supplied If-None-Match (or a misbehaving
+    // server) — we have nothing to return.
+    if (cached) {
       return cached.definitions;
     }
     throw new Error(
